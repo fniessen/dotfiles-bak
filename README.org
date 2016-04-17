@@ -17,3 +17,12 @@ DOTFILES="~/.dotfiles"
 ln -s ${DOTFILES}/.zshrc ~/.zshrc
 ln -s ${DOTFILES}/.gitconfig ~/.gitconfig
 #+end_src
+
+* Custom scripts
+
+Put your shell scripts in the ~bin/~ directory, and add the following to your
+shell rc file:
+
+#+begin_src shell
+export PATH=~/.dotfiles/bin:${PATH}
+#+end_src
