@@ -1,5 +1,5 @@
 # Hey Emacs, this is a -*- sh -*- file
-## commonprofile --- Common features between Bash and Z Shell
+## .commonprofile --- Common features between Bash and Z Shell
 
 # Copyright (C) 2009-2016 Fabrice Niessen
 
@@ -599,4 +599,4 @@ alias sp=sendpatch
 # Local Variables:
 # End:
 
-# commonprofile ends here
+# .commonprofile ends here
