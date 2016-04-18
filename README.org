@@ -1,6 +1,8 @@
 # dotfiles
 Managing Dotfiles
 
+# git@github.com:fniessen/dotfiles.git
+
 Go on any new machine and do:
 
 #+begin_src shell
