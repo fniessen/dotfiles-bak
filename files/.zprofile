@@ -7,8 +7,8 @@
 
 #* Code:
 
-if [ -r "$HOME/.dotfiles/.oh-my-zsh" ]; then
-    ZSH=$HOME/.dotfiles/.oh-my-zsh
+if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
+    ZSH=$HOME/.dotfiles/repos/.oh-my-zsh
     ZSH_THEME="agnoster"
     # plugins=(git osx rails ruby github node rbenv npm brew byte)
     . $ZSH/oh-my-zsh.sh
