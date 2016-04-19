@@ -9,9 +9,9 @@
 #* PATH
 
 # Extend the PATH var (where to look for executable files).
-for MAYBE_PATH in "$HOME/bin" \
-                  "$HOME/expect" \
-                  "$HOME/winbin";
+for MAYBE_PATH in "${HOME}/.dotfiles/bin" \
+                  "${HOME}/.dotfiles/expect" \
+                  "${HOME}/.dotfiles/winbin";
 do
     # `-e' or `-x'?
     if [ -d "$MAYBE_PATH" ]; then

@@ -44,7 +44,7 @@ precmd_functions+=echo_blank
 # . "/cygdrive/c/Program Files (x86)/Git/etc/git-prompt.sh"
 
 if [ -f "$ZSH/plugins/gitfast/git-prompt.sh" ]; then
-    . "$ZSH/plugins/gitfast/git-prompt.sh"
+  . "$ZSH/plugins/gitfast/git-prompt.sh"
   setopt prompt_subst
   export GIT_PS1_SHOWDIRTYSTATE=true
   export GIT_PS1_SHOWSTASHSTATE=true
