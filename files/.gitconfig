@@ -1,0 +1,293 @@
+[user]
+    name = John Doe
+    email = johndoe@example.com
+
+[github]
+    user = jdoe
+
+[include]
+    path = ~/.gitconfig_local
+
+[alias]
+    workprofile = config user.email \"john@work.com\"
+
+[core]
+    editor = emacsclient
+
+    pager = "less -R"
+
+    whitespace = fix,-indent-with-non-tab,trailing-space,space-before-tab,cr-at-eol
+
+[gc]
+    auto = 1
+
+[diff]
+    renames = copies
+    algorithm = patience
+
+    mnemonicprefix = true
+
+[pull]
+    rebase = preserve
+
+[push]
+    default = simple
+
+[merge]
+    stat = true
+    summary = true
+
+[rebase]
+    stat = true
+
+[grep]
+    fullname = true
+    linenumber = true
+
+[color]
+    ui = auto
+    branch = auto
+    diff = auto
+    status = auto
+    interactive = auto
+
+[color "branch"]
+    current = cyan bold
+    local = green bold
+    remote = red bold
+    upstream = red bold
+    plain = yellow reverse
+
+[color "diff"]
+    plain = normal
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    commit = yellow
+    whitespace = red reverse
+
+[color "status"]
+    header = normal
+    added = green
+    updated = yellow
+    changed = magenta
+    untracked = red
+    branch = cyan bold
+    nobranch = red reverse
+
+[color "grep"]
+    filename = yellow bold
+    linenumber = magenta bold
+    match = green reverse bold
+    separator = red bold
+    selected = white bold
+    context = black
+    function = red
+
+[format]
+    pretty = format:%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset
+    # pretty = format:%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset
+
+[alias]
+
+    alias = "!git config -l | grep alias | cut -c 7- | sort"
+
+    type = cat-file -t
+    dump = cat-file -p
+
+    ci = commit
+
+    cp = cherry-pick -x
+    ls = ls-files
+
+    h = help
+
+    this = !git init && git add . && git commit -m \"Initial commit\"
+    this = !git init && ( [[ -n $(ls) ]] || touch .gitignore ) && git add . && git commit -m \"Initial commit\"
+# plant?
+
+    cl = clone
+
+    st = status -s -b
+
+    ignore = "!f() { echo $1 >> \"${GIT_PREFIX}.gitignore\"; }; f"
+
+    ignored = ls-files --others --ignored --exclude-standard
+
+    assume = update-index --assume-unchanged
+    unassume = update-index --no-assume-unchanged
+
+    assumed = "!git ls-files -v | grep '^h' | cut -c 3-"
+
+    ignored = ls-files -o -i --exclude-standard
+
+    df = diff
+
+    dc = diff --cached
+
+    today = !git log --since=midnight --author=\"`git config user.name`\" --no-merges --all
+
+    today-all = !git log --since=midnight --no-merges --all
+
+    forkdiff = !bash -c 'git diff $(git merge-base "$1" "$2") "$2" "${@: 3}" ' -
+
+    log-local = log --oneline origin..HEAD
+
+    r = !git ls-files --deleted -z | xargs -0 git rm
+
+    lp = log -p
+    lg = log --decorate --oneline --graph
+    lgr = log --decorate --date=relative --graph
+    lga = log --decorate --date=short --graph
+
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    ld = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+    ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+    ls = "!git status -suno"
+
+    lg50 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-50s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{49}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
+    lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-80s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
+
+    ls-modified  = "!git status --porcelain -uno | awk 'match($1, /M/) {print $2}'"
+    ls-added     = "!git status --porcelain -uno | awk 'match($1, /A/) {print $2}'"
+    ls-deleted   = "!git status --porcelain -uno | awk 'match($1, /D/) {print $2}'"
+    ls-renamed   = "!git status --porcelain -uno | awk 'match($1, /R/) {print $2}'"
+    ls-copied    = "!git status --porcelain -uno | awk 'match($1, /C/) {print $2}'"
+    ls-updated   = "!git status --porcelain -uno | awk 'match($1, /U/) {print $2}'"
+    ls-staged    = "!git status --porcelain -uno | grep -P '^[MA]' | awk '{ print $2 }'"
+    ls-untracked = "!git status --porcelain -uall | awk '$1 == \"??\" {print $2}'"
+
+    # List all untracked files.
+    untracked = ls-files --others
+
+    heads = !"git log --format='%C(yellow)%h%Creset;%C(cyan)%H%Creset;%s %Cgreen<%an>%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
+
+    last = log -n 1
+
+    what = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=short --stat
+
+    whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=iso -p -S
+
+    who = shortlog -n -s --
+
+    amend = "!git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend"
+
+    amend = commit -a -v --amend
+    fixup = commit --amend
+# fixlastcommit?
+
+# Commit changes to current head as amended commit.
+    plus = commit --amend -a -C HEAD
+
+# Append additional changes to the previous commit.
+    fixup = commit --amend --reuse-message HEAD
+
+    undo = checkout --
+    scrap = checkout --
+
+    unstage = reset HEAD --
+# OK
+
+    uncommit = reset --soft HEAD~1
+# OK
+
+    wipe = reset --hard HEAD~1
+# rollback?
+
+    r = "remote -v"
+
+    in = !(echo "Please fetch origin before." && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
+    inf = !(git remote update -p && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
+
+    incoming = log ..@{u} --stat
+
+    in-what = diff --stat ...@{u}
+
+    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+
+    pull-all = !"old=$(git rev-parse --abbrev-ref HEAD) ; for b in $(git for-each-ref refs/heads --format='%(refname)') ; do git checkout ${b#refs/heads/} ; git pull --ff-only ; done; git checkout ${old}"
+
+    up = !git pull --ff-only
+
+    out = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' @{u}..
+
+    outgoing = log @{u}.. --stat
+
+    out-all = log --branches --not --remotes --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset'
+
+    sync = !git pull && git push
+
+    sync = !git update && git co master && git pull && git co @{-1}
+
+    # git resync -> sync repository and rebase current branch.
+    resync = !sh -c 'BRANCH_NAME=master && git co master && git fe && git reset --hard origin/master && git rebase master'
+
+    tags = !git tag | sort -V
+
+    lasttag = describe --tags --abbrev=0
+
+    co = checkout
+
+    cob = checkout -b
+# grow?
+
+    master = checkout master
+    develop = checkout develop
+
+    br = branch -a -vv
+
+    bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+
+    bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+
+    # Current branch.
+    cb = "name-rev --name-only HEAD"
+
+    ff = merge --ff-only
+    ff = merge --ff-only @{u}
+    mm = merge --no-ff
+
+    ours = "!f() { git checkout --ours $@ && git add $@; }; f"
+    theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+
+    export = archive -o latest.tar.gz -9 --prefix=latest/
+
+    record = !sh -c '(git add -p -- $@ && git commit) || git reset' --
+
+    snapshot = !git stash save "Snapshot: $(date +\"%F %a %R\")" && git stash apply "stash@{0}"
+
+    ss = stash save
+    sl = stash list
+    sa = stash apply
+
+    hide = stash
+    unhide = stash apply
+# bad aliases, used by some instead to mean assume and unassume...
+
+    stp = stash pop
+    std = stash drop
+
+    stashdiff = stash show -p -w stash@{0}
+    stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
+
+    plop = "!git stash && git pull && git stash pop"
+# cleanpull
+# update (like svn? if we add a git reset in front?)
+# sync
+
+    sp = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git stash pop
+    spp = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git push && git stash pop
+
+    find = "log --all --grep"
+
+    gr = "grep --break --heading"
+
+    lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset  %s' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
+
+    graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+
+    sha1-tag = '!f() { git name-rev --name-only "$@"; }; f'
+
+    sha1-branch = '!f() { git branch -a --contains "$@"; }; f'
+    where = "branch -a --contains"
