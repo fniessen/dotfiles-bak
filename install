@@ -1,6 +1,13 @@
 #!/bin/bash
 
-DOTFILES="~/.dotfiles"
+DOTFILES="${HOME}/.dotfiles"
+cd ${DOTFILES}/files
 
-ln -s ${DOTFILES}/.zshrc ~/.zshrc
-ln -s ${DOTFILES}/.gitconfig ~/.gitconfig
+for f in $(find -type f)
+do
+    f=$(basename $f)
+    ln -s ${DOTFILES}/files/$f ${HOME}/$f
+done
+
+# ln -s ${DOTFILES}/.zshrc ${HOME}/.zshrc
+# ln -s ${DOTFILES}/.gitconfig ${HOME}/.gitconfig
