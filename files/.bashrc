@@ -85,7 +85,7 @@ leuven-before-prompt ()
     fi
 
     if [ "$color_prompt" = "yes" ]; then
-        PS1="${green}\u@\h${BLACK}:${yellow}${myPWD}${HILIT_RET} ${RET}${reset_color}${PROMPTCHAR} "
+        PS1="${green}\u@\h${BLACK}:${reset_color}${yellow}${myPWD}${HILIT_RET} ${RET}${reset_color}${PROMPTCHAR} "
     else
         PS1="\u@\h:${myPWD} ${RET}${PROMPTCHAR} "
     fi
