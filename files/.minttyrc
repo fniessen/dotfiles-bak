@@ -1,0 +1,16 @@
+BackgroundColour=0,24,40
+BellFlash=yes
+BellSound=yes
+BoldAsColour=yes
+BoldAsFont=no
+Columns=132
+CursorColour=255,255,128
+CursorType=underscore
+Font=DejaVu Sans Mono for Powerline
+FontHeight=9
+ForegroundColour=108,131,134
+RightClickAction=paste
+Rows=50
+ScrollbackLines=100000
+SwitchShortcuts=no
+Term=xterm-256color
