@@ -144,8 +144,7 @@ complete -A hostname ssh telnet nmap ftp ping host traceroute nslookup
 # basename=${file%/*}
 
 # Source common settings.
-: ${SHELLRC_LEUVEN:="$HOME/src/shellrc-leuven"} # Necessary to use $HOME!
-. $SHELLRC_LEUVEN/etc/commonprofile
+. ${HOME}/.commonprofile
 
 #* Local Variables
 

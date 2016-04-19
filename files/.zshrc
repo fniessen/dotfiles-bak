@@ -7,8 +7,8 @@
 
 #* Code:
 
-if [ -r "$HOME/.oh-my-zsh" ]; then
-    ZSH=$HOME/.oh-my-zsh
+if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
+    ZSH=$HOME/.dotfiles/repos/.oh-my-zsh
     ZSH_THEME="agnoster"
     # plugins=(git osx rails ruby github node rbenv npm brew byte)
     . $ZSH/oh-my-zsh.sh
@@ -43,8 +43,8 @@ precmd_functions+=echo_blank
 
 # . "/cygdrive/c/Program Files (x86)/Git/etc/git-prompt.sh"
 
-if [ -f "/cygdrive/d/Users/fni/.oh-my-zsh/plugins/gitfast/git-prompt.sh" ]; then
-  . "/cygdrive/d/Users/fni/.oh-my-zsh/plugins/gitfast/git-prompt.sh"
+if [ -f "$ZSH/plugins/gitfast/git-prompt.sh" ]; then
+    . "$ZSH/plugins/gitfast/git-prompt.sh"
   setopt prompt_subst
   export GIT_PS1_SHOWDIRTYSTATE=true
   export GIT_PS1_SHOWSTASHSTATE=true
@@ -248,8 +248,7 @@ setopt nomatch
 setopt notify
 
 # Source common settings.
-: ${SHELLRC_LEUVEN:="$HOME/src/shellrc-leuven"} # Necessary to use $HOME!
-. $SHELLRC_LEUVEN/etc/commonprofile     # Error displayed if not found.
+. ${HOME}/.commonprofile                # Error displayed if not found.
 
 # Enable overriding.
 if [ -f ~/.zshrc_local ]; then
