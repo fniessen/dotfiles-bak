@@ -118,10 +118,6 @@ alias -- cdwd='cd `pwd`'
 alias -- cwd='echo $cwd'
 # alias h='history 1 | less +G'
 
-alias -g ...='../..'
-alias -g ....='../../..'
-alias -g .....='../../../..'
-
 # When entering a directory, list the contents.
 cd() { builtin cd "$@" && ls; }
 
@@ -251,8 +247,8 @@ setopt notify
 . ${HOME}/.shellrc                      # Error displayed if not found.
 
 # Enable overriding.
-if [ -f ~/.zshrc_local ]; then
-    source ~/.zshrc_local
+if [ -f ${HOME}/.zshrc_local ]; then
+    source ${HOME}/.zshrc_local
 fi
 
 #* Local Variables
