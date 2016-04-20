@@ -220,8 +220,7 @@ ShellRC is installed by doing the following:
 
    #+begin_src shell
    git clone git@github.com:fniessen/dotfiles.git ~/.dotfiles
-   cd .dotfiles
-   ~/install
+   ~/.dotfiles/install
    #+end_src
 
 2. *Source ShellRC configuration files*
