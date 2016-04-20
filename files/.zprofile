@@ -248,7 +248,7 @@ setopt nomatch
 setopt notify
 
 # Source common settings.
-. ${HOME}/.commonprofile                # Error displayed if not found.
+. ${HOME}/.shellrc                      # Error displayed if not found.
 
 # Enable overriding.
 if [ -f ~/.zshrc_local ]; then

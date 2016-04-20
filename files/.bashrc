@@ -144,7 +144,7 @@ complete -A hostname ssh telnet nmap ftp ping host traceroute nslookup
 # basename=${file%/*}
 
 # Source common settings.
-. ${HOME}/.commonprofile
+. ${HOME}/.shellrc                      # Error displayed if not found.
 
 #* Local Variables
 
