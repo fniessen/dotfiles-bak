@@ -1,4 +1,3 @@
-
 ## .zshrc --- Z Shell configuration file (for interactive shells)
 
 # Copyright (C) 2009-2016 Fabrice Niessen
@@ -7,6 +6,9 @@
 # Keywords: zsh, dotfile, config
 
 #* Code:
+
+# Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
+PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
 
 if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
     ZSH=$HOME/.dotfiles/repos/.oh-my-zsh
@@ -77,9 +79,6 @@ compinit
 
 # Display a list of completions when you give an ambiguous choice (like Bash).
 setopt autolist
-
-# Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
-PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
 
 BEL=$(tput bel)
 PROMPT+='%(?::$BEL)'

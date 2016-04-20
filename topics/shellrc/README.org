@@ -724,6 +724,11 @@ Documentation: [[http://www.bash2zsh.com/zsh_refcard/refcard.pdf][Zsh Reference 
 #* Code:
 #+end_src
 
+#+begin_src shell
+# Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
+PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
+#+end_src
+
 ** Oh-my-Zsh Agnoster theme
 
 #+begin_note
@@ -861,11 +866,6 @@ setopt autolist
 #+end_src
 
 ** Prompt
-
-#+begin_src shell
-# Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
-PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
-#+end_src
 
 Zsh expects that every character in ~PS1~ will advance the cursor one space.  Wrap
 any non-printing escape sequences in ~%{...%}~, and it should work. So use
