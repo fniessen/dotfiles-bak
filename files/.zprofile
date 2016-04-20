@@ -29,6 +29,57 @@ setopt HIST_IGNORE_DUPS
 # Use the same history file for all sessions.
 setopt SHARE_HISTORY
 
+# Change directory given just path.
+setopt autocd
+
+# Beep when there's an error with the command text you're typing in (e.g. if you
+# hit tab and there are no matching files) -- not as a result of normal commands
+# returning errors.
+setopt beep
+
+# Use additional pattern matching features.
+setopt extendedglob
+
+# Unmatched patterns cause an error.
+setopt nomatch
+
+# Immediately report changes in background job status.
+setopt notify
+
+# Behave like Emacs when editing.
+bindkey -e
+
+# Mappings for `Ctrl-up/down' for matching commands from the history.
+bindkey ';5A' history-search-backward
+bindkey ';5B' history-search-forward
+
+# Mappings for `Ctrl-left/right' for word moving.
+bindkey ';5C' forward-word
+bindkey ';5D' backward-word
+
+# Make Zsh beep like Bash when backspacing on an empty command line.
+backward-delete-char-beep ()
+{
+    if (( CURSOR == 0 )); then
+        zle beep
+    fi
+    zle backward-delete-char
+}
+zle -N backward-delete-char-beep
+bindkey "^?" backward-delete-char-beep
+
+# zstyle :compinstall filename '/cygdrive/d/Users/fni/.zshrc'
+
+# Load general completion.
+autoload -Uz compinit
+compinit
+
+# Display a list of completions when you give an ambiguous choice (like Bash).
+setopt autolist
+
+# Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
+PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
+
 BEL=$(tput bel)
 PROMPT+='%(?::$BEL)'
 
@@ -181,39 +232,6 @@ EOF
     rm ${LEDGER_FILE}
 }
 
-# Behave like Emacs when editing.
-bindkey -e
-
-# Mappings for `Ctrl-up/down' for matching commands from the history.
-bindkey ';5A' history-search-backward
-bindkey ';5B' history-search-forward
-
-# Mappings for `Ctrl-left/right' for word moving.
-bindkey ';5C' forward-word
-bindkey ';5D' backward-word
-
-# Beep when there's an error with the command text you're typing in (e.g. if you
-# hit tab and there are no matching files) -- not as a result of normal commands
-# returning errors.
-setopt beep
-
-# Make Zsh beep like Bash when backspacing on an empty command line.
-backward-delete-char-beep ()
-{
-    if (( CURSOR == 0 )); then
-        zle beep
-    fi
-    zle backward-delete-char
-}
-zle -N backward-delete-char-beep
-bindkey "^?" backward-delete-char-beep
-
-# Load general completion.
-autoload -Uz compinit && compinit
-
-# Display a list of completions when you give an ambiguous choice (like Bash).
-setopt autolist
-
 # Case-insensitive completion.
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
@@ -230,18 +248,6 @@ color_err () {
 }
 
 exec 2> >( color_err )
-
-# Change directory given just path.
-setopt autocd
-
-# Use additional pattern matching features.
-setopt extendedglob
-
-# Unmatched patterns cause an error.
-setopt nomatch
-
-# Immediately report changes in background job status.
-setopt notify
 
 # Source common settings.
 . ${HOME}/.shellrc                      # Error displayed if not found.

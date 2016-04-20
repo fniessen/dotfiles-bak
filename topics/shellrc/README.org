@@ -776,9 +776,96 @@ setopt HIST_IGNORE_DUPS
 
 # Use the same history file for all sessions.
 setopt SHARE_HISTORY
+
+# Change directory given just path.
+setopt autocd
+
+# Beep when there's an error with the command text you're typing in (e.g. if you
+# hit tab and there are no matching files) -- not as a result of normal commands
+# returning errors.
+setopt beep
+
+# Use additional pattern matching features.
+setopt extendedglob
+
+# Unmatched patterns cause an error.
+setopt nomatch
+
+# Immediately report changes in background job status.
+setopt notify
+#+end_src
+
+** Zsh line editor
+
+Useful keybindings:
+
+- ~M-q~ ::
+     Type another command in the middle of a long command (look at ~man~, etc.):
+     you can push the current command to the buffer stack, and after executing
+     another command, you can see the top of the stack popped.
+
+- ~M-.~ ::
+     Recall the last argument of the previous command, and so on.
+
+- ~C-r~ ::
+     Do an interactive search across all of the *command history*.
+
+Useful commands:
+
+- ~vared VAR~ ::
+     Interactively edit variable ~VAR~.
+
+#+begin_note
+See [[file:~/.oh-my-zsh/lib/key-bindings.zsh]] for extra key bindings.
+#+end_note
+
+#+begin_src shell
+# Behave like Emacs when editing.
+bindkey -e
+
+# Mappings for `Ctrl-up/down' for matching commands from the history.
+bindkey ';5A' history-search-backward
+bindkey ';5B' history-search-forward
+
+# Mappings for `Ctrl-left/right' for word moving.
+bindkey ';5C' forward-word
+bindkey ';5D' backward-word
+
+# Make Zsh beep like Bash when backspacing on an empty command line.
+backward-delete-char-beep ()
+{
+    if (( CURSOR == 0 )); then
+        zle beep
+    fi
+    zle backward-delete-char
+}
+zle -N backward-delete-char-beep
+bindkey "^?" backward-delete-char-beep
+#+end_src
+
+** Completion Widgets
+
+Zsh will attempt to complete wildcards by expanding them in the command line.
+
+#+begin_src shell
+# zstyle :compinstall filename '/cygdrive/d/Users/fni/.zshrc'
+
+# Load general completion.
+autoload -Uz compinit
+compinit
+#+end_src
+
+#+begin_src shell
+# Display a list of completions when you give an ambiguous choice (like Bash).
+setopt autolist
 #+end_src
 
 ** Prompt
+
+#+begin_src shell
+# Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
+PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
+#+end_src
 
 Zsh expects that every character in ~PS1~ will advance the cursor one space.  Wrap
 any non-printing escape sequences in ~%{...%}~, and it should work. So use
@@ -1047,72 +1134,7 @@ EOF
 # versus binary). You'll have to enter a password every time you want to run
 # ledger.
 #+end_src
-
-** Zsh line editor
-
-Useful keybindings:
-
-- ~M-q~ ::
-     Type another command in the middle of a long command (look at ~man~, etc.):
-     you can push the current command to the buffer stack, and after executing
-     another command, you can see the top of the stack popped.
-
-- ~M-.~ ::
-     Recall the last argument of the previous command, and so on.
-
-- ~C-r~ ::
-     Do an interactive search across all of the *command history*.
-
-Useful commands:
-
-- ~vared VAR~ ::
-     Interactively edit variable ~VAR~.
-
-#+begin_note
-See [[file:~/.oh-my-zsh/lib/key-bindings.zsh]] for extra key bindings.
-#+end_note
-
-#+begin_src shell
-# Behave like Emacs when editing.
-bindkey -e
-
-# Mappings for `Ctrl-up/down' for matching commands from the history.
-bindkey ';5A' history-search-backward
-bindkey ';5B' history-search-forward
-
-# Mappings for `Ctrl-left/right' for word moving.
-bindkey ';5C' forward-word
-bindkey ';5D' backward-word
-
-# Beep when there's an error with the command text you're typing in (e.g. if you
-# hit tab and there are no matching files) -- not as a result of normal commands
-# returning errors.
-setopt beep
-
-# Make Zsh beep like Bash when backspacing on an empty command line.
-backward-delete-char-beep ()
-{
-    if (( CURSOR == 0 )); then
-        zle beep
-    fi
-    zle backward-delete-char
-}
-zle -N backward-delete-char-beep
-bindkey "^?" backward-delete-char-beep
-#+end_src
-
-** 19. Completion Widgets
-
-Zsh will attempt to complete wildcards by expanding them in the command line.
-
-#+begin_src shell
-# Load general completion.
-autoload -Uz compinit && compinit
-
-# Display a list of completions when you give an ambiguous choice (like Bash).
-setopt autolist
-#+end_src
-
+1
 ** 20. Completion System
 
 #+begin_src shell
@@ -1136,22 +1158,6 @@ color_err () {
 }
 
 exec 2> >( color_err )
-#+end_src
-
-** Others
-
-#+begin_src shell
-# Change directory given just path.
-setopt autocd
-
-# Use additional pattern matching features.
-setopt extendedglob
-
-# Unmatched patterns cause an error.
-setopt nomatch
-
-# Immediately report changes in background job status.
-setopt notify
 #+end_src
 
 ** Source common file
