@@ -1,4 +1,5 @@
-## .zprofile --- Z Shell configuration file (for interactive shells)
+
+## .zshrc --- Z Shell configuration file (for interactive shells)
 
 # Copyright (C) 2009-2016 Fabrice Niessen
 
@@ -265,4 +266,4 @@ fi
 # mode: outline-minor
 # End:
 
-## .zprofile ends here
+## .zshrc ends here

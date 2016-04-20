@@ -700,7 +700,7 @@ set completion-ignore-case on
 
 * Configuration related to Zsh
   :PROPERTIES:
-  :header-args+: :tangle ../../files/.zprofile
+  :header-args+: :tangle ../../files/.zshrc
   :END:
 
 Documentation: [[http://www.bash2zsh.com/zsh_refcard/refcard.pdf][Zsh Reference Card]].
@@ -714,7 +714,7 @@ Documentation: [[http://www.bash2zsh.com/zsh_refcard/refcard.pdf][Zsh Reference 
 ** Preamble
 
 #+begin_src shell :noweb yes
-## .zprofile --- Z Shell configuration file (for interactive shells)
+## .zshrc --- Z Shell configuration file (for interactive shells)
 
 # Copyright (C) 2009-<<current-year()>> Fabrice Niessen
 
@@ -1183,7 +1183,7 @@ fi
 # mode: outline-minor
 # End:
 
-## .zprofile ends here
+## .zshrc ends here
 #+end_src
 
 * Configuration related to both shells
