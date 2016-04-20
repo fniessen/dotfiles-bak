@@ -1,0 +1,1554 @@
+#+TITLE:     Git configuration file
+#+AUTHOR:    Fabrice Niessen
+#+EMAIL:     (concat "fniessen" at-sign "pirilampo.org")
+#+DESCRIPTION: Pretty format for `git log' and different helpful command aliases
+#+KEYWORDS:  git, log, pretty format, alias
+#+LANGUAGE:  en
+#+OPTIONS:   H:4 num:nil toc:2
+
+#+SETUPFILE: ~/.dotfiles/org/theme-readtheorg.setup
+
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+PROPERTY:  header-args :tangle ~/.dotfiles/files/.gitconfig :eval no
+
+*Commit early, commit often*: it is a bad idea to do a lot of work without
+committing.
+
+* Overview
+
+The following configures interesting global settings for Git. These are stored
+in the =.gitconfig= file located in the user home directory.
+
+#+begin_warning
+Note that tangling this file will override whichever =~/.gitconfig= file you
+might have. So *BE EXTREMELY CAREFUL*!
+#+end_warning
+
+* COMMENT Tasks
+
+** TODO Add doc about push failure
+
+If a push fails, that does not necessarily indicate a "bad state"---it
+simply represents that your history is different than what the remote
+server has, and that the tip of the branch you are pushing to cannot
+simply be "fast-forwarded" to your commit.
+
+After a failed push, you are in no different state than you were before
+the push (aside from a possibly puzzled mental state).
+
+In your case, since you just want to commit and push in one operation,
+you likely want to run `git pull --rebase`, which would get those
+changes and then automatically re-commit your work on top of them, as if
+you had those changes all along.  You could then push.  So, something
+like:
+
+#+begin_src shell :tangle no
+# Commit all changes and attempt to push, pulling in changes if necessary and
+# re-pushing; on failure, restore to previous state with changes uncomitted.
+git commit -am Foo \
+  && {
+    git push \
+      |   | { |
+        { git pull --rebase || handle-pull-conflicts; } \
+          && git push;
+      }
+  } \
+  |   | { |
+    git reset --soft HEAD^
+    echo 'Commit failed.'
+  }
+#+end_src
+
+But what if rebasing fails?  Then you are left resolving a conflict
+before you can attempt the push operation again.  I do not know how you
+would want to handle this.  `handle-pull-conflicts` might simply perform
+a `git rebase --abort` and exit with a non-zero status, or it may open a
+UI/shell to help resolve changes.  If you are pushing after every
+change, this amounts to correcting a single commit, so it might be worth
+having VC maintain the state here, allow you to correct your commit, and
+then the vc-next-action would be to run `git rebase --continue` after
+adding the files that conflicted.
+
+This will be how the majority of Git users will resolve rejected pushes.
+
+Does that make sense?
+
+  [Aside: `git pull` without `--rebase` performs a `git fetch && git
+  merge whatever-branch-you-are-tracking`, which has the unfortunate
+  side-effect of creating a merge commit if histories are different;
+  this muddies up history.  `git pull --rebase` performs `git fetch &&
+  git rebase whatever-branch-you-are-tracking`.  The difference in the
+  two styles of conflicts here is that, with rebasing, since you are
+  re-committing each and every changeset, you may get multiple
+  conflicts on any number of commits, whereas a merge will give you a
+  single conflict that must be resolved at once.  The benefit of
+  rebasing is that it gives you a clean history and does not produce an
+  unnecessary merge conflict which you would then push to origin, akin
+  to leaving a bag of poop on origin's doorstep.]
+
+For other users, it may represent a wholly different problem.  For
+example, if I were to push to GNU ease.js' repo and get that message,
+that would be a problem, since that means that someone has committed to
+my repository without my permission.  An automatic pull and re-push
+would be bad in this case, since that makes it look like I'm okay with
+that.
+
+A failed push could also mean that you are tracking the wrong
+branch, or pushing to the wrong repository.  Git allows you to set a
+"tracking branch", which can be anything---a local branch, a remote
+branch, or a branch in an entirely different repository, local or
+remote.  Further, you can override the tracking branch by specifying
+which remote to push to as part of the `push` command.
+
+In your case, you'd always want to respect the tracking branch and
+assume that there are no problems pushing, since you use only one
+remote, and the tracking branch is always a branch of the same name on
+origin.
+
+A failed push could also mean that someone rudely rewrote history on the
+remote branch (using `git push --force`) and someone needs a talkin' to.
+
+** TODO Outsource and include private entries in .gitconfig
+
+Git (1.7.10+) now supports this syntax in .gitconfig:
+
+#+begin_src conf :tangle no
+[include]
+    path = /path/to/file
+#+end_src
+
+So you can split your gitconfig configurations across multiple files, e.g. you
+can have a =.gitconfig= file for your nonsensitive information and a git ignored
+=.githubconfig= file containing your private github token.
+
+See http://travisjeffery.com/b/2012/03/using-gits-include-for-private-information-like-github-tokens/
+
+Mix professional and personal Git configurations:
+
+http://monkeypatch.me/blog/mixing-professional-and-personal-git-configurations.html
+
+** TODO git-repos
+
+http://osiux.com/2015-01-14-sincronizar-repositorios-git-repos.html
+
+** TODO Git Quick Start For Emacs Devs
+
+http://www.emacswiki.org/emacs/GitQuickStartForEmacsDevs
+
+** TODO Work in progress which I can't commit (from Stephen J. Turnbull)
+   [2015-03-31 Tue 16:35]
+
+#+begin_verse
+ > > With git pull, if there are changes in the working directory, the
+ > > merge (i.e. merge from remote/master into master) part of the
+ > > operation is aborted before it starts, giving a message describing its
+ > > refusal.  It does this even when there are no conflicts to deal with.
+ >
+ > What are we supposed to do in that case, if we're not yet ready to
+ > commit our files?
+
+If you have work-in-progress and feel unable to commit, but at the
+same time feel the need to pull into that workspace, I suggest you get
+up and walk around, fight off the pull urge, then finish the commit
+after your head cools off.
+
+If that isn't satisfactory, then
+
+ > or putting our work into a new branch, like:
+ >
+ > --8<---------------cut here---------------start------------->8---
+ > git checkout -b new-branch-name
+ > git commit -a -m "Edited"
+ > git checkout master
+ > git pull
+ > ...
+ > --8<---------------cut here---------------end--------------->8---
+
+is one way to go.  Another possibility is creating a new workspace,
+with cp -a or similar.
+
+If you need the pulled code for your work, then a quick stash is the
+better idea.
+#+end_verse
+
+From [[gnus:INBOX#87vbhhi69x.fsf@uwakimon.sk.tsukuba.ac.jp][Email from Stephen J. Turnbull: Re: VC mode and git]]
+
+* User                                                                 :ARCHIVE:
+
+Setting your user name and e-mail address is important because Git stores the
+committer and author of a change in every commit.
+
+#+begin_src conf
+[user]
+    name = John Doe
+    email = johndoe@example.com
+
+[github]
+    user = jdoe
+#+end_src
+
+You should "override" the above with your personal details:
+
+#+begin_src conf
+[include]
+    path = ~/.gitconfig_local
+#+end_src
+
+Or create a Git command to set email addresses for you:
+
+#+begin_src conf
+[alias]
+    workprofile = config user.email \"john@work.com\"
+#+end_src
+
+* Core                                                                 :ARCHIVE:
+
+#+begin_src conf
+[core]
+    editor = emacsclient
+#+end_src
+
+*Text viewer* for use by Git commands.
+
+#+begin_note
+When the ~LESS~ environment variable is unset, Git sets it to ~FRSX~.  If the ~LESS~
+environment variable is set, Git does not change it at all.
+
+We use ~-R~ in the command itself to be sure to *interpret the color codes* when Git
+is run from /Windows/ Emacs (~C-x v l~), with /no/ value for the ~LESS~ /environment
+variable/.
+#+end_note
+
+#+begin_src conf
+    pager = "less -R"
+#+end_src
+
+#+begin_src conf
+    whitespace = fix,-indent-with-non-tab,trailing-space,space-before-tab,cr-at-eol
+#+end_src
+
+#+begin_src conf :tangle no
+    autocrlf = input
+    safecrlf = true
+#+end_src
+
+#+begin_src conf
+[gc]
+    auto = 1
+#+end_src
+
+* Diff                                                                 :ARCHIVE:
+
+#+begin_src conf
+[diff]
+    renames = copies
+    algorithm = patience
+#+end_src
+
+Git diff will use (i)ndex, (w)ork tree, (c)ommit and (o)bject instead of a/b/c/d
+as prefixes for patches:
+
+#+begin_src conf
+    mnemonicprefix = true
+#+end_src
+
+* Pull                                                                 :ARCHIVE:
+
+Configure Git to do the ~--rebase~ part automatically.
+
+#+begin_src conf
+[pull]
+    rebase = preserve
+#+end_src
+
+(The merge commit doesn't get deleted!)
+
+* Push                                                                 :ARCHIVE:
+
+Push *only* the *current working branch* (sane pushing -- instead of pushing all
+branches), with an added safety: only if it is /tracking/ a remote upstream branch
+with the /same name/.
+
+#+begin_src conf
+[push]
+    default = simple
+#+end_src
+
+(~simple~ is the default in Git 2.x)
+
+* Merge                                                                :ARCHIVE:
+
+#+begin_src conf
+[merge]
+    stat = true
+    summary = true
+#+end_src
+
+* Rebase                                                               :ARCHIVE:
+
+Also set ~rebase.stat = true~, so the ~diffstat~ output is still shown when they
+pull.
+
+#+begin_src conf
+[rebase]
+    stat = true
+#+end_src
+
+* Grep                                                                 :ARCHIVE:
+
+#+begin_src conf
+[grep]
+    fullname = true
+    linenumber = true
+#+end_src
+
+* Color                                                                :ARCHIVE:
+
+Instead of hardcoding colors, I suggest:
+
+#+begin_src conf
+[color]
+    ui = auto
+    branch = auto
+    diff = auto
+    status = auto
+    interactive = auto
+#+end_src
+
+See http://git-scm.com/docs/git-config for the ~slot~ list.
+
+** Branch
+
+#+begin_src conf
+[color "branch"]
+    current = cyan bold
+    local = green bold
+    remote = red bold
+    upstream = red bold
+    plain = yellow reverse
+#+end_src
+
+** Diff
+
+#+begin_src conf
+[color "diff"]
+    plain = normal
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+    commit = yellow
+    whitespace = red reverse
+#+end_src
+
+** Status
+
+#+begin_src conf
+[color "status"]
+    header = normal
+    added = green
+    updated = yellow
+    changed = magenta
+    untracked = red
+    branch = cyan bold
+    nobranch = red reverse
+#+end_src
+
+** Grep
+
+#+begin_src conf
+[color "grep"]
+    filename = yellow bold
+    linenumber = magenta bold
+    match = green reverse bold
+    separator = red bold
+    selected = white bold
+    context = black
+    function = red
+#+end_src
+
+* Format
+
+#+begin_src conf
+[format]
+    pretty = format:%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset
+    # pretty = format:%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset
+#+end_src
+
+* Aliases
+
+#+begin_src conf
+[alias]
+#+end_src
+
+If you forget your aliases and don't want to open =.gitconfig= just to check, type
+~git alias~ to *print the current list of Git aliases*:
+
+#+begin_src conf
+    alias = "!git config -l | grep alias | cut -c 7- | sort"
+#+end_src
+
+#+begin_src conf
+    type = cat-file -t
+    dump = cat-file -p
+#+end_src
+
+(see http://gitimmersion.com/lab_11.html)
+
+** Abbreviations
+
+Basic shortcuts.
+
+#+begin_src conf
+    ci = commit
+#+end_src
+
+#+begin_src conf
+    cp = cherry-pick -x
+    ls = ls-files
+#+end_src
+
+#+begin_src conf
+    h = help
+#+end_src
+
+** Getting a Git repository
+
+*** Initialize a repository
+
+#+begin_src conf
+    this = !git init && git add . && git commit -m \"Initial commit\"
+    this = !git init && ( [[ -n $(ls) ]] || touch .gitignore ) && git add . && git commit -m \"Initial commit\"
+# plant?
+#+end_src
+
+*** Clone an existing repository
+
+#+begin_src conf
+    cl = clone
+#+end_src
+
+** Check the status of your files
+
+Give the status in the *short-format* (preceded by a line showing the /branch name/
+and /tracking info/).
+
+#+begin_src conf
+    st = status -s -b
+#+end_src
+
+In the following example:
+
+#+begin_example
+M  README
+ M lisp/mail/rmail.el
+MM ChangeLog
+#+end_example
+
+- =README= is changed and *staged for commit* (it's *in the index*),
+- =lisp/mail/rmail.el= is changed but *not staged for commit*, and
+- =Changelog= is changed and staged for commit, then *changed again* and the new
+  change is *not staged for commit*.
+
+#+begin_note
+Staging for commit is typically done by ~git add~.
+#+end_note
+
+** Ignoring files
+
+*** ~git ignore~ command
+
+Quickly add a file or directory to =.gitignore=:
+
+#+begin_src conf
+    ignore = "!f() { echo $1 >> \"${GIT_PREFIX}.gitignore\"; }; f"
+#+end_src
+
+List untracked files ignored by a =.gitignore= statement somewhere.
+
+#+begin_src conf
+    ignored = ls-files --others --ignored --exclude-standard
+#+end_src
+
+*** ~assume-unchanged~ command
+
+Ignore/unignore changes to *tracked file(s)* without =.gitignore=:
+
+#+begin_src conf
+    assume = update-index --assume-unchanged
+    unassume = update-index --no-assume-unchanged
+#+end_src
+
+It has to be configured for each project member individually.
+
+#+begin_warning
+As stated in [[http://stackoverflow.com/questions/23097368/git-ignore-vs-exclude-vs-assume-unchanged][git ignore vs. exclude vs. assume-unchanged]],
+~git-update-index --assume-unchanged~ was never meant to ignore changes to tracked
+files (*only to spare some stats*).  So do not suggest it as a means to achieve
+that.
+#+end_warning
+
+List ignored files (*marked unchanged*):
+
+#+begin_src conf
+    assumed = "!git ls-files -v | grep '^h' | cut -c 3-"
+#+end_src
+
+Show files ignored by Git:
+
+#+begin_src conf
+    ignored = ls-files -o -i --exclude-standard
+#+end_src
+
+** View your changes
+
+*** Changes between the working tree and the index
+
+#+begin_src conf
+    df = diff
+#+end_src
+
+*** Changes between the working tree and the latest commit (HEAD)
+
+#+begin_src shell :tangle no
+    diff-all = diff HEAD
+#+end_src
+
+*** Changes between the index (staged for the next commit) and the latest commit (HEAD)
+
+Just before committing the *staged* changes, check what your commit changes:
+
+#+begin_src conf
+    dc = diff --cached
+#+end_src
+
+*** Today
+
+Quickly see what you've done today (commits that aren't merges on all branches):
+
+#+begin_src conf
+    today = !git log --since=midnight --author=\"`git config user.name`\" --no-merges --all
+#+end_src
+
+#+begin_src conf
+    today-all = !git log --since=midnight --no-merges --all
+#+end_src
+
+*** Diff of branch
+
+Getting the diff of a branch since it forked from another branch, or since the
+last merge.
+
+To see the changes in a branch since it was forked from another branch, or
+since the last merge with the origin branch, you can add this alias:
+
+#+begin_src conf
+    forkdiff = !bash -c 'git diff $(git merge-base "$1" "$2") "$2" "${@: 3}" ' -
+#+end_src
+
+It uses ~git merge-base~ to determine the fork-point (the commit that is common
+to both the branches) and does a ~git diff~ between that commit and the second
+branch.
+
+Usage:
+
+: git forkdiff <forked from branch> <forked branch> [git-diff-options]
+
+Example:
+
+: git forkdiff origin/master my_forked_branch --stat
+
+*** Finding new commits
+
+Diverging from ~origin/master~, whatever the branch?
+
+#+begin_src conf
+    log-local = log --oneline origin..HEAD
+#+end_src
+
+** Remove deleted files
+
+Removing multiple files from a Git repo that have already been deleted from
+disk:
+
+#+begin_src conf
+    r = !git ls-files --deleted -z | xargs -0 git rm
+#+end_src
+
+** View the commit history
+
+#+begin_src conf
+    lp = log -p
+    lg = log --decorate --oneline --graph
+    lgr = log --decorate --date=relative --graph
+    lga = log --decorate --date=short --graph
+
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    ld = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
+    ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+    ls = "!git status -suno"
+
+    lg50 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-50s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{49}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
+    lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-80s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
+#+end_src
+
+#+begin_src conf
+    ls-modified  = "!git status --porcelain -uno | awk 'match($1, /M/) {print $2}'"
+    ls-added     = "!git status --porcelain -uno | awk 'match($1, /A/) {print $2}'"
+    ls-deleted   = "!git status --porcelain -uno | awk 'match($1, /D/) {print $2}'"
+    ls-renamed   = "!git status --porcelain -uno | awk 'match($1, /R/) {print $2}'"
+    ls-copied    = "!git status --porcelain -uno | awk 'match($1, /C/) {print $2}'"
+    ls-updated   = "!git status --porcelain -uno | awk 'match($1, /U/) {print $2}'"
+    ls-staged    = "!git status --porcelain -uno | grep -P '^[MA]' | awk '{ print $2 }'"
+    ls-untracked = "!git status --porcelain -uall | awk '$1 == \"??\" {print $2}'"
+#+end_src
+
+#+begin_src conf
+    # List all untracked files.
+    untracked = ls-files --others
+#+end_src
+
+#+begin_src conf
+    heads = !"git log --format='%C(yellow)%h%Creset;%C(cyan)%H%Creset;%s %Cgreen<%an>%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
+#+end_src
+
+#+begin_note
+The ~git log~ command shows, by default, the "author date" -- not the "committer
+date".
+#+end_note
+
+#+begin_src conf
+    last = log -n 1
+#+end_src
+
+Prettier and concise ~whatchanged~:
+
+#+begin_src conf
+    what = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=short --stat
+#+end_src
+
+Prettier ~whatchanged~ with full diffs based on text search:
+
+#+begin_src conf
+    whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=iso -p -S
+#+end_src
+
+Show a "top contributors" list:
+
+#+begin_src conf
+    who = shortlog -n -s --
+#+end_src
+
+#+begin_note
+The ~--~ signals the end of options, that the rest of the parameters are limiters.
+#+end_note
+
+** Undo things
+
+*** Change your last commit
+
+> The reason I don't commit a change immediately after I write it is
+> that I want to test it in real (and varied) use.  Sometimes I find
+> bugs and have to change it.  After some period in which it works well,
+> I decide it is ready to install.
+
+That is a good reason. However, for your information there is the variant “git
+commit --amend”, which as the option suggests amends the current commit. Just
+“git add“ the files you changed and run “git commit --amend”. It also lets you
+edit the commit message. After discovering this option, I find I am less fearful
+of making premature commits, since they are easily fixed. (But not after
+pushing, of course. That way lies madness.)
+
+#+begin_verse
+The key to understanding that is that Git does not rewrite history, it creates
+new history and calls that reality.  The commits in this history have different
+IDs (because the ID is the content plus the ID of its parent, changing just one
+commit means everything after it must change).  If you push this new history
+(with --force) everyone else will have the old divergent history.  All their
+work will be on top of this divergent history.  They have to do the surgery to
+put their work on your new history.
+
+When users do a "git pull", git doesn't store that you did a rebase (it would be
+nice if it did) so it assumes something has gone wrong and refuses to pull.  Git
+gets a human to look at the divergence and decide what to do with it.
+Unfortunately, most people don't know what to do with a divergent repository.
+
+And yes, this applies to amended commits.
+
+This is a common question answered on Stack Overflow.
+https://stackoverflow.com/questions/8939977/git-push-rejected-after-feature-branch-rebase
+
+This answer isn't specifically about rebase, but it illustrates how Git creates
+new history.
+https://stackoverflow.com/questions/27692954/change-mail-address-in-each-commit/27709938#27709938
+#+end_verse
+
+Amend with the same message (without your editor prompting you for the message
+you've already entered).
+
+#+begin_src conf
+    amend = "!git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend"
+#+end_src
+
+Modify the last commit:
+
+#+begin_src conf
+    amend = commit -a -v --amend
+    fixup = commit --amend
+# fixlastcommit?
+
+# Commit changes to current head as amended commit.
+    plus = commit --amend -a -C HEAD
+
+# Append additional changes to the previous commit.
+    fixup = commit --amend --reuse-message HEAD
+#+end_src
+
+Note that the ~-a~ switch which tells Git to automatically *stage all your changes*,
+as if you ran ~git add .~ right before the commit.
+
+#+begin_src shell :tangle no
+git commit --amend                      # Correct the previous commit, with the staged changes.
+#+end_src
+
+#+begin_warning
+Never do this to a commit that you've already pushed to a remote repository.
+#+end_warning
+
+*** Unmodify a modified file
+
+*Undo* the local changes *in the working directory*: roll a file back to its last
+committed version.
+
+#+begin_src conf
+    undo = checkout --
+    scrap = checkout --
+#+end_src
+
+#+begin_note
+The two dashes there (canonically called the "bare double dashes") ensure that
+the checkout command know that we are trying to roll back a file and not /change
+branches/ (the typical usage of the checkout command).
+#+end_note
+
+When you grab a file from a previous time, it sits *in your index*, modified.
+
+*** Unstage a staged file
+
+*Remove* the specified files *from the index* (proposed next commit):
+
+#+begin_src conf
+    unstage = reset HEAD --
+# OK
+#+end_src
+
+~unstage~ is the opposite of ~git add~. It lets you remove items from the staging
+area.  This makes it a very useful tool when you're deciding which files to
+stage for a commit.  If you've accidentally added something to the staging area,
+just use ~unstage~ to remove it.
+
+*** Throw away a commit
+
+http://www.vogella.com/tutorials/Git/article.html#resetcommits
+http://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
+http://git-scm.com/2011/07/11/reset.html
+
+~git reset~ is a simple way to undo changes that haven't been shared with anyone
+else.
+
+**** Do not touch the index file or the working tree at all
+
+Go back before last commit, with files in uncommitted state:
+
+#+begin_src conf
+    uncommit = reset --soft HEAD~1
+# OK
+#+end_src
+
+~uncommit~ *removes the last commit* from your repository, and *puts the changes
+into your index*, keeping changes in the working tree. It's like going back in
+time to the moment right before you committed.
+
+#+begin_note
+~uncommit~ here means to do just the reverse of commit, i.e. just like commit it
+shouldn't touch the files's contents, only the metadata.
+#+end_note
+
+This is a useful technique in resuming work on an unfinished changeset.
+
+**** Reset the index (but not the working tree)
+
+Reset the previous commit, but *puts* all *the changes* from that commit *in the
+working directory*:
+
+#+begin_src conf :tangle no
+    undo = reset --mixed HEAD~1
+# popcommit?
+#+end_src
+
+#+begin_note
+~--mixed~ with paths is deprecated; use ~git reset -- <paths>~ instead.
+#+end_note
+
+This is a useful technique if your pull fails to merge the new stuff from
+upstream: ~git reset HEAD~1~, pull again, fix the conflicts, then commit your
+changes again.
+
+**** Reset both the index and working tree
+
+Remove the last commit, delete staged changes and working copy changes:
+
+#+begin_src conf
+    wipe = reset --hard HEAD~1
+# rollback?
+#+end_src
+
+If you reset work that you /never committed/, it is gone for good. Too bad!  This
+is quite a dangerous command, and must be used with care.
+
+#+begin_warning
+This command will also *overwrite changed files* in the working tree!
+#+end_warning
+
+Use ~git reset --hard @{u}~ to make sure the integration branch is up-to-date
+before merging.
+
+#+begin_note
+~git reset --hard~ will not *remove untracked files*, where as ~git clean~ will remove
+any files from the tracked root directory that are not under Git tracking.
+
+*WARNING -- BE CAREFUL WITH THIS!*  It is helpful to run a dry-run with ~git clean~
+first, to see what it will delete.
+
+Use ~git clean -f~ (to remove the untracked files) and ~-fd~ (to also *remove
+untracked directories*).
+#+end_note
+
+XXX What is the difference with ~git checkout .~?  See
+https://wiki.mozilla.org/Cjku/git#git-reset_and_git-checkout.
+
+*** Revert a commit
+
+Once you've pushed changes to a remote repository, it is considered dangerous to
+modify the history because someone else may have already pulled it.
+
+However, Git offers you an easy way to undo a patch by committing a change that
+effectively reverses the patch in question. The simplest usage is to revert an
+entire commit:
+
+#+begin_src shell :tangle no
+git revert [hash]
+#+end_src
+
+This creates a patch that is the opposite of commit ~[hash]~ and commits it to
+your repository.
+
+If you want to revert that commit without committing it (putting the reversion
+into your index), use:
+
+#+begin_src shell :tangle no
+git revert -n [hash]
+#+end_src
+
+** Work with remotes
+
+Starting with Git 1.7.0, ~@{u}~ is shorthand for the *current* branch's *upstream*
+branch; e.g., ~origin/foo~ (or ~github/foo~, etc., since the remote doesn't have to
+be called ~origin~) if the checked out branch is ~foo~.
+
+#+begin_src conf
+    r = "remote -v"
+#+end_src
+
+*** Pull
+
+#+begin_note
+~git pull~ is simply ~git fetch && git merge remote~.  Its ~--rebase~ option uses
+~rebase~ instead of ~merge~.
+
+That's exactly why some decide to avoid ~rebase~ (but to ~pull~ instead), because it
+has bad effects if one merges from another branch and then wants to push.
+#+end_note
+
+The ~in~ command returns a list of *incoming* commits for the *current branch* --
+after a ~git fetch~, to fetch down *all the data* it has for the *current remote* that
+you do not --, the next time you do a merge.
+
+#+begin_src conf
+    in = !(echo "Please fetch origin before." && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
+    inf = !(git remote update -p && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
+#+end_src
+
+#+begin_src conf
+    incoming = log ..@{u} --stat
+#+end_src
+
+Show the changes between the last local commit and the *remote* branch:
+
+Show a *single diffstat* (number of added and deleted lines for *all changed
+files*):
+
+#+begin_src conf
+    in-what = diff --stat ...@{u}
+#+end_src
+
+#+begin_warning
+The upstream diff ~in-what~ will show the negative of unpushed (rebased) commits,
+if any, with the ~..~ notation --- not with the ~...~ notation!
+#+end_warning
+
+Before doing work (in a new branch), ensure that the working directory is
+up-to-date with the ~origin~ (pull and get latest for all submodules):
+
+#+begin_src conf
+    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+#+end_src
+
+XXX Pull current branch only?
+
+Pull all:
+
+#+begin_src conf
+    pull-all = !"old=$(git rev-parse --abbrev-ref HEAD) ; for b in $(git for-each-ref refs/heads --format='%(refname)') ; do git checkout ${b#refs/heads/} ; git pull --ff-only ; done; git checkout ${old}"
+#+end_src
+
+XXX
+
+#+begin_src conf
+    up = !git pull --ff-only
+#+end_src
+
+is pretty safe.  It will abort the merge if it can't be done using fast-forward.
+(In other words, if the local branch has diverged from the remote.)
+
+#+begin_note
+~git pull~ with uncommitted changes can succeed if the newly pulled changes don't
+touch the locally changed files, but will fail otherwise.  Which makes a lot of
+sense.
+#+end_note
+
+*** Push
+
+It is useful to know if you have any *local commits* that are not in the remote
+branch.
+
+#+begin_note
+It is a good idea to examine what you are about to push, before actually doing
+so, because fixing mistakes before pushing is much easier (see the next
+section). To do that, use the command "git diff origin/master". If you want to
+show your unpushed commits with their commit log messages, use "git show
+origin/master.." instead. If you only have one local commit you want to push,
+just "git show" is enough.
+
+> It is not clear to me how these two differ.  Does "git show origin/master.."
+> output everything that "git diff origin/master" outputs, plus log messages?
+
+Yes, that's the only real difference between them, when you have no
+uncommitted changes.  (When you do have uncommitted changes, "git
+diff" will include them, while "git show" will not.)
+#+end_note
+
+The ~out~ command returns a list of *unpushed* (outgoing) commits for the *current
+branch*, the next time you do a push.
+
+#+begin_src conf
+    out = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' @{u}..
+#+end_src
+
+#+begin_src conf
+    outgoing = log @{u}.. --stat
+#+end_src
+
+This causes git log to show all commits reachable from ~HEAD~ excluding those
+reachable from the upstream branch. The ~@{u}..~ argument is equivalent to
+~@{u}..HEAD~, where ~HEAD~ stands for the last commit in your local branch, but ~HEAD~
+can be omitted for shorthand purposes.
+
+#+begin_note
+Use ~git push -u origin new/branch~ to push the ~new/branch~ branch to the ~origin~
+remote and to set up tracking.
+#+end_note
+
+If you want to see all *unpushed* commits from *all branches*, do this:
+
+#+begin_src conf
+    out-all = log --branches --not --remotes --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset'
+#+end_src
+
+*** Sync
+
+#+begin_src conf
+    sync = !git pull && git push
+#+end_src
+
+#+begin_src conf
+    sync = !git update && git co master && git pull && git co @{-1}
+#+end_src
+
+That's rather basic - it doesn't actually rebase my branch that I'm on.
+
+Let's do a slightly different command: ~resync~
+
+#+begin_src conf
+    # git resync -> sync repository and rebase current branch.
+    resync = !sh -c 'BRANCH_NAME=master && git co master && git fe && git reset --hard origin/master && git rebase master'
+#+end_src
+
+** Tag
+
+List tags using (better) version sorting (if your ~sort~ supports it):
+
+#+begin_src conf
+    tags = !git tag | sort -V
+#+end_src
+
+Show the last tag:
+
+#+begin_src conf
+    lasttag = describe --tags --abbrev=0
+#+end_src
+
+** Branch
+
+#+begin_src conf
+    co = checkout
+#+end_src
+
+#+begin_src conf
+    cob = checkout -b
+# grow?
+#+end_src
+
+#+begin_note
+I think the recommended approach is to create a branch pointing at a
+specific commit. So:
+
+git checkout -b test_branch 7e09ef09
+
+Otherwise you're in a "detached head" state, which can have odd results.
+The branch method is at least a little more stable.
+#+end_note
+
+#+begin_note
+I usually branch off from the commit before the offending
+commit and stay there until things are resolved (unless I'm able to
+resolve it myself).
+
+Or I branch off master and revert the offending commit until things are
+resolved, ie. like so
+ git checkout master
+ git checkout -b sb-master
+ git revert sha1-of-offending-commit
+
+(that's what I did with gnus, when cram-md5 auth disappeared from nnimap
+with SSL/TLS...)
+#+end_note
+
+Checkout [[http://nvie.com/posts/a-successful-git-branching-model/][common branches]] (useful if you have feature branches):
+
+#+begin_src conf
+    master = checkout master
+    develop = checkout develop
+#+end_src
+
+*List all branches* (both remote-tracking and local branches), showing SHA1 and
+commit subject line for each head, along with the name of the upstream branch
+(if any).
+
+#+begin_src conf
+    br = branch -a -vv
+#+end_src
+
+~git bclean~ is meant to be run from your master (or default) branch and does the
+cleanup of merged branches.
+
+#+begin_src conf
+    bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+#+end_src
+
+When I'm done with this topic branch and I want to clean everything up on my
+local machine, I use git bdone:
+
+1. Switch to master (though you can specify a different default branch)
+2. Run git up to bring master up to speed with the origin
+3. Delete all branches already merged into master using another alias, git bclean
+
+#+begin_src conf
+    bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+#+end_src
+
+See http://haacked.com/archive/2014/07/28/github-flow-aliases/.
+
+#+begin_src conf
+    # Current branch.
+    cb = "name-rev --name-only HEAD"
+#+end_src
+
+** Merge
+
+Merging means to *bring the contents of another branch* (possibly from an external
+repository) *into the current branch*. [...]  Merging is performed by an automatic
+process that identifies changes made since the branches diverged, and then
+applies all those changes together.
+
+#+begin_src conf
+    ff = merge --ff-only
+    ff = merge --ff-only @{u}
+    mm = merge --no-ff
+#+end_src
+
+If you're the Branch/Integration manager, you can use these aliases to *merge*
+stuff (to select the entirety of either our or their file in a 3 way merge).
+
+Often, during a merge, you know you want to take a file from one side
+wholesale. The following aliases expose the ~ours~ and ~theirs~ commands which will
+let you pick a file(s) from the current branch or the merged branch
+respectively:
+
+#+begin_src conf
+    ours = "!f() { git checkout --ours $@ && git add $@; }; f"
+    theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+#+end_src
+
+** Prepare a release
+
+Save a repo as a tarball:
+
+#+begin_src conf
+    export = archive -o latest.tar.gz -9 --prefix=latest/
+#+end_src
+
+** Cherrypick style recording
+
+Ask interactively which patch hunk to commit, and then do the commit:
+
+#+begin_src conf
+    record = !sh -c '(git add -p -- $@ && git commit) || git reset' --
+#+end_src
+
+It will not only do ~git add -p~ (with an optional file list), but it will also
+immediately do the ~commit~. Upon abandonment of either the add or the commit, it
+will ~reset~ the index.
+
+** Stash
+
+A *stash* is nothing but a *(temporary) branch*.
+
+~git stash~ makes a temporary copy of the *index* and the *working tree*, and clears
+the decks so you can easily work on something else; it reverts your local
+modifications, allowing you to get rid of some incomplete changes:
+
+#+begin_src conf :tangle no
+git stash save "DESCRIBE WHAT YOU DID HERE"
+#+end_src
+
+Take named stash:
+
+#+begin_src conf
+    snapshot = !git stash save "Snapshot: $(date +\"%F %a %R\")" && git stash apply "stash@{0}"
+#+end_src
+
+When you're done, with ~git stash apply~ (top stash by default), you're back where
+you were.  But if that doesn't work, for whatever reason, you can use any of
+Git's other branch merging tools to put things back they way you want them.
+
+Be aware that, unlike ~git stash apply~ (though it has its use), ~git stash pop~
+*deletes the applied stash* -- /only/ if the stash is cleanly applied.  If there are
+conflicts, Git will not remove it (but it will still apply it)!
+
+#+begin_src conf :tangle no
+git stash clear
+#+end_src
+
+You can operate on the "stash" ref as if it were any other ref.
+
+#+begin_src conf
+    ss = stash save
+    sl = stash list
+    sa = stash apply
+#+end_src
+
+#+begin_src conf
+    hide = stash
+    unhide = stash apply
+# bad aliases, used by some instead to mean assume and unassume...
+#+end_src
+
+#+begin_src conf
+    stp = stash pop
+    std = stash drop
+#+end_src
+
+#+begin_src conf
+    stashdiff = stash show -p -w stash@{0}
+    stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
+#+end_src
+
+#+begin_src conf
+    plop = "!git stash && git pull && git stash pop"
+# cleanpull
+# update (like svn? if we add a git reset in front?)
+# sync
+#+end_src
+
+... but read "you're not using git as it was intended" on
+https://news.ycombinator.com/item?id=2301765.
+
+#+begin_src conf
+    sp = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git stash pop
+    spp = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git push && git stash pop
+#+end_src
+
+#+begin_src shell :tangle no
+git stash list                          # show a list of all stashes
+git stash show                          # show the last stash
+git stash show stash@{1}                # show the previous stash
+
+git stash apply                         # apply the stash only, don't delete it
+git stash drop                          # drop the last stash
+git stash drop stash@{1}                # drop a previous stash
+#+end_src
+
+XXX What about ~git stash --include-untracked~ and ~git stash pop~?
+
+Git's fix is to ask you to commit (or stash) before you pull (which is fetch
+followed by merge). XXX
+
+Alternative to ~stash~ (writing a commit with a default message):
+
+1. Do a regular ~commit~:
+
+   #+begin_src shell :tangle no
+   git add -A && git commit -m 'WIP'       # Add all changes (including untracked files).
+   #+end_src
+
+2. Do some other work...
+
+3. Return to previous work:
+
+   #+begin_src shell :tangle no
+   git reset --mixed                       # Reset the previous commit (but
+                                           # keeps all the changes from that
+                                           # commit in the working directory).
+
+   git reset --soft                        # Or this one???
+   #+end_src
+
+   Or, if I merely need to modify the previous commit:
+
+   #+begin_src shell :tangle no
+   git commit -a --amend
+   #+end_src
+
+   The ~-a~ adds any modifications and deletions of existing files to the commit
+   but ignores brand new files.
+
+   The ~--amend~ launches your default commit editor and lets you change the
+   commit message of the most recent commit.
+
+** Search commits
+
+*** String in Log messages
+
+If you want to find all commits (across all branches, showing names and status
+of changed files) where *log message* matches a specified pattern (regular
+expression), use ~find~.
+
+#+begin_src conf
+    find = "log --all --grep"
+#+end_src
+
+Add ~--name-status~ to show only names and status of *changed files*.
+
+For example, to find all commits referencing bug #382:
+
+#+begin_src shell :tangle no
+git find "Bug #382"
+#+end_src
+
+Show the *last commit* which *message matches a regex*:
+
+#+begin_src shell :tangle no
+# Show the last commit which has the word "fix" in its message.
+git show :/fix
+
+# Show the last merge commit.
+git show :/^Merge
+#+end_src
+
+*** String added/removed in Commit contents (Diff)
+
+If you want to find all commits where a *string* was *added or removed* in the /file
+contents/ (to be more exact: where its *number of occurrences changed*),
+i.e. search the /commit contents/, use ~-S~.
+
+By default, ~-S~ accepts a string, but can be modified to accept a regexp with
+~--pickaxe-regex~.  You can dig up commits that have, for example, removed calls
+to a specific function, or added a certain CSS classname.
+
+#+begin_src shell :tangle no
+git log -S "foo" --since="1 week ago"
+#+end_src
+
+*** String contained in added/removed lines from Commit contents (Diff)
+
+~-G~ looks for *differences* whose added or removed *line* matches the given *regexp*.
+
+I think you'd want this with ~--all~ as well (whether using ~-S~ or ~-G~).
+
+*** String in (current?) Code base
+
+The advantages of ~git grep~ are not only its *speed*, and the fact it only searches
+your project files (i.e. no files in =.git=), but also that is allows you to
+interface with your repository's Git database; for example, for searching:
+
+- for your regexp in some files from another branch,
+- files registered in the index, rather than the working tree.
+
+#+begin_src conf
+    gr = "grep --break --heading"
+#+end_src
+
+XXX works only on files really in Git (bypassing ignored files)?
+
+** Dangling
+
+- Dangling blob = Change(s) that made it to the staging area/index but never got
+  committed. One thing that is amazing with Git is that once it gets added to
+  the staging area, you can always get it back because these blobs behave like
+  commits!!
+
+- Dangling commit = A commit that isn't linked to any branch or tag either
+  directly or by any of its ancestors. You can get these back too!
+
+#+begin_src conf
+    lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset  %s' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
+#+end_src
+
+** COMMENT Git and Subversion
+
+#+begin_src conf
+    spull = svn rebase
+    spush = svn dcommit
+    slog = svn log --oneline --show-commit
+#+end_src
+
+#+begin_src conf
+    cvs-full-log = log --reverse --pretty=format:'%B\n--------------------------------------------\n'
+    cvsmerge = merge --no-ff --log
+#+end_src
+
+** Tips and tricks
+
+Directed Acyclic Graph:
+
+#+begin_src conf
+    graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+#+end_src
+
+** Find out if a change is part of a release
+
+#+begin_src conf
+    sha1-tag = '!f() { git name-rev --name-only "$@"; }; f'
+#+end_src
+
+The ~name-rev~ command indicates the *position of a commit relative to tags* in the
+project. For example, ~v2.3~5~ means that this commit is located 5 commits *before*
+the v2.3 tag -- we can be certain that this change is part of v2.3, then.
+
+** Find out which branch contains a change
+
+Filter the list of branches to only those which have the given commit among
+their ancestors.
+
+#+begin_src conf
+    sha1-branch = '!f() { git branch -a --contains "$@"; }; f'
+    where = "branch -a --contains"
+#+end_src
+
+This also includes *remote* tracking branches in the list.
+
+#+begin_src shell :tangle no
+git tag --contains a2c71a6
+#+end_src
+
+** See which changes from a branch are already present upstream
+
+While on "feature" branch:
+
+#+begin_src shell :tangle no
+git cherry -v master
+#+end_src
+
+#+begin_example
++ 497034f2 Listener.new now accepts a hash of options
+- 2d0333ff cache the absolute images path for growl messages
++ e4406858 rename Listener#run to #start
+#+end_example
+
+The ~cherry~ command is useful to see which commits have been cherry-picked from
+a development branch to the stable branch, for instance. This command compares
+changes on the current (~feature~) branch to upstream (~master~) and indicates which
+are present on both with the ~-~ sign. Changes still missing from upstream are
+marked with ~+~.
+
+** Show blame information about original authors of lines changed or removed
+
+Extra script (called [[https://github.com/mislav/dotfiles/blob/master/bin/git-overwritten][git-overwritten]]) which shows blame information about
+original authors of lines changed or removed in a given branch:
+
+#+begin_src shell :tangle no
+git overwritten feature origin/master
+#+end_src
+
+This is useful when opening pull requests per GitHub Flow; you'll want your pull
+request reviewed by colleagues but you might not be sure who to ping. With
+git-overwritten you'll get the names of people who wrote the lines you just
+changed, so you'll know who to @-mention when opening a pull request.
+
+> So, given a patch (or a branch) together with a "base revision", you'd get
+> a list of code chunks modified by that patch, then run "annotate" on the
+> base revision, and look for those code chunks, collecting the names of
+> corresponding authors.
+
+Sounds like git-guilt (which I've just read about today), might be
+relevant: https://bitbucket.org/tpettersen/git-guilt
+
+* What if
+
+... I'm working on master adding a simple feature. After a few minutes I realize
+it was not so simple and it should have been better to work into a new branch.
+
+http://stackoverflow.com/questions/2569459/git-create-a-branch-from-unstaged-uncommited-changes-on-master
+
+* If you made a mistake
+
+# Absolutely read https://github.com/blog/2019-how-to-undo-almost-anything-with-git!
+
+This will help when we need to change the most recent commit.
+
+'git commit --amend' is already a dangerous operation. Someone might forget that
+the current commit has already been pushed, and amend it anyway. What will they
+do then?
+
+Try to push the result, see a message about non-fast-forward pushes being not
+allowed, then go along the "If pushing fails" section (pull, resolve, commit,
+push), and we'll have two similar commits in the history.
+
+I don't really know how to proof the instructions against that.
+
+* Recover from problems
+  :PROPERTIES:
+  :header-args+: :tangle no
+  :END:
+
+It is POSSIBLE that a safe way to recover from your problems is as follows:
+
+#+begin_src shell
+git stash
+git reset --hard HEAD
+git pull --ff-only
+git stash apply
+#+end_src
+
+Of course, if any of the commands but the last fails, stop and ask for advice
+again. If the last one reports merge conflicts, fix them by hand and run “git
+add” on each file after you fixed it. DO NOT use C-x v v after fixing a merge
+conflict, since that runs both git add and git commit, and you are not ready for
+the latter until all merge conflicts are dealt with.
+
+In any case, do run git status before finally doing git commit. If all succeeds,
+you can clean up with:
+
+#+begin_src shell
+git stash drop
+#+end_src
+
+** Alternative
+
+If your master branch is busted, rename it to something else so that it's out of
+the way:
+
+#+begin_src shell
+git branch -m master master-busted
+#+end_src
+
+Create a new branch ~master~ that tracks the origin:
+
+#+begin_src shell
+git branch --track master origin/master
+#+end_src
+
+Check it out (be careful, this will discard all your local changes):
+
+#+begin_src shell
+git checkout -f master
+#+end_src
+
+Make sure the ~master~ is up-to-date:
+
+#+begin_src shell
+git pull
+#+end_src
+
+* GitHub tasks
+  :PROPERTIES:
+  :header-args+: :tangle no
+  :END:
+
+# https://github.com/abo-abo/oremacs/blob/github/etc/org/wiki/git.org
+
+** force push
+
+#+begin_src shell
+git push --force origin master
+#+end_src
+
+** push tags
+
+#+begin_src shell
+git push --tags
+#+end_src
+
+** get user pubkeys
+
+#+begin_src shell
+curl https://github.com/abo-abo.keys
+#+end_src
+
+** routine
+
+#+begin_src shell
+git fetch --all
+#+end_src
+
+This results in all pull requests available in the local repo in the local pull/
+namespace.
+
+To check out e.g. PR #42:
+
+#+begin_src shell
+git checkout -b foo refs/pull/upstream/42
+#+end_src
+
+* Git workflows
+
+It may be helpful to do a some background reading on workflows with Git.  Here
+is the gitworkflows man page:
+https://www.kernel.org/pub/software/scm/git/docs/gitworkflows.html
+
+Other doc on branch models:
+
+http://nvie.com/posts/a-successful-git-branching-model/
+http://www.draconianoverlord.com/2013/09/07/no-cherry-picking.html
+http://williamdurand.fr/2012/01/17/my-git-branching-model/
+
+* References
+
+- https://github.com/tj/git-extras
+- https://hub.github.com/hub.1.html
+- http://stackoverflow.com/questions/2423777/is-it-possible-to-create-a-remote-repo-on-github-from-the-cli-without-ssh
+
+- [[https://git.wiki.kernel.org/index.php/Aliases][Git SCM Wiki - Aliases]]
+- [[https://ochronus.com/git-tips-from-the-trenches/][Git tips from the trenches]]
+# - [[file:~/Public/Repositories/emacs/admin/notes/git-workflow][Emacs Git workflow]]

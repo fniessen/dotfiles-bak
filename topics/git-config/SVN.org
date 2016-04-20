@@ -1,0 +1,60 @@
+#+TITLE:     SVN aliases
+#+AUTHOR:    Fabrice Niessen
+#+EMAIL:     (concat "fniessen" at-sign "pirilampo.org")
+#+DESCRIPTION: Pretty format for `git log' and different helpful command aliases
+#+KEYWORDS:  git, log, pretty format, alias
+#+LANGUAGE:  en
+#+OPTIONS:   H:4 num:nil toc:2
+
+#+SETUPFILE: ~/.dotfiles/org/theme-readtheorg.setup
+
+#+EXPORT_EXCLUDE_TAGS: noexport
+
+* Overview
+
+The following aliases are interesting for using SVN a bit like Git.
+
+* Log
+
+** One-line log format
+
+#+begin_src shell
+svn log | perl -l40pe 's/^-+/\n/'
+#+end_src
+
+** Show a single revision
+
+#+begin_src shell
+svn diff -c <revision>
+#+end_src
+
+** Show what changed
+
+Output filenames of files changed in each commit:
+
+#+begin_src shell
+svn log -v
+#+end_src
+
+* Incoming changes
+
+** Check for modifications
+
+Show which files are modified in the repository (with an ~*~):
+
+#+begin_src shell
+alias svn-incoming='svn status -u | grep \*'
+#+end_src
+
+#+begin_src shell
+svn log -r BASE:HEAD                    # Equivalent of `git log'
+svn log --diff -r BASE:HEAD             # Equivalent of `git log -p'
+#+end_src
+
+** Preview incoming changes
+
+See what has been changed (how it's different from my working copy):
+
+#+begin_src shell
+svn diff -r BASE:HEAD
+#+end_src
