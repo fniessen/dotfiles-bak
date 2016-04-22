@@ -171,6 +171,7 @@ Install extra packages:
     installer, though you can use ~C-l~ to get the same result)
   + [ ] ~screen~
   + [ ] ~sgrep~ (installs the XPath command ~xmllint~, with ~libxml2~)
+  + [X] ~the_silver_searcher~ (ag)
   + [X] ~tig~ (Git browser)
   + [X] ~xmlstarlet~
 
@@ -179,6 +180,16 @@ Install extra packages:
 
 - Web
   + [ ] ~wget~
+
+Many Unix commands have already newer and more feature-rich
+replacements:
+
+df pydf
+less most
+tail multitail
+top htop
+tracepath mtr
+traceroute mtr
 
 *** Terminal emulators
 
@@ -438,6 +449,26 @@ HISTCONTROL=ignoredups
 Appearance of the prompt.
 
 Note ~\[...\]~ used by the shell to count proper length.
+
+#+begin_src shell :tangle no
+if tput setaf 1 &> /dev/null; then
+    tput sgr0
+    if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
+      MAGENTA=$(tput setaf 9)
+      ORANGE=$(tput setaf 172)
+      GREEN=$(tput setaf 190)
+      PURPLE=$(tput setaf 141)
+      WHITE=$(tput setaf 256)
+    else
+      MAGENTA=$(tput setaf 5)
+      ORANGE=$(tput setaf 4)
+      GREEN=$(tput setaf 2)
+      PURPLE=$(tput setaf 1)
+      WHITE=$(tput setaf 7)
+    fi
+    BOLD=$(tput bold)
+    RESET=$(tput sgr0)
+#+end_src
 
 #+begin_src shell
 #** Controlling the Prompt
@@ -856,7 +887,7 @@ Zsh will attempt to complete wildcards by expanding them in the command line.
 
 # Load general completion.
 autoload -Uz compinit
-compinit
+compinit                                # Security check (insecure directories)!
 #+end_src
 
 #+begin_src shell
@@ -2322,3 +2353,15 @@ alias sp=sendpatch
 
 # .shellrc ends here
 #+end_src
+
+* FAQ
+
+** How to fix "zsh compinit: insecure directories"
+
+Stripping these directories of the group write permission:
+
+#+begin_src shell
+compaudit | xargs chmod g-w
+#+end_src
+
+will do the trick, see [[http://www.wezm.net/technical/2008/09/zsh-cygwin-and-insecure-directories/][zsh, Cygwin and Insecure Directories]].

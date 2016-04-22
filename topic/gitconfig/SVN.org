@@ -19,7 +19,7 @@ The following aliases are interesting for using SVN a bit like Git.
 ** One-line log format
 
 #+begin_src shell
-svn log | perl -l40pe 's/^-+/\n/'
+alias svnlog="svn log | perl -l40pe 's/^-+/\n/'"
 #+end_src
 
 ** Show a single revision
