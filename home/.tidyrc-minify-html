@@ -1,0 +1,37 @@
+/// .tidyrc --- my HTML Tidy Configuration File
+
+// Copyright (C) 1999-2015 Fabrice Niessen
+// Time-stamp: <2015-03-06 Fri 14:09>
+
+// Author: Fabrice Niessen <fni@missioncriticalit.com>
+// Keywords: html, tidy, dotfile, config
+
+// See URL: http://tidy.sourceforge.net/docs/quickref.html.
+
+// --[ HTML / XHTML ]---------------------------------------------------------
+
+bare: yes
+clean: yes
+drop-empty-paras: yes
+hide-comments: yes
+hide-endtags: yes
+output-xhtml: yes
+preserve-entities: yes
+quote-ampersand: no
+
+// --[ Pretty Printing ]------------------------------------------------------
+
+indent-spaces: 0
+tab-size: 0
+wrap: 0
+
+// --[ Encoding ]-------------------------------------------------------------
+
+char-encoding: utf8
+
+// This is for the sake of Emacs.
+// Local Variables:
+// mode: c
+// End:
+
+/// .tidyrc ends here

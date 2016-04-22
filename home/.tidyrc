@@ -1,0 +1,48 @@
+/// .tidyrc --- my HTML Tidy Configuration File
+
+// Copyright (C) 1999-2015 Fabrice Niessen
+// Time-stamp: <2015-03-06 Fri 14:09>
+
+// Author: Fabrice Niessen <fni@missioncriticalit.com>
+// Keywords: html, tidy, dotfile, config
+
+// See URL: http://tidy.sourceforge.net/docs/quickref.html.
+
+// --[ HTML / XHTML ]---------------------------------------------------------
+
+bare: yes
+clean: yes
+doctype: auto
+drop-empty-paras: yes
+output-xhtml: yes
+
+//{{{ For PFlow
+  new-blocklevel-tags: index, iterate, pflowtableau, pflowtableaudataentry
+  new-empty-tags: pflowtableaunewbutton
+  new-inline-tags: includegroupitem, pflowfield
+//}}}
+
+// --[ Pretty Printing ]------------------------------------------------------
+
+indent: auto
+  //! indent element content
+indent-spaces: 2
+wrap: 80
+
+// --[ Encoding ]-------------------------------------------------------------
+
+char-encoding: utf8
+
+// --[ Miscellaneous ]--------------------------------------------------------
+
+show-warnings: yes
+force-output: yes
+gnu-emacs: yes
+tidy-mark: yes
+
+// This is for the sake of Emacs.
+// Local Variables:
+// mode: c
+// End:
+
+/// .tidyrc ends here
