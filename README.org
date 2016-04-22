@@ -12,7 +12,7 @@ To install the dotfiles on a new machine, we can do so easily by cloning the
 repo, and do:
 
 #+begin_src shell
-git clone git@github.com:fniessen/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ~./install
+git clone https://github.com/fniessen/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ~./install
 #+end_src
 
 * Structure
