@@ -1,24 +1,54 @@
 # dotfiles
 Managing Dotfiles
 
-# git@github.com:fniessen/dotfiles.git
+Your unofficial guide to dotfiles on GitHub:
+http://dotfiles.github.io/
 
-Go on any new machine and do:
+https://github.com/alebcay/awesome-shell
+
+* Installation
+
+To install the dotfiles on a new machine, we can do so easily by cloning the
+repo, and do:
 
 #+begin_src shell
-git clone git@github.com:fniessen/dotfiles.git && ./install
+git clone git@github.com:fniessen/dotfiles.git ~/.dotfiles && cd ~/.dotfiles && ~./install
 #+end_src
+
+* Structure
+
+- ~bin~ -- Files that are symlinked to any directory with binaries in ~$PATH~
+- ~home~ -- Files that are symlinked to ~$HOME~ directory
 
 * Install script
 
 #+begin_src shell :tangle install
 #!/bin/bash
 
-DOTFILES="~/.dotfiles"
+DOTFILES="${HOME}/.dotfiles"            # Base it on `pwd'!
+DOTHOME=${DOTFILES}/home
 
-ln -s ${DOTFILES}/.zshrc ~/.zshrc
-ln -s ${DOTFILES}/.gitconfig ~/.gitconfig
+
+# Make a backup directory for overwritten dotfiles.
+if [[ ! -e ~/.dotfiles/backup ]]; then
+    mkdir ~/.dotfiles/backup
+fi
+
+
+cd $DOTHOME
+
+for config_file in $(ls --almost-all)
+do
+    config_file=$(basename $config_file)
+    echo "Symlinking $config_file..."
+    ln -s ${DOTHOME}/$config_file ${HOME}/$config_file
+done
 #+end_src
+
+* Files _local
+
+The ~xxx_local~ files (where ~xxx~ = ~.bashrc~, ~.zshrc~ or ~.gitconfig~, for example)
+contain configurations only needed on specific machines you manage.
 
 * Custom scripts
 
@@ -28,3 +58,9 @@ shell rc file:
 #+begin_src shell
 export PATH=~/.dotfiles/bin:${PATH}
 #+end_src
+
+* Oh-My-Zshell
+
+Download Powerline-compatible fonts.
+
+Install "Source Code Pro" font.

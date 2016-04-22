@@ -1,13 +1,20 @@
 #!/bin/bash
 
-DOTFILES="${HOME}/.dotfiles"
-cd ${DOTFILES}/files
+DOTFILES="${HOME}/.dotfiles"            # Base it on `pwd'!
+DOTHOME=${DOTFILES}/home
 
-for f in $(find -type f)
+
+# Make a backup directory for overwritten dotfiles.
+if [[ ! -e ~/.dotfiles/backup ]]; then
+    mkdir ~/.dotfiles/backup
+fi
+
+
+cd $DOTHOME
+
+for config_file in $(ls --almost-all)
 do
-    f=$(basename $f)
-    ln -s ${DOTFILES}/files/$f ${HOME}/$f
+    config_file=$(basename $config_file)
+    echo "Symlinking $config_file..."
+    ln -s ${DOTHOME}/$config_file ${HOME}/$config_file
 done
-
-# ln -s ${DOTFILES}/.zshrc ${HOME}/.zshrc
-# ln -s ${DOTFILES}/.gitconfig ${HOME}/.gitconfig
