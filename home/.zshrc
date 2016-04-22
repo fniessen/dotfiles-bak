@@ -75,7 +75,7 @@ bindkey "^?" backward-delete-char-beep
 
 # Load general completion.
 autoload -Uz compinit
-compinit
+compinit                                # Security check (insecure directories)!
 
 # Display a list of completions when you give an ambiguous choice (like Bash).
 setopt autolist
