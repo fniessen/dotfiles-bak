@@ -1,0 +1,7 @@
+#!/bin/sh
+# gunzip -- gunzip solution on Windows
+
+PATH=${GZIP_BINDIR-'/usr/bin'}:$PATH
+exec gzip -d "$@"
+
+# gunzip ends here
