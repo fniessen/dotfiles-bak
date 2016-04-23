@@ -1,0 +1,8 @@
+#!/bin/bash
+
+printf "Searching for Git directories, please wait (this can take a while)...\n"
+
+for dir in $(find . -name ".git" -type d)
+do
+    (cd ${dir%/*}; echo "Updating $(pwd)..."; git pull)
+done
