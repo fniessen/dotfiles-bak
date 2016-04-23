@@ -64,3 +64,11 @@ export PATH=~/.dotfiles/bin:${PATH}
 Download Powerline-compatible fonts.
 
 Install "Source Code Pro" font.
+
+* FAQ
+
+** Bad owner or permissions on $HOME/.ssh/config
+
+#+begin_src shell
+chmod -R 600 ~/.ssh/
+#+end_src
