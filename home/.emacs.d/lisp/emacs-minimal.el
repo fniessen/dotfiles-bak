@@ -1,4 +1,5 @@
-;;; .emacs-minimal --- Minimal configuration file for Emacs
+
+;;; emacs-minimal --- Minimal configuration file for Emacs
 
 ;;; Commentary:
 
@@ -97,6 +98,6 @@
 (message "Loading Minimal Emacs... Done (in %.2f s)"
          (- (float-time) em/emacs-load-time-start))
 
-(provide '.emacs-minimal)
+(provide 'emacs-minimal)
 
-;;; .emacs-minimal.el ends here
+;;; emacs-minimal.el ends here

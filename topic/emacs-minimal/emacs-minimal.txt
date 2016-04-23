@@ -384,7 +384,7 @@ use the ~-P~ option of =emacs-helm.sh= to use another Emacs executable file.
 
 *Call this script emacs-q?*
 
-#+begin_src shell :tangle ~/.dotfiles/home/bin/emacs-minimal :padline no :shebang #!/bin/sh
+#+begin_src shell :tangle ~/.dotfiles/bin/emacs-minimal :padline no :shebang #!/bin/sh
 TESTEL=
 TESTFILE=~/test.el
 if test -e $TESTFILE # file exists
