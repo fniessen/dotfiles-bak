@@ -411,12 +411,14 @@ $ gm convert !*
 #+end_src
 
 Prevent "stdin is not a tty" errors when ~ssh~'ing to a remote machine (or using
-~rsync~):
+~scp~, ~rcp~ or ~rsync~):
 
 #+begin_src shell
 # If not running interactively, don't do anything.
 [[ "$-" != *i* ]] && return
 #+end_src
+
+it's important to refrain from outputting anything in those cases.
 
 ** Source global rc file (if any)
 
@@ -887,7 +889,7 @@ Zsh will attempt to complete wildcards by expanding them in the command line.
 
 # Load general completion.
 autoload -Uz compinit
-compinit                                # Security check (insecure directories)!
+# compinit                                # Security check (insecure directories)!
 #+end_src
 
 #+begin_src shell
@@ -1717,6 +1719,9 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
+# Aliases '-' to 'cd -'.
+alias -- -='cd -'
+
 # Directory history.
 alias d='dirs -v'
 #+end_src
@@ -2344,7 +2349,23 @@ texlist ()
 alias sp=sendpatch
 #+end_src
 
-** Postamble
+*** Extra
+
+#+begin_src shell
+# Convert a picture to a favicon.
+alias make-favicon="convert -colors 256 -resize 16x16 "
+
+function console {
+    if [[ $# > 0 ]]; then
+        query=$(echo "$*" | tr -s ' ' '|')
+        tail -f /var/log/system.log|grep -i --color=auto -E "$query"
+    else
+        tail -f /var/log/system.log
+    fi
+}
+#+end_src
+
+* Postamble
 
 #+begin_src shell
 # This is for the sake of Emacs.
