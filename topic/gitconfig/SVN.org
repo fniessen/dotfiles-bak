@@ -10,6 +10,39 @@
 
 #+EXPORT_EXCLUDE_TAGS: noexport
 
+* Incoming
+
+http://stackoverflow.com/questions/182945/how-to-see-what-will-be-updated-from-repository-before-issuing-svn-update-comm
+
+Depending on what you want to know between your working copy and the latest svn server repository, without updating your local working copy, here is what you can do:
+
+if you want to know what has been changed in svn server repository, run
+ command: $ svn st -u
+
+
+if you want to know if the same file has been modified both in your local working copy and in svn server repository, run command:
+$ svn st -u |grep -i "^M \{7\}\*"
+
+
+if you want to get list of files changed between a particular revision and HEAD, run command:
+$ svn diff -r revisionNumber:HEAD --summarize
+
+
+if you want to get a list of files changed between paticular revisions, run command:
+$ svn diff -r revisionNumber:anotherRevisionNumber --summarize
+
+
+if you want to see what will be updated (without actually updating), run command:
+$ svn merge --dry-run -r BASE:HEAD .
+
+
+if you want to know what content of a particular file has been changed in svn server repository compared with your working copy, run command:
+$ svn diff -r BASE:HEAD ./pathToYour/file
+
+
+if you want to know what contents of all the files have been changed in svn server repository compared with your working copy, run command:
+$ svn diff -r BASE:HEAD .
+
 * Overview
 
 The following aliases are interesting for using SVN a bit like Git.
