@@ -93,12 +93,12 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="file:///D:/Users/fni/src/org-html-themes/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="file:///D:/Users/fni/src/org-html-themes/styles/readtheorg/css/readtheorg.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="file:///D:/Users/fni/src/org-html-themes/styles/lib/js/jquery.stickytableheaders.min.js"></script>
-<script type="text/javascript" src="file:///D:/Users/fni/src/org-html-themes/styles/readtheorg/js/readtheorg.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js"></script>
+<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
 </head>
 <body>
 <div id="content">
@@ -107,53 +107,53 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org14e4ae7">Example</a>
+<li><a href="#orgf81d3ee">Example</a>
 <ul>
-<li><a href="#org436731a">Header</a></li>
-<li><a href="#org95c7e29">Constant part</a></li>
-<li><a href="#orgd90426b">Variable part</a>
+<li><a href="#org9f48626">Header</a></li>
+<li><a href="#orgd5e8472">Constant part</a></li>
+<li><a href="#org81e4282">Variable part</a>
 <ul>
-<li><a href="#org41f61e7">Sandbox</a></li>
-<li><a href="#org8a191f7">Test if function is defined</a></li>
-<li><a href="#org941e1ca">Eval-after-load eval&rsquo;ed twice</a>
+<li><a href="#org1da3e4e">Sandbox</a></li>
+<li><a href="#orga29d46f">Test if function is defined</a></li>
+<li><a href="#org74a8e1b">Eval-after-load eval&rsquo;ed twice</a>
 <ul>
-<li><a href="#org989284e">Minimal display</a></li>
-<li><a href="#org64485da">Backtraces</a></li>
+<li><a href="#org92083f1">Minimal display</a></li>
+<li><a href="#org95f7d">Backtraces</a></li>
 </ul>
 </li>
-<li><a href="#org8c1c39a">Test export to HTML</a></li>
-<li><a href="#org7a26429">Org-test</a>
+<li><a href="#orgb4a5ca1">Test export to HTML</a></li>
+<li><a href="#orgf6fd5f8">Org-test</a>
 <ul>
-<li><a href="#orgacbe2fa">Create a new test case</a></li>
-<li><a href="#org9597bd0">Run an existing test</a></li>
+<li><a href="#org4f2b7cc">Create a new test case</a></li>
+<li><a href="#org9c61a33">Run an existing test</a></li>
 </ul>
 </li>
-<li><a href="#org78f2bca">ELP</a></li>
+<li><a href="#org8e37722">ELP</a></li>
 </ul>
 </li>
-<li><a href="#orga2659c7">Footer</a></li>
+<li><a href="#org6c727c1">Footer</a></li>
 </ul>
 </li>
-<li><a href="#org189284">One-liners</a>
+<li><a href="#org2979b6f">One-liners</a>
 <ul>
-<li><a href="#orgce80d3f">ELP</a></li>
+<li><a href="#orgd308ac8">ELP</a></li>
 </ul>
 </li>
-<li><a href="#org3ba2642">Script</a>
+<li><a href="#org2ffaa55">Script</a>
 <ul>
-<li><a href="#org4b9e061">From the man page</a></li>
-<li><a href="#org5dc603d">Ideal</a></li>
-<li><a href="#org299e173">emacs-helm.sh (from Thierry Volpiatto)</a></li>
-<li><a href="#org161f6ea">Code</a></li>
+<li><a href="#org3398029">From the man page</a></li>
+<li><a href="#orgfa47a2c">Ideal</a></li>
+<li><a href="#orgfb17d3">emacs-helm.sh (from Thierry Volpiatto)</a></li>
+<li><a href="#org8321c22">Code</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org14e4ae7" class="outline-2">
-<h2 id="org14e4ae7">Example</h2>
-<div class="outline-text-2" id="text-org14e4ae7">
+<div id="outline-container-orgf81d3ee" class="outline-2">
+<h2 id="orgf81d3ee">Example</h2>
+<div class="outline-text-2" id="text-orgf81d3ee">
 <p>
 The usual method to find a problem while avoiding to disturb a running Emacs
 instance is to run a separate Emacs in batch mode: that will avoid any
@@ -171,9 +171,9 @@ Here is such a minimal Emacs config file.
 </p>
 </div>
 
-<div id="outline-container-org436731a" class="outline-3">
-<h3 id="org436731a">Header</h3>
-<div class="outline-text-3" id="text-org436731a">
+<div id="outline-container-org9f48626" class="outline-3">
+<h3 id="org9f48626">Header</h3>
+<div class="outline-text-3" id="text-org9f48626">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;;; </span><span class="org-comment">.emacs-minimal --- Minimal configuration file for Emacs</span>
@@ -190,9 +190,9 @@ Here is such a minimal Emacs config file.
 </div>
 </div>
 
-<div id="outline-container-org95c7e29" class="outline-3">
-<h3 id="org95c7e29">Constant part</h3>
-<div class="outline-text-3" id="text-org95c7e29">
+<div id="outline-container-orgd5e8472" class="outline-3">
+<h3 id="orgd5e8472">Constant part</h3>
+<div class="outline-text-3" id="text-orgd5e8472">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;;</span><span class="org-comment">* --[ Constant part ]-------------------------------------------------------</span>
@@ -287,9 +287,9 @@ Here is such a minimal Emacs config file.
 </div>
 </div>
 
-<div id="outline-container-orgd90426b" class="outline-3">
-<h3 id="orgd90426b">Variable part</h3>
-<div class="outline-text-3" id="text-orgd90426b">
+<div id="outline-container-org81e4282" class="outline-3">
+<h3 id="org81e4282">Variable part</h3>
+<div class="outline-text-3" id="text-org81e4282">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;;</span><span class="org-comment">* --[ Variable part Under Test ]--------------------------------------------</span>
@@ -297,9 +297,9 @@ Here is such a minimal Emacs config file.
 </div>
 </div>
 
-<div id="outline-container-org41f61e7" class="outline-4">
-<h4 id="org41f61e7">Sandbox</h4>
-<div class="outline-text-4" id="text-org41f61e7">
+<div id="outline-container-org1da3e4e" class="outline-4">
+<h4 id="org1da3e4e">Sandbox</h4>
+<div class="outline-text-4" id="text-org1da3e4e">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">Place your test code here.</span>
@@ -308,9 +308,9 @@ Here is such a minimal Emacs config file.
 </div>
 </div>
 
-<div id="outline-container-org8a191f7" class="outline-4">
-<h4 id="org8a191f7">Test if function is defined</h4>
-<div class="outline-text-4" id="text-org8a191f7">
+<div id="outline-container-orga29d46f" class="outline-4">
+<h4 id="orga29d46f">Test if function is defined</h4>
+<div class="outline-text-4" id="text-orga29d46f">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(message <span class="org-string">"defined? %S"</span> (functionp (<span class="org-keyword">quote</span> org-babel-do-load-languages)))
@@ -319,12 +319,12 @@ Here is such a minimal Emacs config file.
 </div>
 </div>
 
-<div id="outline-container-org941e1ca" class="outline-4">
-<h4 id="org941e1ca">Eval-after-load eval&rsquo;ed twice</h4>
-<div class="outline-text-4" id="text-org941e1ca">
-</div><div id="outline-container-org989284e" class="outline-5">
-<h5 id="org989284e">Minimal display</h5>
-<div class="outline-text-5" id="text-org989284e">
+<div id="outline-container-org74a8e1b" class="outline-4">
+<h4 id="org74a8e1b">Eval-after-load eval&rsquo;ed twice</h4>
+<div class="outline-text-4" id="text-org74a8e1b">
+</div><div id="outline-container-org92083f1" class="outline-5">
+<h5 id="org92083f1">Minimal display</h5>
+<div class="outline-text-5" id="text-org92083f1">
 <p>
 You can see the problem by running the following code:
 </p>
@@ -340,9 +340,9 @@ You can see the problem by running the following code:
 </div>
 </div>
 
-<div id="outline-container-org64485da" class="outline-5">
-<h5 id="org64485da">Backtraces</h5>
-<div class="outline-text-5" id="text-org64485da">
+<div id="outline-container-org95f7d" class="outline-5">
+<h5 id="org95f7d">Backtraces</h5>
+<div class="outline-text-5" id="text-org95f7d">
 <p>
 You can <b>get backtraces</b> at each stopping point by Edebugging <code>foobar</code> and
 <code>C-x C-f foo.org</code>:
@@ -362,9 +362,9 @@ You can <b>get backtraces</b> at each stopping point by Edebugging <code>foobar<
 </div>
 </div>
 
-<div id="outline-container-org8c1c39a" class="outline-4">
-<h4 id="org8c1c39a">Test export to HTML</h4>
-<div class="outline-text-4" id="text-org8c1c39a">
+<div id="outline-container-orgb4a5ca1" class="outline-4">
+<h4 id="orgb4a5ca1">Test export to HTML</h4>
+<div class="outline-text-4" id="text-orgb4a5ca1">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span class="org-keyword">let</span> ((org-confirm-babel-evaluate nil)) <span class="org-comment-delimiter">; </span><span class="org-comment">Preference over the explicit setq.</span>
@@ -375,9 +375,9 @@ You can <b>get backtraces</b> at each stopping point by Edebugging <code>foobar<
 </div>
 </div>
 
-<div id="outline-container-org7a26429" class="outline-4">
-<h4 id="org7a26429">Org-test</h4>
-<div class="outline-text-4" id="text-org7a26429">
+<div id="outline-container-orgf6fd5f8" class="outline-4">
+<h4 id="orgf6fd5f8">Org-test</h4>
+<div class="outline-text-4" id="text-orgf6fd5f8">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">Change the pathname appropriately!</span>
@@ -387,9 +387,9 @@ You can <b>get backtraces</b> at each stopping point by Edebugging <code>foobar<
 </div>
 </div>
 
-<div id="outline-container-orgacbe2fa" class="outline-5">
-<h5 id="orgacbe2fa">Create a new test case</h5>
-<div class="outline-text-5" id="text-orgacbe2fa">
+<div id="outline-container-org4f2b7cc" class="outline-5">
+<h5 id="org4f2b7cc">Create a new test case</h5>
+<div class="outline-text-5" id="text-org4f2b7cc">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(<span class="org-keyword">ert-deftest</span> <span class="org-function-name">test-org/end-of-line</span> ()
@@ -413,9 +413,9 @@ You can <b>get backtraces</b> at each stopping point by Edebugging <code>foobar<
 </div>
 </div>
 
-<div id="outline-container-org9597bd0" class="outline-5">
-<h5 id="org9597bd0">Run an existing test</h5>
-<div class="outline-text-5" id="text-org9597bd0">
+<div id="outline-container-org9c61a33" class="outline-5">
+<h5 id="org9c61a33">Run an existing test</h5>
+<div class="outline-text-5" id="text-org9c61a33">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">Change the pathname appropriately!</span>
@@ -428,9 +428,9 @@ You can <b>get backtraces</b> at each stopping point by Edebugging <code>foobar<
 </div>
 </div>
 
-<div id="outline-container-org78f2bca" class="outline-4">
-<h4 id="org78f2bca">ELP</h4>
-<div class="outline-text-4" id="text-org78f2bca">
+<div id="outline-container-org8e37722" class="outline-4">
+<h4 id="org8e37722">ELP</h4>
+<div class="outline-text-4" id="text-org8e37722">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;; </span><span class="org-comment">(setq org-babel-load-languages '((emacs-lisp . t) (latex . t)))</span>
@@ -475,9 +475,9 @@ You can <b>get backtraces</b> at each stopping point by Edebugging <code>foobar<
 </div>
 </div>
 
-<div id="outline-container-orga2659c7" class="outline-3">
-<h3 id="orga2659c7">Footer</h3>
-<div class="outline-text-3" id="text-orga2659c7">
+<div id="outline-container-org6c727c1" class="outline-3">
+<h3 id="org6c727c1">Footer</h3>
+<div class="outline-text-3" id="text-org6c727c1">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span class="org-comment-delimiter">;;</span><span class="org-comment">* --[ Constant part ]-------------------------------------------------------</span>
@@ -494,12 +494,12 @@ You can <b>get backtraces</b> at each stopping point by Edebugging <code>foobar<
 </div>
 </div>
 
-<div id="outline-container-org189284" class="outline-2">
-<h2 id="org189284">One-liners</h2>
-<div class="outline-text-2" id="text-org189284">
-</div><div id="outline-container-orgce80d3f" class="outline-3">
-<h3 id="orgce80d3f">ELP</h3>
-<div class="outline-text-3" id="text-orgce80d3f">
+<div id="outline-container-org2979b6f" class="outline-2">
+<h2 id="org2979b6f">One-liners</h2>
+<div class="outline-text-2" id="text-org2979b6f">
+</div><div id="outline-container-orgd308ac8" class="outline-3">
+<h3 id="orgd308ac8">ELP</h3>
+<div class="outline-text-3" id="text-orgd308ac8">
 <div class="org-src-container">
 
 <pre class="src src-shell">emacs -Q --batch -L ~/Public/Repositories/org-mode/lisp <span class="org-sh-escaped-newline">\</span>
@@ -510,12 +510,12 @@ You can <b>get backtraces</b> at each stopping point by Edebugging <code>foobar<
 </div>
 </div>
 
-<div id="outline-container-org3ba2642" class="outline-2">
-<h2 id="org3ba2642">Script</h2>
-<div class="outline-text-2" id="text-org3ba2642">
-</div><div id="outline-container-org4b9e061" class="outline-3">
-<h3 id="org4b9e061">From the man page</h3>
-<div class="outline-text-3" id="text-org4b9e061">
+<div id="outline-container-org2ffaa55" class="outline-2">
+<h2 id="org2ffaa55">Script</h2>
+<div class="outline-text-2" id="text-org2ffaa55">
+</div><div id="outline-container-org3398029" class="outline-3">
+<h3 id="org3398029">From the man page</h3>
+<div class="outline-text-3" id="text-org3398029">
 <dl class="org-dl">
 <dt><code>-q</code>, <code>--no-init-file</code></dt><dd>Do not load an init file.</dd>
 
@@ -545,9 +545,9 @@ to call.
 </div>
 </div>
 
-<div id="outline-container-org5dc603d" class="outline-3">
-<h3 id="org5dc603d">Ideal</h3>
-<div class="outline-text-3" id="text-org5dc603d">
+<div id="outline-container-orgfa47a2c" class="outline-3">
+<h3 id="orgfa47a2c">Ideal</h3>
+<div class="outline-text-3" id="text-orgfa47a2c">
 <p>
 <b>Some code must be used in the <code>.emacs</code> file (or libraries loaded FROM it).</b>
 </p>
@@ -582,9 +582,9 @@ changing <code>HOME</code> for Emacs is a very bad idea. WE DON&rsquo;T DO THAT!
 </div>
 </div>
 
-<div id="outline-container-org299e173" class="outline-3">
-<h3 id="org299e173">emacs-helm.sh (from Thierry Volpiatto)</h3>
-<div class="outline-text-3" id="text-org299e173">
+<div id="outline-container-orgfb17d3" class="outline-3">
+<h3 id="orgfb17d3">emacs-helm.sh (from Thierry Volpiatto)</h3>
+<div class="outline-text-3" id="text-orgfb17d3">
 <p class="verse">
 &gt; I was too lazy to test with emacs -Q before.<br  />
 <br  />
@@ -598,9 +598,9 @@ use the <code>-P</code> option of <code>emacs-helm.sh</code> to use another Emac
 </div>
 </div>
 
-<div id="outline-container-org161f6ea" class="outline-3">
-<h3 id="org161f6ea">Code</h3>
-<div class="outline-text-3" id="text-org161f6ea">
+<div id="outline-container-org8321c22" class="outline-3">
+<h3 id="org8321c22">Code</h3>
+<div class="outline-text-3" id="text-org8321c22">
 <p>
 <b>Call this script emacs-q?</b>
 </p>
@@ -617,7 +617,7 @@ use the <code>-P</code> option of <code>emacs-helm.sh</code> to use another Emac
 <span class="org-variable-name">EMACS</span>=<span class="org-string">"emacs"</span>
 
 <span class="org-comment-delimiter"># </span><span class="org-comment">No init file.</span>
-<span class="org-variable-name">cmd</span>=<span class="org-string">"$EMACS -q -l ${workingDir}.emacs-minimal.el $TESTEL"</span>
+<span class="org-variable-name">cmd</span>=<span class="org-string">"$EMACS -q -l ~/.emacs.d/lisp/emacs-minimal.el $TESTEL"</span>
 
 <span class="org-builtin">echo</span> <span class="org-string">"Launching '$cmd'..."</span>
 <span class="org-builtin">eval</span> <span class="org-string">"$cmd"</span>
@@ -629,16 +629,6 @@ use the <code>-P</code> option of <code>emacs-helm.sh</code> to use another Emac
 <div class="org-src-container">
 
 <pre class="src src-shell"><span class="org-builtin">alias</span> <span class="org-variable-name">em</span>=emacs-minimal
-</pre>
-</div>
-
-<p>
-Install it, by symlinking the file.
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-shell">ln -f -s $<span class="org-variable-name">workingDir</span>/emacs-minimal ~/bin/emacs-minimal
 </pre>
 </div>
 </div>
