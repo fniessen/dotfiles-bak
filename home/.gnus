@@ -8,7 +8,6 @@
 
 (require 'gnus-leuven)
 
-(load-file "~/.dotfiles/home/.gnus_local")
-;; (load-file "~/.gnus_local")
+(load-file "~/.gnus_local")
 
 ;;; .gnus ends here
