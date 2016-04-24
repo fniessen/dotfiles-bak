@@ -1,0 +1,4 @@
+#!/bin/bash
+# echoti bel                            # For Zsh only.
+tput bel                                # For Bash (and Zsh?).
+# printf '\007'
