@@ -117,7 +117,7 @@
 
 ;; (setq leuven-load-verbose t)
 
-(add-to-list 'load-path (expand-file-name "~/src/emacs-leuven"))
+(add-to-list 'load-path (expand-file-name "~/2-Output/emacs-leuven"))
 (require 'emacs-leuven)
 
 (load-file "~/.dotfiles/home/.emacs.d/init_local.el")
