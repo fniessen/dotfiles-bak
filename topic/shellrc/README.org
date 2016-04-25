@@ -162,6 +162,7 @@ Install extra packages:
   + [ ] ~tidy~
 
 - Utils
+  + [X] ~colordiff~ (for ~svn~)
   + [ ] ~dos2unix~
   + [ ] ~fdupes~
   + [ ] ~file~ to determine file type
