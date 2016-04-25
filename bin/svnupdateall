@@ -1,0 +1,8 @@
+#!/bin/bash
+
+printf "Searching for SVN directories, please wait (this can take a while)...\n"
+
+for dir in $(find . -name ".svn" -type d)
+do
+    (cd ${dir%/*}; echo "Updating $(pwd)..."; svn update)
+done
