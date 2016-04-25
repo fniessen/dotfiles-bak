@@ -10,38 +10,94 @@
 
 #+EXPORT_EXCLUDE_TAGS: noexport
 
+* svn diff zip revision to deploy
+
+Make release package (get list of changed files via svn diff log and zip them):
+
+svn-rev-patch:
+
+#+begin_src shell
+# For one release only.
+svn diff -c 124 --summarize | cut -c 9- | xargs zip -9 patch.zip
+
+# For a range of releases.
+svn diff -r 123:124 --summarize | cut -c 9- | xargs zip -9 patch.zip
+#+end_src
+
+This will create a ZIP file with the changed file(s) -- in an intact directory
+structure -- from revision ~123:HEAD~.
+
+#+begin_note
+~-c ARG~ = change made by revision ~ARG~ (like ~-r ARG-1:ARG~)
+#+end_note
+
+* Others
+
+We also supply four bash shell aliases that make status checks of your working
+copy easier, add them to your ~.bashrc~:
+
+#+BEGIN_SRC shell
+alias svnl="svn log -r 1:HEAD -v"    # Show log messages
+alias svnm="svn status -u -q"        # Show locally/repository changed items
+alias svnn="svn status -q"           # Show locally changed items
+alias svns="svn status -u -q -v"     # Show status of all items
+#+END_SRC
+
+To *compare all modified files* in your working copy with the HEAD revision in the
+repository, use the following command:
+
+#+BEGIN_SRC shell
+alias svndiffall="echo svn status | grep '^M' | awk '{print $2}' | xargs svn diff -rHEAD"
+#+END_SRC
+
 * Incoming
 
 http://stackoverflow.com/questions/182945/how-to-see-what-will-be-updated-from-repository-before-issuing-svn-update-comm
 
-Depending on what you want to know between your working copy and the latest svn server repository, without updating your local working copy, here is what you can do:
+Depending on what you want to know between your working copy and the latest svn
+server repository, without updating your local working copy, here is what you
+can do:
 
-if you want to know what has been changed in svn server repository, run
- command: $ svn st -u
+If you want to know what has been changed in svn server repository, run command:
 
+#+begin_src shell
+svn st -u
+#+end_src
 
-if you want to know if the same file has been modified both in your local working copy and in svn server repository, run command:
-$ svn st -u |grep -i "^M \{7\}\*"
+If you want to know if the same file has been modified both in your local
+working copy and in svn server repository, run command:
 
+#+begin_src shell
+svn st -u |grep -i "^M \{7\}\*"
+#+end_src
 
-if you want to get list of files changed between a particular revision and HEAD, run command:
-$ svn diff -r revisionNumber:HEAD --summarize
+If you want to get list of files changed between a particular revision and HEAD,
+run command:
 
+#+begin_src shell
+svn diff -r revisionNumber:HEAD --summarize
+#+end_src
 
-if you want to get a list of files changed between paticular revisions, run command:
-$ svn diff -r revisionNumber:anotherRevisionNumber --summarize
+If you want to get a list of files changed between paticular revisions, run
+command:
 
+#+begin_src shell
+svn diff -r revisionNumber:anotherRevisionNumber --summarize
+#+end_src
 
-if you want to see what will be updated (without actually updating), run command:
-$ svn merge --dry-run -r BASE:HEAD .
+If you want to know what content of a particular file has been changed in svn
+server repository compared with your working copy, run command:
 
+#+begin_src shell
+svn diff -r BASE:HEAD ./pathToYour/file
+#+end_src
 
-if you want to know what content of a particular file has been changed in svn server repository compared with your working copy, run command:
-$ svn diff -r BASE:HEAD ./pathToYour/file
+If you want to know what contents of all the files have been changed in svn
+server repository compared with your working copy, run command:
 
-
-if you want to know what contents of all the files have been changed in svn server repository compared with your working copy, run command:
-$ svn diff -r BASE:HEAD .
+#+begin_src shell
+svn diff -r BASE:HEAD .
+#+end_src
 
 * Overview
 
