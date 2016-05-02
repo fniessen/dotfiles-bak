@@ -9,7 +9,7 @@
 #+SETUPFILE: ~/.dotfiles/org/theme-readtheorg.setup
 
 #+EXPORT_EXCLUDE_TAGS: noexport
-#+PROPERTY:  header-args :tangle ~/.dotfiles/files/.gitconfig :eval no
+#+PROPERTY:  header-args :tangle ~/.dotfiles/home/.gitconfig :eval no
 
 *Commit early, commit often*: it is a bad idea to do a lot of work without
 committing.
@@ -496,7 +496,7 @@ List ignored files (*marked unchanged*):
 
 ** View your changes
 
-*** Changes between the working tree and the index
+*** Changes between the working tree and the index (staged for the next commit)
 
 #+begin_src conf
     df = diff
@@ -1321,13 +1321,13 @@ XXX works only on files really in Git (bypassing ignored files)?
 
 ** COMMENT Git and Subversion
 
-#+begin_src conf
+#+begin_src conf :tangle no
     spull = svn rebase
     spush = svn dcommit
     slog = svn log --oneline --show-commit
 #+end_src
 
-#+begin_src conf
+#+begin_src conf :tangle no
     cvs-full-log = log --reverse --pretty=format:'%B\n--------------------------------------------\n'
     cvsmerge = merge --no-ff --log
 #+end_src

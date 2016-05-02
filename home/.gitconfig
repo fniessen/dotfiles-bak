@@ -1,3 +1,4 @@
+
 [user]
     name = John Doe
     email = johndoe@example.com
@@ -119,8 +120,6 @@
     unassume = update-index --no-assume-unchanged
 
     assumed = "!git ls-files -v | grep '^h' | cut -c 3-"
-
-    ignored = ls-files -o -i --exclude-standard
 
     df = diff
 
