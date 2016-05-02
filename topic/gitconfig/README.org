@@ -464,7 +464,7 @@ Quickly add a file or directory to =.gitignore=:
     ignore = "!f() { echo $1 >> \"${GIT_PREFIX}.gitignore\"; }; f"
 #+end_src
 
-List untracked files ignored by a =.gitignore= statement somewhere.
+List untracked *files ignored* by a =.gitignore= statement somewhere.
 
 #+begin_src conf
     ignored = ls-files --others --ignored --exclude-standard
@@ -492,12 +492,6 @@ List ignored files (*marked unchanged*):
 
 #+begin_src conf
     assumed = "!git ls-files -v | grep '^h' | cut -c 3-"
-#+end_src
-
-Show files ignored by Git:
-
-#+begin_src conf
-    ignored = ls-files -o -i --exclude-standard
 #+end_src
 
 ** View your changes
