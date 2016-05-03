@@ -71,8 +71,8 @@ from that field).
 Install extra packages:
 
 - Archive
-  + [ ] ~unzip~
-  + [ ] ~zip~ used by the "Org to ODT" exporter
+  + [X] ~unzip~
+  + [X] ~zip~ (used by the "Org to ODT" exporter)
 
 - Devel
   + [ ] ~autoconf~
