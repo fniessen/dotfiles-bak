@@ -39,7 +39,7 @@ function symlinkifne {
         # File exists.
         if [[ -L $1 ]]; then
             # It's already a simlink (could have come from this project).
-            echo ' skipping target which already exists!'
+            echo ' symlink already exists... skipping!'
             return
         fi
         # Backup file does not exist yet.
