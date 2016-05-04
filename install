@@ -3,10 +3,11 @@
 
 DOTFILES="${HOME}/.dotfiles"            # Base it on `pwd'!
 DOTHOME=${DOTFILES}/home
+DOTBACKUP=${DOTFILES}/backup
 
 # Make a backup directory for overwritten dotfiles.
-if [[ ! -e ${DOTFILES}/backup ]]; then
-    mkdir ${DOTFILES}/backup
+if [[ ! -e ${DOTBACKUP} ]]; then
+    mkdir ${DOTBACKUP}
 fi
 
 function symlinkifne {
@@ -14,13 +15,13 @@ function symlinkifne {
     if [[ -e $1 ]]; then
         # File exists.
         if [[ -L $1 ]]; then
-            # It's already a simlink (could have come from this project).
+            # It's already a symlink (could have come from this project).
             echo ' symlink already exists... skipping!'
             return
         fi
         # Backup file does not exist yet.
-        if [[ ! -e ${DOTFILES}/backup/$1 ]]; then
-            mv $1 ${DOTFILES}/backup/
+        if [[ ! -e ${DOTBACKUP}/$1 ]]; then
+            mv $1 ${DOTBACKUP}/
             echo -n ' backing up target;'
         fi
     fi
@@ -33,6 +34,5 @@ cd ${HOME}
 
 for config_file in $(ls --almost-all ${DOTHOME})
 do
-    config_file=$(basename $config_file)
-    symlinkifne $config_file
+    symlinkifne $(basename $config_file)
 done
