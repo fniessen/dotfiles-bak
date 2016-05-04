@@ -78,7 +78,6 @@ Install extra packages:
   + [ ] ~autoconf~
   + [ ] ~bzr~
   + [ ] ~ctags~ (Exuberant Ctags)
-  + [ ] ~cvs~
   + [ ] ~gcc-core~ (C compiler)
   + [ ] ~gcc4~ (needed for installing some Perl packages, for CSV2Ledger)
   + [X] ~gdb~
@@ -185,12 +184,12 @@ Install extra packages:
 Many Unix commands have already newer and more feature-rich
 replacements:
 
-df pydf
-less most
-tail multitail
-top htop
-tracepath mtr
-traceroute mtr
+- df :: pydf
+- less :: most
+- tail :: multitail
+- top :: htop
+- tracepath :: mtr
+- traceroute :: mtr
 
 *** Terminal emulators
 
@@ -2378,7 +2377,7 @@ function console {
 
 * FAQ
 
-** How to fix "zsh compinit: insecure directories"
+** How to fix "zsh compinit: insecure directories"?
 
 Stripping these directories of the group write permission:
 
@@ -2387,3 +2386,11 @@ compaudit | xargs chmod g-w
 #+end_src
 
 will do the trick, see [[http://www.wezm.net/technical/2008/09/zsh-cygwin-and-insecure-directories/][zsh, Cygwin and Insecure Directories]].
+
+** How to run Emacs without shwoing a terminal window?
+
+Use the ~run~ command:
+
+#+begin_src shell
+C:\cygwin64\bin\run.exe /usr/bin/emacs
+#+end_src
