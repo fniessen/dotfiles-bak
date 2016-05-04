@@ -28,20 +28,37 @@ git clone https://github.com/fniessen/dotfiles.git ~/.dotfiles && cd ~/.dotfiles
 DOTFILES="${HOME}/.dotfiles"            # Base it on `pwd'!
 DOTHOME=${DOTFILES}/home
 
-
 # Make a backup directory for overwritten dotfiles.
-if [[ ! -e ~/.dotfiles/backup ]]; then
-    mkdir ~/.dotfiles/backup
+if [[ ! -e ${DOTFILES}/backup ]]; then
+    mkdir ${DOTFILES}/backup
 fi
 
+function symlinkifne {
+    echo -n "$1..."
+    if [[ -e $1 ]]; then
+        # File exists.
+        if [[ -L $1 ]]; then
+            # It's already a simlink (could have come from this project).
+            echo ' symlink exists, skipping!'
+            return
+        fi
+        # Backup file does not exist yet.
+        if [[ ! -e ${DOTFILES}/backup/$1 ]]; then
+            mv $1 ${DOTFILES}/backup/
+            echo -n ' backed up;'
+        fi
+    fi
+    # Create the link.
+    ln -s ${DOTHOME}/$1 $1
+    echo ' symlinked'
+}
 
-cd $DOTHOME
+cd ${HOME}
 
-for config_file in $(ls --almost-all)
+for config_file in $(ls --almost-all ${DOTHOME})
 do
     config_file=$(basename $config_file)
-    echo "Symlinking $config_file..."
-    ln -s ${DOTHOME}/$config_file ${HOME}/$config_file
+    symlinkifne $config_file
 done
 #+end_src
 
