@@ -39,18 +39,18 @@ function symlinkifne {
         # File exists.
         if [[ -L $1 ]]; then
             # It's already a simlink (could have come from this project).
-            echo ' symlink exists, SKIPPING!'
+            echo ' skipping target which already exists!'
             return
         fi
         # Backup file does not exist yet.
         if [[ ! -e ${DOTFILES}/backup/$1 ]]; then
             mv $1 ${DOTFILES}/backup/
-            echo -n ' backed up;'
+            echo -n ' backing up target;'
         fi
     fi
     # Create the link.
     ln -s ${DOTHOME}/$1 $1
-    echo ' symlinked'
+    echo ' symlinking... done'
 }
 
 cd ${HOME}
