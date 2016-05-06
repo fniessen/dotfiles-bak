@@ -120,8 +120,9 @@
 (add-to-list 'load-path (expand-file-name "~/2-Output/emacs-leuven"))
 (require 'emacs-leuven)
 
-(load-file "~/.dotfiles/home/.emacs.d/init_local.el")
-;; (load-file "~/.emacs.d/init_local.el")
+(let ((init-local "~/.emacs.d/init_local.el"))
+  (when (file-exists-p init-local)
+    (load-file init-local)))
 
 ;; This is for the sake of Emacs.
 ;; Local Variables:
