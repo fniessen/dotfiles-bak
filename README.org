@@ -83,9 +83,14 @@ export PATH=~/.dotfiles/bin:${PATH}
 
 * Oh-My-Zshell
 
-Download Powerline-compatible fonts.
+Download *Powerline-compliant fonts*:
+- https://github.com/Lokaltog/powerline-fonts
+- https://github.com/runsisi/consolas-font-for-powerline
 
-Install "Source Code Pro" font.
+Install one of the following nice fonts:
+- Powerline Consolas
+- Sauce Code Powerline (Source Code Pro for Powerline)
+- DejaVu Sans Mono for Powerline
 
 * FAQ
 
