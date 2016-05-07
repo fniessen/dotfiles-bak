@@ -166,7 +166,8 @@ Install extra packages:
   + [ ] ~fdupes~
   + [ ] ~file~ to determine file type
   + [ ] ~flog~ (logger, to syslog)
-  + [X] ~gnupg~ (~gpg~)
+  + [X] ~gnupg~ (for ~gpg~) -- requiring ~libusb0~ (though you don't need to install
+    the Win32 driver which is adviced!)
   + [X] ~ncurses~ (provides ~tput~ and the ~clear~ command used by the TeX Live
     installer, though you can use ~C-l~ to get the same result)
   + [ ] ~screen~
