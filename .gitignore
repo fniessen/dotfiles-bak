@@ -1,2 +1,8 @@
 backup
 .hide
+home/.ssh/id_github.com_rsa
+home/.ssh/id_github.com_rsa.pub
+home/.ssh/id_github.com_rsa
+home/.ssh/id_repo.or.cz_rsa.pub
+home/.ssh/id_repo.or.cz_rsa
+home/.ssh/known_hosts
