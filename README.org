@@ -99,3 +99,11 @@ Install one of the following nice fonts:
 #+begin_src shell
 chmod -R 600 ~/.ssh/
 #+end_src
+
+** LaTeX classes not found
+
+Edit the ~TEXMFHOME~ line in the file reported by:
+
+#+begin_src shell
+kpsewhich texmf.cnf
+#+end_src
