@@ -14,3 +14,5 @@ Rows=50
 ScrollbackLines=100000
 SwitchShortcuts=no
 Term=xterm-256color
+Transparency=low
+OpaqueWhenFocused=yes
