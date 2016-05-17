@@ -1,6 +1,6 @@
 ## .mailcap -- MIME Viewer configuration file
 
-# Copyright (C) 2004-2015 Fabrice Niessen
+# Copyright (C) 2004-2016 Fabrice Niessen
 
 # Author: Fabrice Niessen <fni@missioncriticalit.com>
 # Keywords: mailcap, dotfile
@@ -45,7 +45,6 @@ audio/*;                        totem "%s"; test=sh -c 'test $DISPLAY'
 audio/*;                        "C:/Program Files/Windows Media Player/wmplayer.exe" "%s"
 image/*;                        display "%s"; test=sh -c 'test $DISPLAY'
 image/*;                        "C:/Program Files/Mozilla Firefox/firefox.exe" "%s"
-# text/plain;                   less "%s"; edit=vim "%s"; needsterminal; description=Text; test=test -n "`which less`"
 text/*;                         cat; copiousoutput; edit=$EDITOR "%s"
 
 # This is for the sake of Emacs.
