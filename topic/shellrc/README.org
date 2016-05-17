@@ -18,7 +18,7 @@ OS X, Linux and Windows (with Cygwin).
 
 ** Prerequisites for Windows
 
-Install [[https://www.cygwin.com/][Cygwin]].
+Install [[https://www.cygwin.com/][Cygwin]] (http://mirrors.kernel.org).
 
 *** ~PATH~
 
@@ -318,7 +318,7 @@ We just let =.profile= also read =.bashrc= and put everything in =.bashrc=.
 
 - For Bash, put stuff in =~/.bashrc=, and make =~/.bash_profile= source it.
 
-#+begin_src shell :tangle ../../files/.bash_profile
+#+begin_src shell :tangle ../../home/.bash_profile
 # User dependent .bash_profile file
 
 # Source the user's .bashrc if it exists.
@@ -372,7 +372,7 @@ See http://zsh.sourceforge.net/Guide/zshguide02.html.
 
 * Configuration related to Bash
   :PROPERTIES:
-  :header-args+: :tangle ../../files/.bashrc
+  :header-args+: :tangle ../../home/.bashrc
   :END:
 
 Le ~!~ en shell permet plein de trucs sympa.
@@ -659,7 +659,7 @@ In general, it should not do more than *change the default options of a command*
 
 ** InputRC
    :PROPERTIES:
-   :header-args+: :tangle ../../files/.inputrc
+   :header-args+: :tangle ../../home/.inputrc
    :END:
 
 This file controls the behavior of line input editing for programs that use
@@ -733,7 +733,7 @@ set completion-ignore-case on
 
 * Configuration related to Zsh
   :PROPERTIES:
-  :header-args+: :tangle ../../files/.zshrc
+  :header-args+: :tangle ../../home/.zshrc
   :END:
 
 Documentation: [[http://www.bash2zsh.com/zsh_refcard/refcard.pdf][Zsh Reference Card]].
@@ -791,8 +791,11 @@ For Consolas, use: https://github.com/runsisi/consolas-font-for-powerline.
 #+begin_src shell
 if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
     ZSH=$HOME/.dotfiles/repos/.oh-my-zsh
+    # ZSH_THEME="random"
     ZSH_THEME="agnoster"
+    HIST_STAMPS="yyyy-mm-dd"
     # plugins=(git osx rails ruby github node rbenv npm brew byte)
+    plugins=(git osx xcode zshmarks history-substring-search)
     . $ZSH/oh-my-zsh.sh
 fi
 #+end_src
@@ -1221,7 +1224,7 @@ fi
 
 * Configuration related to both shells
   :PROPERTIES:
-  :header-args+: :tangle ../../files/.shellrc
+  :header-args+: :tangle ../../home/.shellrc
   :END:
 
 Everything in common between Bash and Z shell will come here, since it is read
@@ -1522,6 +1525,8 @@ done
 
 #+begin_src shell :tangle no
 alias e="emacsclient -a emacs -n"       # -n is essential part
+alias e="emacsclient -t -a ''"
+alias ek="emacsclient -e '(kill-emacs)'"
 #+end_src
 
 #+begin_note
@@ -2352,7 +2357,7 @@ alias sp=sendpatch
 
 *** Extra
 
-#+begin_src shell
+#+begin_src shell :tangle no
 # Convert a picture to a favicon.
 alias make-favicon="convert -colors 256 -resize 16x16 "
 
@@ -2366,7 +2371,7 @@ function console {
 }
 #+end_src
 
-* Postamble
+** Postamble
 
 #+begin_src shell
 # This is for the sake of Emacs.
