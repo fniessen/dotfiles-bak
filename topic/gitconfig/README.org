@@ -750,6 +750,8 @@ http://git-scm.com/2011/07/11/reset.html
 ~git reset~ is a simple way to undo changes that haven't been shared with anyone
 else.
 
+See « Undo 'git add' before commit ».
+
 **** Do not touch the index file or the working tree at all
 
 Go back before last commit, with files in uncommitted state:
