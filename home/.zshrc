@@ -1,3 +1,4 @@
+
 ## .zshrc --- Z Shell configuration file (for interactive shells)
 
 # Copyright (C) 2009-2016 Fabrice Niessen
@@ -12,8 +13,11 @@ PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
 
 if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
     ZSH=$HOME/.dotfiles/repos/.oh-my-zsh
+    # ZSH_THEME="random"
     ZSH_THEME="agnoster"
+    HIST_STAMPS="yyyy-mm-dd"
     # plugins=(git osx rails ruby github node rbenv npm brew byte)
+    plugins=(git osx xcode zshmarks history-substring-search)
     . $ZSH/oh-my-zsh.sh
 fi
 
