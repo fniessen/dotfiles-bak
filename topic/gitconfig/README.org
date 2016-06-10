@@ -26,6 +26,8 @@ might have. So *BE EXTREMELY CAREFUL*!
 
 * COMMENT Tasks
 
+See https://blog.liip.ch/archive/2015/12/11/git-tips-tricks.html!!! XXX
+
 ** TODO Add doc about push failure
 
 If a push fails, that does not necessarily indicate a "bad state"---it
@@ -172,6 +174,10 @@ better idea.
 #+end_verse
 
 From [[gnus:INBOX#87vbhhi69x.fsf@uwakimon.sk.tsukuba.ac.jp][Email from Stephen J. Turnbull: Re: VC mode and git]]
+
+** Git the simple guide
+
+http://rogerdudler.github.io/git-guide/
 
 * User                                                                 :ARCHIVE:
 
@@ -996,6 +1002,12 @@ List tags using (better) version sorting (if your ~sort~ supports it):
 
 #+begin_src conf
     tags = !git tag | sort -V
+#+end_src
+
+You can do a lot better with:
+
+#+begin_src conf
+    releases = log --decorate --oneline --simplify-by-decoration --all
 #+end_src
 
 Show the last tag:

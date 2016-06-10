@@ -224,6 +224,8 @@
 
     tags = !git tag | sort -V
 
+    releases = log --decorate --oneline --simplify-by-decoration --all
+
     lasttag = describe --tags --abbrev=0
 
     co = checkout
