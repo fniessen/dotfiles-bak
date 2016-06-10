@@ -82,6 +82,7 @@ for editor in emacsclientw emacsclient emacs; do
                 # # doesn't bother waiting for a response
                 # export EDITOR="$editor --no-wait"
 
+                # From the man page for emacsclient(1):
                 # If the Emacs server is not running, run `emacs --daemon' to
                 # start Emacs in daemon mode, and try to connect to it.
                 export EDITOR="$editor -a ''"
@@ -198,6 +199,11 @@ alias j='jobs -l'
 alias l='ls'
 
 alias g='git'
+
+alias tigall='tig --all'
+alias tigreleases='tig --all --simplify-by-decoration'
+alias tigb='tig blame'
+alias tigs='tig status'
 
 # Search through files, ignoring .svn directories.
 alias svn_find="find . -not \( -name .svn -prune \)"

@@ -70,6 +70,10 @@ from that field).
 
 Install extra packages:
 
+#+begin_src shell
+alias cyg-get="/cygdrive/c/cygwin64/setup-x86_64.exe -q -P"
+#+end_src
+
 - Archive
   + [X] ~unzip~
   + [X] ~zip~ (used by the "Org to ODT" exporter)
@@ -1508,6 +1512,7 @@ for editor in emacsclientw emacsclient emacs; do
                 # # doesn't bother waiting for a response
                 # export EDITOR="$editor --no-wait"
 
+                # From the man page for emacsclient(1):
                 # If the Emacs server is not running, run `emacs --daemon' to
                 # start Emacs in daemon mode, and try to connect to it.
                 export EDITOR="$editor -a ''"
@@ -1749,6 +1754,17 @@ alias l='ls'
 #+begin_src shell
 alias g='git'
 #+end_src
+
+http://jonas.nitro.dk/tig/manual.html
+
+#+begin_src shell
+alias tigall='tig --all'
+alias tigreleases='tig --all --simplify-by-decoration'
+alias tigb='tig blame'
+alias tigs='tig status'
+#+end_src
+
+http://stackoverflow.com/tags/tig/hot
 
 *** SVN
 
