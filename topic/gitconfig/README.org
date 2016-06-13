@@ -721,8 +721,10 @@ Never do this to a commit that you've already pushed to a remote repository.
 committed version.
 
 #+begin_src conf
-    undo = checkout --
-    scrap = checkout --
+    # undo = checkout --
+    # scrap = checkout --
+
+    unmodify = checkout --
 #+end_src
 
 #+begin_note
@@ -899,8 +901,8 @@ The upstream diff ~in-what~ will show the negative of unpushed (rebased) commits
 if any, with the ~..~ notation --- not with the ~...~ notation!
 #+end_warning
 
-Before doing work (in a new branch), ensure that the working directory is
-up-to-date with the ~origin~ (pull and get latest for all submodules):
+Before doing work (in a new branch), *ensure that the working directory is
+up-to-date* with the ~origin~ (pull and get latest for all submodules):
 
 #+begin_src conf
     up = !git pull --rebase --prune $@ && git submodule update --init --recursive
@@ -1091,6 +1093,19 @@ See http://haacked.com/archive/2014/07/28/github-flow-aliases/.
     # Current branch.
     cb = "name-rev --name-only HEAD"
 #+end_src
+
+*** How to git diff all changes since branching from master?
+
+Show all commits in a git branch since original branching point from master:
+
+#+begin_src conf
+    sincemaster = diff master...
+#+end_src
+
+When you use three dots, ~git diff~ finds the1 merge-base between the left and
+right side commit SHA-1s (as obtained from the names, or defaulting to ~HEAD~) and
+substitutes that in for the left-side SHA-1. The right-side SHA-1 (as resolved
+from the name) remains intact.
 
 ** Merge
 
@@ -1506,25 +1521,25 @@ git pull
 
 # https://github.com/abo-abo/oremacs/blob/github/etc/org/wiki/git.org
 
-** force push
+** Force push
 
 #+begin_src shell
 git push --force origin master
 #+end_src
 
-** push tags
+** Push tags
 
 #+begin_src shell
 git push --tags
 #+end_src
 
-** get user pubkeys
+** Get user pubkeys
 
 #+begin_src shell
 curl https://github.com/abo-abo.keys
 #+end_src
 
-** routine
+** Routine
 
 #+begin_src shell
 git fetch --all
