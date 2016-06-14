@@ -97,6 +97,8 @@
     type = cat-file -t
     dump = cat-file -p
 
+    exec = '!exec '
+
     ci = commit
 
     cp = cherry-pick -x

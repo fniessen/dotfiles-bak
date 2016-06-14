@@ -401,6 +401,13 @@ If you forget your aliases and don't want to open =.gitconfig= just to check, ty
 
 (see http://gitimmersion.com/lab_11.html)
 
+#+begin_src conf
+    exec = '!exec '
+#+end_src
+
+So, I can do things like ~git exec make~. This works because shell aliases are
+always executed in the top-level directory.
+
 ** Abbreviations
 
 Basic shortcuts.
