@@ -115,7 +115,11 @@
 ;; (setq leuven-load-chapter-XX-emacs-display nil)
 ;; (setq leuven-load-chapter-99-debugging nil)
 
-;; (setq leuven-load-verbose t)
+;; (setq leuven-verbose-loading t)
+
+;; (setq leuven-excluded-packages
+;;       '(useless-package
+;;         other-annoying-package))
 
 (add-to-list 'load-path (expand-file-name "~/2-Output/emacs-leuven"))
 (require 'emacs-leuven)
