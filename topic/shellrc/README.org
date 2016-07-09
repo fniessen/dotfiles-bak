@@ -14,6 +14,14 @@
 ShellRC is a set of configuration files to take advantage of Bash and Zsh on Mac
 OS X, Linux and Windows (with Cygwin).
 
+* COMMENT Tasks
+
+** TODO Look at shell scripts
+
+https://bitbucket.org/ambrevar/dotfiles/src/ac47e01e1b25942d5a3f83616a91f9eab6382823/.scripts/?at=master
+
+(pdfscan, etc.)
+
 * Getting started
 
 ** Prerequisites for Windows
@@ -157,8 +165,8 @@ alias cyg-get="/cygdrive/c/cygwin64/setup-x86_64.exe -q -P"
 
 - Text
   + [ ] ~antiword~
-  + [ ] ~aspell~ (Note that the Win32 binary has *much* more dictionaries! Use that
-    one instead...)
+  + [X] ~aspell~ (Note that the Win32 binary has *much* more dictionaries! Use that
+    one instead if you need "nl" language...)
   + [ ] ~most~
   + [ ] ~opensp~ (for ~nsgmls~ validator)
   + [X] ~texinfo~ (for ~makeinfo~)
@@ -1001,7 +1009,7 @@ fi
 http://www.railstips.org/blog/archives/2009/02/02/bedazzle-your-bash-prompt-with-git-info/
 *************** END
 
-#+begin_src shell
+#+begin_src shell :tangle no
 # . "/cygdrive/c/Program Files (x86)/Git/etc/git-prompt.sh"
 
 if [ -f "$ZSH/plugins/gitfast/git-prompt.sh" ]; then
@@ -1753,15 +1761,16 @@ alias l='ls'
 
 #+begin_src shell
 alias g='git'
+# alias gitroot="cd $(git rev-parse --show-toplevel)" # Conflict with Oh-My-ZShell?
 #+end_src
 
 http://jonas.nitro.dk/tig/manual.html
 
 #+begin_src shell
+alias tigs='tig status'                 # Use it all of the time!
+alias tigb='tig blame'
 alias tigall='tig --all'
 alias tigreleases='tig --all --simplify-by-decoration'
-alias tigb='tig blame'
-alias tigs='tig status'
 #+end_src
 
 http://stackoverflow.com/tags/tig/hot
@@ -1824,7 +1833,7 @@ history | awk '{print $2}' | awk 'BEGIN {FS="|"} {print $1}' | sort | uniq -c | 
 
 Connect to a host in a new screen tab, with the device name as the tab title.
 
-#+begin_src shell
+#+begin_src shell :tangle no
 function s()
 {
     screen -t "$@" /usr/bin/ssh "$@"
@@ -1836,6 +1845,9 @@ alias sr='screen -r'
 #+end_src
 
 *** SSH agent / GPG agent
+    :PROPERTIES:
+    :header-args+: :tangle no
+    :END:
 
 Most of our servers don't listen to SSH on a public VLAN. I can't be bothered to
 keep a tunnel open on my laptop when away from the office:
@@ -1918,12 +1930,18 @@ keys ()
 #+end_src
 
 *** Debian
+    :PROPERTIES:
+    :header-args+: :tangle no
+    :END:
 
 #+begin_src shell
 alias aps='aptitude search'
 #+end_src
 
 *** System admin (NMAP, etc.)
+    :PROPERTIES:
+    :header-args+: :tangle no
+    :END:
 
 #+begin_src shell
 # Use `pkill' (which is pgrep + kill in a single command).
@@ -1972,6 +1990,8 @@ alias ngrep='ngrep -W byline'
 # ngrep google port 80
 # ngrep -i 'rcpt to|mail from' tcp port smtp
 # ngrep -q -t -wi "login" port 23
+
+alias sniff='sudo ngrep -d "enp6s0" -t "^(GET|POST) " "tcp and port 80"'
 #+end_src
 
 #+begin_src shell
@@ -1995,6 +2015,41 @@ alias nmap_fast="nmap -F -T5 --top-ports 300"
 #     sudo nmap -sT -p $port -P0 -v -T 4 -oG dump-$port-${range////_}.txt $range
 #     grep -i open dump-$port-${range////_}.txt
 # }
+#+end_src
+
+#+begin_src shell :tangle no
+inpath() { [[ -x "$(which "$1" 2>/dev/null)" ]]; }
+
+inpath nmap && {
+    # -- [ nmap ] ---------------------------------------------------
+    #  -sS - TCP SYN scan
+    #  -v - verbose
+    #  -T1 - timing of scan. Options are paranoid (0), sneaky (1), polite (2), normal (3), aggressive (4), and insane (5)
+    #  -sF - FIN scan (can sneak through non-stateful firewalls)
+    #  -PE - ICMP echo discovery probe
+    #  -PP - timestamp discovery probe
+    #  -PY - SCTP init ping
+    #  -g - use given number as source port
+    #  -A - enable OS detection, version detection, script scanning, and traceroute (aggressive)
+    #  -O - enable OS detection
+    #  -sA - TCP ACK scan
+    #  -F - fast scan
+    #  --script=vulscan - also access vulnerabilities in target
+    alias nmap_open_ports="nmap --open"
+    alias nmap_list_interfaces="nmap --iflist"
+    alias nmap_slow="nmap -sS -v -T1"
+    alias nmap_fin="nmap -sF -v"
+    alias nmap_full="nmap -sS -T4 -PE -PP -PS80,443 -PY -g 53 -A -p1-65535 -v"
+    alias nmap_check_for_firewall="nmap -sA -p1-65535 -v -T4"
+    alias nmap_ping_through_firewall="nmap -PS -PA"
+    alias nmap_fast="nmap -F -T5 --version-light --top-ports 300"
+    alias nmap_detect_versions="nmap -sV -p1-65535 -O --osscan-guess -T4 -Pn"
+    alias nmap_check_for_vulns="nmap --script=vulscan"
+    alias nmap_full_udp="nmap -sS -sU -T4 -A -v -PE -PS22,25,80 -PA21,23,80,443,3389 "
+    alias nmap_traceroute="nmap -sP -PE -PS22,25,80 -PA21,23,80,3389 -PU -PO --traceroute "
+    alias nmap_full_with_scripts="sudo nmap -sS -sU -T4 -A -v -PE -PP -PS21,22,23,25,80,113,31339 -PA80,113,443,10042 -PO --script all "
+    alias nmap_web_safe_osscan="sudo nmap -p 80,443 -O -v --osscan-guess --fuzzy "
+}
 #+end_src
 
 #+begin_src shell
@@ -2387,6 +2442,9 @@ function console {
 }
 #+end_src
 
+** NMAP
+
+
 ** Postamble
 
 #+begin_src shell
@@ -2396,6 +2454,13 @@ function console {
 
 # .shellrc ends here
 #+end_src
+
+* Java
+
+- Download Ant and add its =/bin= directory to ~PATH~.
+
+- Add =C:\Program Files\Java\jdk1.7.0_80= to ~JAVA_HOME~ and add ~%JAVA_HOME%/bin~
+  to ~PATH~.
 
 * FAQ
 

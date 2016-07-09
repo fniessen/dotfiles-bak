@@ -96,20 +96,6 @@ precmd_functions+=echo_blank
 
 [ "$TERM" = "dumb" ] && PROMPT="> "
 
-# . "/cygdrive/c/Program Files (x86)/Git/etc/git-prompt.sh"
-
-if [ -f "$ZSH/plugins/gitfast/git-prompt.sh" ]; then
-  . "$ZSH/plugins/gitfast/git-prompt.sh"
-  setopt prompt_subst
-  export GIT_PS1_SHOWDIRTYSTATE=true
-  export GIT_PS1_SHOWSTASHSTATE=true
-  export GIT_PS1_SHOWUNTRACKEDFILES=true
-  export GIT_PS1_SHOWUPSTREAM=verbose
-  export GIT_PS1_DESCRIBE_STYLE=branch
-  export GIT_PS1_SHOWCOLORHINTS=true
-  export RPROMPT=$'%{$fg[magenta]%}■%{$reset_color%} $(__git_ps1 "%s")'
-fi
-
 [ "$TERM" = "dumb" ] && RPROMPT=""
 
 # Command line head / tail shortcuts
