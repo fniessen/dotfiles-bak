@@ -170,6 +170,8 @@
 
     whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=iso -p -S
 
+    changed = show --pretty="format:" --name-only
+
     who = shortlog -n -s --
 
     amend = "!git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend"

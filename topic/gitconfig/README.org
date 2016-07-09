@@ -28,6 +28,11 @@ might have. So *BE EXTREMELY CAREFUL*!
 
 See https://blog.liip.ch/archive/2015/12/11/git-tips-tricks.html!!! XXX
 
+** TODO Read about Git
+
+http://marlacorinne.4parkers.com/2012/07/20/git-pull-vs-git-fetch-then-merge/
+https://adamcod.es/2014/12/10/git-pull-correct-workflow.html
+
 ** TODO Add doc about push failure
 
 If a push fails, that does not necessarily indicate a "bad state"---it
@@ -112,7 +117,7 @@ remote branch (using `git push --force`) and someone needs a talkin' to.
 
 ** TODO Outsource and include private entries in .gitconfig
 
-Git (1.7.10+) now supports this syntax in .gitconfig:
+Git 1.7.10+ supports this syntax in =.gitconfig=:
 
 #+begin_src conf :tangle no
 [include]
@@ -639,6 +644,17 @@ Prettier ~whatchanged~ with full diffs based on text search:
 #+begin_src conf
     whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=iso -p -S
 #+end_src
+
+List all the ~changed~ files in a commit:
+
+#+begin_src conf
+    changed = show --pretty="format:" --name-only
+#+end_src
+
+then:
+git changed (lists files modified in last commit)
+git changed bAda55 (lists files modified in this commit)
+git changed bAda55..ff0021 (lists files modified between those commits)
 
 Show a "top contributors" list:
 
