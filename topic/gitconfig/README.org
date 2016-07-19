@@ -745,8 +745,6 @@ committed version.
 
 #+begin_src conf
     # undo = checkout --
-    # scrap = checkout --
-
     unmodify = checkout --
 #+end_src
 

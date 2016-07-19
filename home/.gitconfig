@@ -187,8 +187,6 @@
     fixup = commit --amend --reuse-message HEAD
 
     # undo = checkout --
-    # scrap = checkout --
-
     unmodify = checkout --
 
     unstage = reset HEAD --
