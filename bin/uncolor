@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+## uncolor -- Remove terminal escape sequences such as color changes
+sed -e "s/\x1b\[[^m]\{1,5\}m//g"
