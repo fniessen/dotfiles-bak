@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+## sd (for `say-done') -- notify when task is done (even if it is running in
+## some background screen session)
+
+# Usage:
+# - sd make all
+# - sd cdrecord -v speed=2 dev=2,0 cdimage.raw
+# - sd wget http://releases.ubuntu.com/9.04/ubuntu-9.04-desktop-i386.iso
+
+# FIXME Does work with bash functions, not with bash aliases
+
+command="$@"  # difference with `$*' ???
+
+eval "$command"
+
+if [[ $? -eq 0 ]]; then
+    beep
+    notify-send -i /cygdrive/c/cygwin64/usr/share/texmf-dist/tex/latex/alertmessage/img/alertmessage-info.png \
+                -t "Done..." -m "$command"
+else
+    beep; beep; beep
+    notify-send -i /cygdrive/c/cygwin64/usr/share/texmf-dist/tex/latex/alertmessage/img/alertmessage-error.png \
+                -t "Failed!" -m "$command"
+fi
+
+## sd ends here
