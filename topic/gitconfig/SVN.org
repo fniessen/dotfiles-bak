@@ -147,3 +147,13 @@ See what has been changed (how it's different from my working copy):
 #+begin_src shell
 svn diff -r BASE:HEAD
 #+end_src
+
+* SVN conflict
+
+Quand problème avec psvn, s'en sortir en faisant :
+
+#+begin_src shell
+svn status (-q)
+svn resolved (FILE)
+svn status (-q)
+#+end_src
