@@ -1,7 +1,8 @@
-backups
-elpa
-org-clock-save.el
+.org-id-locations
 .places
 .recentf
-.org-id-locations
+backups
 bbdb
+elpa
+org-clock-save.el
+semanticdb
