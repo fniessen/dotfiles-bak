@@ -1,5 +1,13 @@
-# dotfiles
-Managing Dotfiles
+#+TITLE:     Managing Dotfiles
+#+AUTHOR:    Fabrice Niessen
+#+EMAIL:     (concat "fniessen" at-sign "pirilampo.org")
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:4 num:t toc:3
+
+#+FILETAGS:  :personal:
+#+SETUPFILE: ~/.dotfiles/org/theme-readtheorg.setup
 
 Your unofficial guide to dotfiles on GitHub:
 http://dotfiles.github.io/
@@ -7,6 +15,15 @@ http://dotfiles.github.io/
 https://github.com/alebcay/awesome-shell
 
 http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/
+
+* Context
+
+I revision-control my configuration files using Git. I have a Bash script
+(called ~install~, also under the repository) which either copies or symlinks the
+files to their appropriate location on a machine.
+
+So if I need to set up on a new machine, I just do a ~git clone~ of the repository
+and run my ~install~ to set up my config files in the appropriate locations.
 
 * Installation
 
@@ -23,6 +40,8 @@ git clone https://github.com/fniessen/dotfiles.git ~/.dotfiles && ~/.dotfiles/in
 # git submodule update --init --recursive
 # ./install
 # #+end_src
+
+# or ~git clone --recursive https://github.com/fniessen/dotfiles.git ~/.dotfiles~?
 
 #+begin_note
 If you try this on a brand new PC, you need Cygwin installed with the ~git~
