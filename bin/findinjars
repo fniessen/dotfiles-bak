@@ -1,0 +1,13 @@
+#!/bin/sh
+## findinjars -- Find a class in a set of Jar files.
+
+if [ -z "$1" ]
+then
+    echo Usage: $(basename $0) [CLASS_NAME] > /dev/stderr
+    exit 1
+fi
+
+find . -name "*.jar" \
+     -exec sh -c 'jar -tvf {} | grep --color=auto --label={} -H '$1'' \;
+
+## findinjars ends here
