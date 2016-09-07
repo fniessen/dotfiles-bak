@@ -43,20 +43,17 @@
            (display-graphic-p))         ; Detect whether Emacs is running in
                                         ; a text-only terminal.
   (cond
-   ;; ((font-info "Consolas")
-   ;;  (set-frame-font "Consolas-10" nil t))
+   ((font-info "Consolas")
+    (set-frame-font "Consolas-8" nil t))
    ;; ((font-info "Courier New")
    ;;  (set-frame-font "Courier New-9" nil t))
    ((font-info "DejaVu Sans Mono")
-    (set-frame-font "DejaVu Sans Mono-9" nil t))
+    (set-frame-font "DejaVu Sans Mono-8" nil t))
    ;; ((font-info "Lucida Sans Typewriter")
    ;;  (set-frame-font "Lucida Sans Typewriter-9" nil t))
    ;; ((font-info "Lucida Console")
    ;;  (set-frame-font "Lucida Console-9" nil t))
-   )
-
-  ;; (set-frame-font "DejaVu Sans Mono-8" nil t))
-  (set-frame-font "Consolas-8" nil t))
+   ))
 
 ;; Other monospaced fonts to look at (with many UTF-8 chars):
 ;; - Droid Sans Mono
