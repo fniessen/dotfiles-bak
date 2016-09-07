@@ -1,0 +1,3 @@
+[submodule "topic/emacs-leuven"]
+	path = topic/emacs-leuven
+	url = https://github.com/fniessen/emacs-leuven
