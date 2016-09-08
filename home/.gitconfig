@@ -102,9 +102,18 @@
     ci = commit
 
     cp = cherry-pick -x
+    pick = cherry-pick -s
+
     ls = ls-files
 
     h = help
+
+    grep4d = !sh -c 'git log -p -S'$1' $2' -
+
+    # 2009-05-26  (merged-bed-bug) 6fe85ff regenerate rules Brad Bowman
+    logdate = log --format=format:'%ad %d %h %s %an%n' --date=short
+    brdate = !"sh -c 'for b in `git branch --no-merged` ; \
+               do git logdate -1 -r $b --; done'" 
 
     this = !git init && git add . && git commit -m \"Initial commit\"
     this = !git init && ( [[ -n $(ls) ]] || touch .gitignore ) && git add . && git commit -m \"Initial commit\"
@@ -124,8 +133,11 @@
     assumed = "!git ls-files -v | grep '^h' | cut -c 3-"
 
     df = diff
+    dw = diff --word-diff
 
     dc = diff --cached
+
+    precommit = diff --cached --diff-algorithm=minimal -w
 
     today = !git log --since=midnight --author=\"`git config user.name`\" --no-merges --all
 
@@ -150,6 +162,11 @@
     lg50 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-50s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{49}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
     lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-80s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
 
+    lf = "log --follow"
+    logfile = log --follow -C
+
+    graph = log --graph -10 --branches --remotes --tags --format=format:'%C(yellow)%h %Creset %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
+
     ls-modified  = "!git status --porcelain -uno | awk 'match($1, /M/) {print $2}'"
     ls-added     = "!git status --porcelain -uno | awk 'match($1, /A/) {print $2}'"
     ls-deleted   = "!git status --porcelain -uno | awk 'match($1, /D/) {print $2}'"
@@ -171,13 +188,15 @@
     whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=iso -p -S
 
     changed = show --pretty="format:" --name-only
+    diffn = diff --name-only
 
     who = shortlog -n -s --
+    # who = shortlog -n -s -e --
 
     amend = "!git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend"
 
     amend = commit -a -v --amend
-    fixup = commit --amend
+    amend = commit --amend
 # fixlastcommit?
 
 # Commit changes to current head as amended commit.
@@ -188,6 +207,7 @@
 
     # undo = checkout --
     unmodify = checkout --
+    undelete = checkout --
 
     unstage = reset HEAD --
 # OK
@@ -198,7 +218,10 @@
     wipe = reset --hard HEAD~1
 # rollback?
 
+    nevermind = !git reset --hard HEAD && git clean -d -f
+
     r = "remote -v"
+    remotes = remote -v
 
     in = !(echo "Please fetch origin before." && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
     inf = !(git remote update -p && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
@@ -208,10 +231,13 @@
     in-what = diff --stat ...@{u}
 
     up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+# `up' used many times
+    update = !git pull && git submodule update --init --recursive
 
     pull-all = !"old=$(git rev-parse --abbrev-ref HEAD) ; for b in $(git for-each-ref refs/heads --format='%(refname)') ; do git checkout ${b#refs/heads/} ; git pull --ff-only ; done; git checkout ${old}"
 
     up = !git pull --ff-only
+# `up' used many times
 
     out = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' @{u}..
 
@@ -268,6 +294,13 @@
     sl = stash list
     sa = stash apply
 
+    stashes = stash list
+
+    save = stash save
+    savepatch = stash save --patch
+    savescratch = stash save --keep-index
+    pop = stash pop
+
     hide = stash
     unhide = stash apply
 # bad aliases, used by some instead to mean assume and unassume...
@@ -279,6 +312,9 @@
     stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
 
     plop = "!git stash && git pull && git stash pop"
+    up = !git stash && git pull origin master && git stash apply
+# `up' used many times
+
 # cleanpull
 # update (like svn? if we add a git reset in front?)
 # sync
@@ -290,11 +326,22 @@
 
     gr = "grep --break --heading"
 
+    g = "grep -Ii"
+
     lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset  %s' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
 
     graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
 
     sha1-tag = '!f() { git name-rev --name-only "$@"; }; f'
 
+    rename = branch -m
+
     sha1-branch = '!f() { git branch -a --contains "$@"; }; f'
     where = "branch -a --contains"
+
+    praise = blame -w
+    archeology = blame -w -C -n
+    whodoikill = blame -w -C -n
+
+    conflicts = diff --name-only --diff-filter=U
+    unmerged = diff --name-only --diff-filter=U
