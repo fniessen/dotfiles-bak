@@ -51,7 +51,7 @@ For similar collections, see:
 
 * Shell functions
   :PROPERTIES:
-  :header-args+: :tangle bin/shellutils :shebang #!/bin/bash
+  :header-args+: :tangle ~/.dotfiles/bin/shellutils :shebang #!/bin/bash
   :END:
 
 Only use alphanumeric characters and the underscore for function names.
@@ -114,7 +114,7 @@ pname () {
 
 ** Send an email
    :PROPERTIES:
-   :header-args+: :tangle bin/mail :shebang #!/bin/bash
+   :header-args+: :tangle ~/.dotfiles/bin/mail :shebang #!/bin/bash
    :END:
 
 Send a mail to one or more people.
@@ -160,7 +160,9 @@ This is $CMD, version: <<current-time()>>.
 
 Usage: $CMD [-s SUBJECT] [-a ATTACHMENT]... [-c CC-ADDR] [-b BCC-ADDR] [-f FROM-ADDR] TO-ADDR
 Send simple mail.
-Example: $CMD -s 'Disk failure' bill@example.com < /tmp/message
+Examples:
+    $CMD -s 'Disk failure' bill@example.com < /tmp/message
+    print "This is the body." | $CMD -s 'Other subject' bill@example.com
 
 Options:
   -s  Specify subject on command line
@@ -316,7 +318,7 @@ blat -to "$MAILTO" \
 
 ** Echo text in color
 
-#+begin_src shell :tangle ~/bin/cecho
+#+begin_src shell :tangle ~/.dotfiles/bin/cecho
 cecho () {
     black="\e[30m"
     red="\e[31m"
@@ -380,7 +382,7 @@ See http://snipplr.com/view/6228/recursively-find-subversion-working-copies-and-
 Add a file (or a file glob pattern) to ignore without deleting the previous
 value of the ~svn:ignore~ property... from the command line.
 
-#+begin_src shell :tangle bin/svnignore
+#+begin_src shell :tangle ~/.dotfiles/bin/svnignore
 # Usage: svnignore admin/notes/\*.tex
 
 target="$1"
@@ -399,7 +401,7 @@ svn propset svn:ignore "$svnignores" "$targetdirectory"
 
 From Hacking Exposed Web Applications:
 
-#+begin_src shell :tangle bin/getit.sh
+#+begin_src shell :tangle ~/.dotfiles/bin/getit.sh
 #!/bin/sh
 # mike's getit.sh script
 if [ -z $1 ]; then
@@ -424,7 +426,7 @@ getit.sh www.victim.com /index.html | grep -i "input type"
 
 ** HTTPS
 
-#+begin_src shell :tangle bin/sgetit.sh
+#+begin_src shell :tangle ~/.dotfiles/bin/sgetit.sh
 #!/bin/sh
 # mike's sgetit.sh script
 if [ -z $1 ]; then
@@ -448,7 +450,7 @@ method, look in the dumpfile ~/tmp/bannergrab~ and look for
 =<script>alert(123)</script>= if you can find that back you got yourself a
 vulnerable server.
 
-#+begin_src shell :tangle bin/nc_bgrab
+#+begin_src shell :tangle ~/.dotfiles/bin/nc_bgrab
 #!/bin/sh
 
 range="10.10.10.";
