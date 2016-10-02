@@ -13,11 +13,13 @@ EOF
 Help ()
 {
     cat << EOF
-This is $CMD, version: 20151224.1256.
+This is $CMD, version: 20161002.1146.
 
 Usage: $CMD [-s SUBJECT] [-a ATTACHMENT]... [-c CC-ADDR] [-b BCC-ADDR] [-f FROM-ADDR] TO-ADDR
 Send simple mail.
-Example: $CMD -s 'Disk failure' bill@example.com < /tmp/message
+Examples:
+    $CMD -s 'Disk failure' bill@example.com < /tmp/message
+    print "This is the body." | $CMD -s 'Other subject' bill@example.com
 
 Options:
   -s  Specify subject on command line
