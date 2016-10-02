@@ -635,13 +635,6 @@ disk:
     lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-80s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
 #+end_src
 
-*List all commits* that changed a *specific file* (it accounts for renames!):
-
-#+begin_src conf
-    lf = "log --follow"
-    logfile = log --follow -C
-#+end_src
-
 To see real *timeline* of who is working on what and when:
 
 #+begin_src conf
@@ -702,6 +695,13 @@ XXX They don't show the same files (test with ~git changed HEAD~1~ and ~git diff
 git changed                             # List files modified in last commit.
 git changed bAda55                      # List files modified in this commit.
 git changed bAda55..ff0021              # List files modified between those commits.
+#+end_src
+
+*List all commits* that changed a *specific file* (it accounts for renames!):
+
+#+begin_src conf
+    lf = "log --follow"
+    logfile = log --follow -C
 #+end_src
 
 Show a "top contributors" list:
