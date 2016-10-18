@@ -347,6 +347,75 @@ cecho () {
 cecho "$@"
 #+end_src
 
+** Find duplicates
+
+*** findup -- find DUPlicate files
+
+See fdupes from Cygwin?
+
+fdupes -S /etc
+
+Sample outputs:
+
+#+begin_example
+1533 bytes each:
+/etc/vimrc
+/etc/virc
+#+end_example
+
+*** findsn -- find Same Name (problems with clashing names)
+
+find (files) with duplicate or conflicting names.
+Usage: findsn [-A -c -C] [[-r] [-f] paths(s) ...]
+
+#+begin_src shell :tangle no
+find . -type f | sort | uniq -c | grep -v "^[ \t]*1 "
+#+end_src
+
+#+begin_src shell :tangle no
+#!/bin/bash
+
+find -type f > names.lst
+
+> names.out
+
+TAB=`echo -ne "\t"`
+while read name
+do
+    bn="$( basename "$name" )"
+    name2="$( grep "$bn" names.lst | grep -v "$name" )"
+    if [ "$name2" != "" ]
+    then
+                        if !(grep -q "^${name}${TAB}" names.out); then
+                                size=`stat --format=%s "$name"`
+                                size2=`stat --format=%s "$name2"`
+                                echo -e "$name${TAB}$size" >> names.out
+                                echo -e "$name2${TAB}$size" >> names.out
+                        fi
+    fi
+done < names.lst
+
+cat names.out
+rm -f names.lst
+#+end_src
+
+#+begin_src shell :tangle ~/.dotfiles/bin/findsn
+#!/bin/bash
+# Find Duplicate File Names - By Dev (dk_mahadeva@yahoo.com)
+# If no command-line parameter (path to begin from) is specified, then the
+# default is to begin from the current (.) directory.
+cd path=$1
+: ${path:=.}
+printf "Building file list...\n" > /dev/stderr
+fullList=$(find `pwd` $path | grep -v '^\.' | awk -F '/' '{print $NF,$0}' | sort +0 -1)
+fileNames=$(find `pwd` $path | grep -v '^\.' | awk -F '/' '{print $NF}' | sort | uniq -d)
+for EACH in $fileNames; do
+    echo "$fullList" | grep -wE "^$EACH "
+    echo ""
+done
+exit 0
+#+end_src
+
 * VC
   :PROPERTIES:
   :header-args+: :shebang #!/bin/bash
