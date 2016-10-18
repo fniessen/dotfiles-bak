@@ -16,6 +16,20 @@ OS X, Linux and Windows (with Cygwin).
 
 * COMMENT Tasks
 
+** TODO Test performance of branch name and merge status in Bash prompt
+
+Should go to local or global bash profile:
+
+#+begin_src shell
+function parse_git_dirty {
+  [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working directory clean" ]] && echo "*"
+}
+function parse_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/[\1$(parse_git_dirty)]/"
+}
+export PS1='\u@\h \[\033[0;36m\]\w \[\033[0;32m\]$(parse_git_branch)\[\033[0m\]$ '
+#+end_src
+
 ** TODO Look at shell scripts
 
 https://bitbucket.org/ambrevar/dotfiles/src/ac47e01e1b25942d5a3f83616a91f9eab6382823/.scripts/?at=master
