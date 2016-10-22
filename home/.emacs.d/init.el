@@ -118,7 +118,9 @@
 ;;       '(useless-package
 ;;         other-annoying-package))
 
-(add-to-list 'load-path (expand-file-name "~/2-Output/emacs-leuven"))
+(if (file-exists-p "~/2-Output/emacs-leuven")
+    (add-to-list 'load-path (expand-file-name "~/2-Output/emacs-leuven"))
+  (add-to-list 'load-path (expand-file-name "~/.dotfiles/topic/emacs-leuven")))
 (require 'emacs-leuven)
 
 (let ((init-local "~/.emacs.d/init_local.el"))
