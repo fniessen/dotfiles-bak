@@ -1,13 +1,12 @@
-
 #!/bin/bash
 
 DOTFILES="${HOME}/.dotfiles"            # Base it on `pwd'!
-DOTHOME=${DOTFILES}/home
-DOTBACKUP=${DOTFILES}/backup
+DOTHOME="${DOTFILES}/home"
+DOTBACKUP="${DOTFILES}/backup"
 
 # Make a backup directory for overwritten dotfiles.
-if [[ ! -e ${DOTBACKUP} ]]; then
-    mkdir ${DOTBACKUP}
+if [[ ! -e "${DOTBACKUP}" ]]; then
+    mkdir "${DOTBACKUP}"
 fi
 
 function symlinkifne {
@@ -20,19 +19,19 @@ function symlinkifne {
             return
         fi
         # Backup file does not exist yet.
-        if [[ ! -e ${DOTBACKUP}/$1 ]]; then
-            mv $1 ${DOTBACKUP}/
+        if [[ ! -e "${DOTBACKUP}/$1" ]]; then
+            mv $1 "${DOTBACKUP}/"
             echo -n ' backing up target;'
         fi
     fi
     # Create the link.
-    ln -s ${DOTHOME}/$1 $1
+    ln -s "${DOTHOME}/$1" $1
     echo ' symlinking... done'
 }
 
-cd ${HOME}
+cd "${HOME}"
 
-for config_file in $(ls --almost-all ${DOTHOME})
+for config_file in $(ls --almost-all "${DOTHOME}")
 do
     symlinkifne $(basename $config_file)
 done
