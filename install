@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DOTFILES="${HOME}/.dotfiles"            # Base it on `pwd'!
 DOTHOME="${DOTFILES}/home"
