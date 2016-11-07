@@ -51,7 +51,7 @@ For similar collections, see:
 
 * Shell functions
   :PROPERTIES:
-  :header-args+: :tangle ~/.dotfiles/bin/shellutils :shebang #!/bin/bash
+  :header-args+: :tangle ~/.dotfiles/bin/shellutils :shebang #!/usr/bin/env bash
   :END:
 
 Only use alphanumeric characters and the underscore for function names.
@@ -109,12 +109,12 @@ pname () {
 
 * Shell scripts
   :PROPERTIES:
-  :header-args+: :shebang #!/bin/bash
+  :header-args+: :shebang #!/usr/bin/env bash
   :END:
 
 ** Send an email
    :PROPERTIES:
-   :header-args+: :tangle ~/.dotfiles/bin/mail :shebang #!/bin/bash
+   :header-args+: :tangle ~/.dotfiles/bin/mail :shebang #!/usr/bin/env bash
    :END:
 
 Send a mail to one or more people.
@@ -253,7 +253,7 @@ SUBJECT="none"
 ATTFILES=""                             # files to be attached
 CC=""
 BCC=""
-FROM="<$(whoami)@$(echo $(hostname) | tr '[:upper:]' '[:lower:]')>"
+FROM="<$(whoami)@$(echo $(hostname).com | tr '[:upper:]' '[:lower:]')>"
 : ${SMTP:="smtp"}                       # set var if not already set
 BODY="--"                               # stdin.txt
 
@@ -373,7 +373,7 @@ find . -type f | sort | uniq -c | grep -v "^[ \t]*1 "
 #+end_src
 
 #+begin_src shell :tangle no
-#!/bin/bash
+#!/usr/bin/env bash
 
 find -type f > names.lst
 
@@ -400,7 +400,6 @@ rm -f names.lst
 #+end_src
 
 #+begin_src shell :tangle ~/.dotfiles/bin/findsn
-#!/bin/bash
 # Find Duplicate File Names - By Dev (dk_mahadeva@yahoo.com)
 # If no command-line parameter (path to begin from) is specified, then the
 # default is to begin from the current (.) directory.
@@ -416,9 +415,29 @@ done
 exit 0
 #+end_src
 
+** Utils
+
+#+begin_src shell :tangle strip-dashes
+#!/usr/bin/env bash
+# Strip lines with dashes.
+sed "s/NULL//g"
+#+end_src
+
+#+begin_src shell :tangle delete-2nd-line
+#!/usr/bin/env bash
+# Delete the second line.
+sed -e '2d'
+#+end_src
+
+#+begin_src shell :tangle replace-null
+#!/usr/bin/env bash
+# Replace NULL value by empty string.
+sed "s/NULL//g"
+#+end_src
+
 * VC
   :PROPERTIES:
-  :header-args+: :shebang #!/bin/bash
+  :header-args+: :shebang #!/usr/bin/env bash
   :END:
 
 http://superuser.com/questions/44787/looping-through-subdirectories-and-running-a-command-in-each

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # mail -- Send simple mail
 
 Usage ()
@@ -13,7 +13,7 @@ EOF
 Help ()
 {
     cat << EOF
-This is $CMD, version: 20161002.1146.
+This is $CMD, version: 20161107.1719.
 
 Usage: $CMD [-s SUBJECT] [-a ATTACHMENT]... [-c CC-ADDR] [-b BCC-ADDR] [-f FROM-ADDR] TO-ADDR
 Send simple mail.
@@ -49,7 +49,7 @@ SUBJECT="none"
 ATTFILES=""                             # files to be attached
 CC=""
 BCC=""
-FROM="<$(whoami)@$(echo $(hostname) | tr '[:upper:]' '[:lower:]')>"
+FROM="<$(whoami)@$(echo $(hostname).com | tr '[:upper:]' '[:lower:]')>"
 : ${SMTP:="smtp"}                       # set var if not already set
 BODY="--"                               # stdin.txt
 
