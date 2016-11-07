@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 die () {
     printf "$(basename $0): $@\n" > /dev/stderr
     exit 2                              # An error occurred.
