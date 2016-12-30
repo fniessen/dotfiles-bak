@@ -1225,6 +1225,17 @@ respectively:
     theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
 #+end_src
 
+Best (and safest) way to merge a Git local branch into ~master~:
+
+#+begin_src shell :tangle no
+git checkout master
+git pull origin master                  # Get the latest changes from the remote.
+git merge test
+git push origin master
+
+git branch -d branch_name               # Delete local branch.
+#+end_src
+
 ** Prepare a release
 
 Save a repo as a tarball:
