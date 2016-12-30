@@ -162,9 +162,6 @@
     lg50 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-50s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{49}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
     lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-80s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
 
-    lf = "log --follow"
-    logfile = log --follow -C
-
     graph = log --graph -10 --branches --remotes --tags --format=format:'%C(yellow)%h %Creset %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
 
     ls-modified  = "!git status --porcelain -uno | awk 'match($1, /M/) {print $2}'"
@@ -189,6 +186,9 @@
 
     changed = show --pretty="format:" --name-only
     diffn = diff --name-only
+
+    lf = "log --follow"
+    logfile = log --follow -C
 
     who = shortlog -n -s --
     # who = shortlog -n -s -e --
