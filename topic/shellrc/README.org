@@ -1537,7 +1537,7 @@ for editor in emacsclientw emacsclient emacs; do
                 # From the man page for emacsclient(1):
                 # If the Emacs server is not running, run `emacs --daemon' to
                 # start Emacs in daemon mode, and try to connect to it.
-                export EDITOR="$editor -a ''"
+                export EDITOR="$editor --alternate-editor=''"
                 ;;
             ,*)
                 export EDITOR="$editor"
@@ -1551,13 +1551,16 @@ done
 #+end_src
 
 #+begin_src shell :tangle no
-alias e="emacsclient -a emacs -n"       # -n is essential part
-alias e="emacsclient -t -a ''"
+alias e="emacsclient --alternate-editor=emacs --no-wait" # --no-wait is an essential part.
+alias e="emacsclient --tty --alternate-editor=''"
+#+end_src
+
+#+begin_src shell
 alias ek="emacsclient -e '(kill-emacs)'"
 #+end_src
 
 #+begin_note
-Shouldn't we alias ~EDITOR~ to ~emacs -nw~?
+Shouldn't we alias ~EDITOR~ to ~emacs --tty~?
 #+end_note
 
 #+begin_src shell
@@ -1586,9 +1589,18 @@ ec ()
 I connect to the server with either a terminal or a GUI client like this:
 
 #+begin_example
-alias et=emacsclient -t                 # New GUI frame.
-alias ec=emacsclient -c                 # New terminal frame.
+alias et=emacsclient --tty              # New GUI frame.
+alias ec=emacsclient --create-frame     # New terminal frame.
 #+end_example
+
+A good way to start emacsclient is with this line:
+
+#+begin_example
+alias e="emacsclient --no-wait --alternate-editor=\"\" --create-frame"
+#+end_example
+
+You may also set the environment variables =EDITOR= and/or =VISUAL=, but then you
+better omit the "=--no-wait=" option.
 
 ** Plugins
 
