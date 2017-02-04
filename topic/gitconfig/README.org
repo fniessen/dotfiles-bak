@@ -841,7 +841,7 @@ Go back before last commit, with files in uncommitted state:
 
 #+begin_src conf
     uncommit = reset --soft HEAD~1
-# OK
+# OK (or undolast)
 #+end_src
 
 ~uncommit~ *removes the last commit* from your repository, and *puts the changes
