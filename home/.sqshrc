@@ -5,9 +5,6 @@
 # Author: Fabrice Niessen <(concat "fni" at-symbol "mygooglest.com")>
 # Keywords: sqsh, dotfile, config
 
-# $Revision: 4560 $
-# $Date: 2010-09-03 15:40:06 +0200 (Fri, 03 Sep 2010) $
-
 #* Connections
 
 # Setting your password within your `.sqshrc' is probably the most secure
@@ -83,7 +80,6 @@
 # This is for the sake of Emacs.
 # Local Variables:
 # mode: outline-minor
-# ispell-local-dictionary: "en_US"
 # End:
 
 ## .sqshrc ends here
