@@ -689,6 +689,8 @@ List all the ~changed~ files in a commit:
     diffn = diff --name-only
 #+end_src
 
+(Use Tig?  Use git blame?)
+
 XXX They don't show the same files (test with ~git changed HEAD~1~ and ~git diffn HEAD~1~) XXX
 
 #+begin_src shell :tangle no
