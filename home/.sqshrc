@@ -1,0 +1,89 @@
+## .sqshrc - My sqsh initialization file
+
+# Copyright (C) 2010-2017 Fabrice Niessen
+
+# Author: Fabrice Niessen <(concat "fni" at-symbol "mygooglest.com")>
+# Keywords: sqsh, dotfile, config
+
+# $Revision: 4560 $
+# $Date: 2010-09-03 15:40:06 +0200 (Fri, 03 Sep 2010) $
+
+#* Connections
+
+# Setting your password within your `.sqshrc' is probably the most secure
+# method of using sqsh. However, make sure that you `chmod go-rwx ~/.sqshrc',
+# otherwise you leave yourself wide open to attacks.
+
+\set username="USER"
+\set password="PASS"
+\set hostname="SERVER"
+\set database=[database]
+
+#* Aliasing
+
+#** Display styles
+
+\alias goh='\go -m horiz | ${PAGER}'
+
+# *very* useful for doing quick bcp commands, and using re-direction to a file
+\alias gob='\go -m bcp'
+
+\alias gof='\go -m html | (cat > /tmp/sqsh-output.html; /usr/bin/firefox file:///tmp/sqsh-output.html)'
+
+\alias gom='\go -m meta | ${PAGER}'
+
+\alias gop='\go -m pretty -w80 | ${PAGER}'
+
+\alias gov='\go -m vert | ${PAGER}'
+
+#** Aliases for T-SQL commands
+
+\alias statson='\loop -e "set statistics io on set statistics time on"'
+\alias statsoff='\loop -e "set statistics io off set statistics time off"'
+\alias planon='\loop -e "set showplan on"'
+\alias planoff='\loop -e "set showplan off"'
+\alias ton='\loop -e "dbcc traceon(3604)"'
+\alias toff='\loop -e "dbcc traceoff(3604)"'
+\alias tmp='\loop -e "use tempdb"'
+\alias mas='\loop -e "use master"'
+
+#** Other aliases
+
+# alias to clear screen within sqsh session (same functionality as in isql)
+\alias clear="\shell clear"
+
+# provides isql functionality to read a file into sqsh session
+\alias :r="\buf-load "
+
+# drops you into a shell out of sqsh
+\alias sh="\shell "
+
+\alias h="\history"
+
+\alias q="\exit"
+
+#* Miscellaneous
+
+# turns off the sqsh banner
+\set banner=no
+
+# have semicolons executing commands (sort of inline go)... but it's a performance drag
+\set semicolon_hack=on
+
+# turns on ability to have !-recall commands
+\set history_shorthand=on
+
+# This variable causes sqsh to exit with an exit status of the total number of
+# batches that failed during the current session. This is useful for use
+# within shell scripts and the such.
+\set exit_failcount=on
+
+\set prompt='[$histnum] ${DSQUERY}.${database}.${lineno}> '
+
+# This is for the sake of Emacs.
+# Local Variables:
+# mode: outline-minor
+# ispell-local-dictionary: "en_US"
+# End:
+
+## .sqshrc ends here
