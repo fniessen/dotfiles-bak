@@ -25,8 +25,8 @@
 # *very* useful for doing quick bcp commands from command line, and using re-direction directly to a file!
 \alias gob='\go -m bcp'
 
-# defaults SELECT statement data returned to be in bcp format.
-\set style="bcp"
+# # defaults SELECT statement data returned to be in bcp format.
+# \set style="bcp"
 
 \alias gof='\go -m html | (cat > /tmp/sqsh-output.html; /usr/bin/firefox file:///tmp/sqsh-output.html)'
 
@@ -70,6 +70,8 @@
 
 # turns off the sqsh banner; cosmetic only
 \set banner=no
+
+\set width=65535
 
 # have semicolons executing commands (sort of inline "go")...
 \set semicolon_hack=on
