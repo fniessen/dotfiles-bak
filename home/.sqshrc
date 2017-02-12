@@ -11,10 +11,10 @@
 # method of using sqsh. However, make sure that you `chmod go-rwx ~/.sqshrc',
 # otherwise you leave yourself wide open to attacks.
 
-# \set username="USER"
-# \set password="PASS"
-# \set hostname="SERVER"
-# \set database=[database]
+\set username="afm"
+\set password="afm"
+\set hostname="192.168.56.1"
+\set database=[ARCHIBUS_23_1_HQ]
 
 #* Aliasing
 
