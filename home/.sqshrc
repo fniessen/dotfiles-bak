@@ -20,7 +20,7 @@
 
 #** Display styles
 
-\alias goh='\go -m horiz | ${PAGER}'
+\alias goh='\go -m horiz | less'
 
 # *very* useful for doing quick bcp commands from command line, and using re-direction directly to a file!
 \alias gob='\go -m bcp'
@@ -30,11 +30,11 @@
 
 \alias gof='\go -m html | (cat > /tmp/sqsh-output.html; /usr/bin/firefox file:///tmp/sqsh-output.html)'
 
-\alias gom='\go -m meta | ${PAGER}'
+\alias gom='\go -m meta | less'
 
-\alias gop='\go -m pretty -w80 | ${PAGER}'
+\alias gop='\go -m pretty -w80 | less'
 
-\alias gov='\go -m vert | ${PAGER}'
+\alias gov='\go -m vert | less'
 
 #** Aliases for T-SQL commands
 
@@ -56,7 +56,7 @@
 \alias clear="\shell clear"
 
 # provides isql functionality to read a file into sqsh session
-\alias :r="\buf-load "
+\alias :r='\buf-load -a !*'
 \alias r="\buf-load "
 
 # drops you into a shell out of sqsh
@@ -82,7 +82,7 @@
 # within shell scripts and the such.
 \set exit_failcount=on
 
-\set prompt='[$histnum] ${DSQUERY}.${database}.${lineno}> '
+\set prompt='[${histnum}] ${username}@${DSQUERY}.${database}.${lineno}> '
 
 # This is for the sake of Emacs.
 # Local Variables:
