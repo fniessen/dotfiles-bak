@@ -16,3 +16,5 @@ SwitchShortcuts=no
 Term=xterm-256color
 Transparency=off
 OpaqueWhenFocused=yes
+Locale=C
+Charset=UTF-8
