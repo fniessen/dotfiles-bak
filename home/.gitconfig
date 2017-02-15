@@ -1,4 +1,3 @@
-
 [user]
     name = John Doe
     email = johndoe@example.com
@@ -24,6 +23,7 @@
 
 [diff]
     renames = copies
+    renameLimit = 12000
     algorithm = patience
 
     mnemonicprefix = true
@@ -113,7 +113,7 @@
     # 2009-05-26  (merged-bed-bug) 6fe85ff regenerate rules Brad Bowman
     logdate = log --format=format:'%ad %d %h %s %an%n' --date=short
     brdate = !"sh -c 'for b in `git branch --no-merged` ; \
-               do git logdate -1 -r $b --; done'" 
+               do git logdate -1 -r $b --; done'"
 
     this = !git init && git add . && git commit -m \"Initial commit\"
     this = !git init && ( [[ -n $(ls) ]] || touch .gitignore ) && git add . && git commit -m \"Initial commit\"
@@ -213,7 +213,7 @@
 # OK
 
     uncommit = reset --soft HEAD~1
-# OK
+# OK (or undolast)
 
     wipe = reset --hard HEAD~1
 # rollback?
