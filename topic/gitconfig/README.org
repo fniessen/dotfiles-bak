@@ -259,6 +259,7 @@ variable/.
 #+begin_src conf
 [diff]
     renames = copies
+    renameLimit = 12000
     algorithm = patience
 #+end_src
 
@@ -682,13 +683,19 @@ Prettier ~whatchanged~ with full diffs based on text search:
     whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=iso -p -S
 #+end_src
 
-List all the ~changed~ files in a commit:
+*List all the ~changed~ files in a commit*:
 
 #+begin_src conf
     changed = show --pretty="format:" --name-only
+    #+end_src
+
+List all the changed files between 2 commits:
+
+    #+begin_src conf
     diffn = diff --name-only
 #+end_src
 
+(See ~git what~ as well!)
 (Use Tig?  Use git blame?)
 
 XXX They don't show the same files (test with ~git changed HEAD~1~ and ~git diffn HEAD~1~) XXX
