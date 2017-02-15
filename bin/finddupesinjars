@@ -1,0 +1,18 @@
+#!/bin/sh
+## finddupesinjars -- Find duplicate classes in a set of Jar files.
+
+# See jarfish:
+# https://code.google.com/archive/p/jarfish/wikis/Intro.wiki
+
+if [ -z "$1" ]
+then
+    echo "Usage: $(basename $0)" > /dev/stderr
+    echo "Find duplicate 'com/' classes in JAR files (in the current directory and subdirectories recursively)." > /dev/stdout
+    # exit 1
+fi
+
+find . -name "*.jar" \
+     -exec sh -c 'jar -tvf {} | grep --color=auto --label={} -H '.class'' \; \
+    | awk '{print $9}' | grep "com/" | sort | uniq -c | grep -v "      1 "
+
+## finddupesinjars ends here
