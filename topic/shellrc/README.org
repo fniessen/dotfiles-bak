@@ -1327,6 +1327,17 @@ if [[ $EUID -ne 0 ]]; then
 fi
 #+end_src
 
+*** Cdpath
+
+Much like the ~PATH~ environment variable defines a search order for the
+executable you want, ~CDPATH~ provides a selection of directories which will be
+checked for the folder you are trying to ~cd~ into.
+
+#+begin_src shell
+# Search current directory, home directory, and Tomcat folder
+export CDPATH=".:~:/cygdrive/d/Dev/Tools/Tomcat"
+#+end_src
+
 *** Manpath
 
 #+begin_src shell

@@ -25,6 +25,9 @@ if [[ $EUID -ne 0 ]]; then
     PATH="$PATH:."
 fi
 
+# Search current directory, home directory, and Tomcat folder
+export CDPATH=".:~:/cygdrive/d/Dev/Tools/Tomcat"
+
 #* MANPATH
 
 # set MANPATH so it includes user's private man if it exists
