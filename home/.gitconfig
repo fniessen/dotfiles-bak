@@ -185,6 +185,7 @@
     whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=iso -p -S
 
     changed = show --pretty="format:" --name-only
+
     diffn = diff --name-only
 
     lf = "log --follow"
