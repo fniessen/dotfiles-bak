@@ -240,6 +240,8 @@
     up = !git pull --ff-only
 # `up' used many times
 
+    when = !stat -c %y .git/FETCH_HEAD
+
     out = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' @{u}..
 
     outgoing = log @{u}.. --stat

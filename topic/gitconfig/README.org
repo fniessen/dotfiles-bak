@@ -1074,6 +1074,12 @@ echo "$REMOTES" | while read REMOTE; do
 done
 #+end_src
 
+*** Get timestamp of last pull
+
+#+begin_src conf
+    when = !stat -c %y .git/FETCH_HEAD
+#+end_src
+
 *** Push
 
 It is useful to know if you have any *local commits* that are not in the remote
