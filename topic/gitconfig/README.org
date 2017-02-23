@@ -1061,12 +1061,12 @@ echo "$REMOTES" | while read REMOTE; do
               NAHEAD=$(( $(git rev-list --count $ARB..$ALB 2> /dev/null) + 0));
               if [ "$NBEHIND" -gt 0 ]; then
                   if [ "$NAHEAD" -gt 0 ]; then
-                      echo "$LB \tis $NBEHIND commit(s) behind and $NAHEAD commit(s) ahead of $REMOTE/$RB.  Could not be fast-forwarded";
+                      echo -e "$LB \tis $NBEHIND commit(s) behind and $NAHEAD commit(s) ahead of $REMOTE/$RB.  Could not be fast-forwarded";
                   elif [ "$LB" = "$CLB" ]; then
-                      echo "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Fast-forwarding merge...";
+                      echo -e "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Fast-forwarding merge...";
                       echo git merge -q $ARB;
                   else
-                      echo "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Resetting local branch to remote...";
+                      echo -e "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Resetting local branch to remote...";
                       echo git branch -l -f $LB -t $ARB > /dev/null;
                   fi
               fi
