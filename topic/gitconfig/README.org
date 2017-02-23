@@ -997,8 +997,8 @@ The upstream diff ~in-what~ will show the negative of unpushed (rebased) commits
 if any, with the ~..~ notation --- not with the ~...~ notation!
 #+end_warning
 
-Before doing work (in a new branch), *ensure that the working directory is
-up-to-date* with the ~origin~ (pull and get latest for all submodules):
+Before doing work (in a new branch), *ensure that the working directory is*
+*up-to-date* with the ~origin~ (pull and get latest for all submodules):
 
 #+begin_src conf
     up = !git pull --rebase --prune $@ && git submodule update --init --recursive
@@ -1031,6 +1031,48 @@ is pretty safe.  It will abort the merge if it can't be done using fast-forward.
 touch the locally changed files, but will fail otherwise.  Which makes a lot of
 sense.
 #+end_note
+
+*** Update all local branches
+
+See http://stackoverflow.com/questions/4318161/can-git-pull-all-update-all-my-local-branches
+(+ interesting comments about *rebase vs merge during a pull*!)
+
+#+begin_src shell :tangle ~/.dotfiles/bin/git-up-all
+#!/bin/bash
+
+REMOTES="$@";
+if [ -z "$REMOTES" ]; then
+    REMOTES=$(git remote);
+fi
+REMOTES=$(echo "$REMOTES" | xargs -n1 echo)
+
+CLB=$(git branch -l | awk '/^\*/{print $2}');
+
+echo "$REMOTES" | while read REMOTE; do
+    git remote update $REMOTE
+    git remote show $REMOTE -n \
+        | awk '/merges with remote/ {print $5" "$1}' \
+        | while read line; do
+              RB=$(echo "$line" | cut -f1 -d" ");
+              ARB="refs/remotes/$REMOTE/$RB";
+              LB=$(echo "$line" | cut -f2 -d" ");
+              ALB="refs/heads/$LB";
+              NBEHIND=$(( $(git rev-list --count $ALB..$ARB 2> /dev/null) + 0));
+              NAHEAD=$(( $(git rev-list --count $ARB..$ALB 2> /dev/null) + 0));
+              if [ "$NBEHIND" -gt 0 ]; then
+                  if [ "$NAHEAD" -gt 0 ]; then
+                      echo "$LB \tis $NBEHIND commit(s) behind and $NAHEAD commit(s) ahead of $REMOTE/$RB.  Could not be fast-forwarded";
+                  elif [ "$LB" = "$CLB" ]; then
+                      echo "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Fast-forwarding merge...";
+                      echo git merge -q $ARB;
+                  else
+                      echo "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Resetting local branch to remote...";
+                      echo git branch -l -f $LB -t $ARB > /dev/null;
+                  fi
+              fi
+    done
+done
+#+end_src
 
 *** Push
 
@@ -1802,44 +1844,3 @@ http://williamdurand.fr/2012/01/17/my-git-branching-model/
 
 I use the *free private repos* from https://bitbucket.org/.
 
-* Update all my local branches
-
-See http://stackoverflow.com/questions/4318161/can-git-pull-all-update-all-my-local-branches
-(+ interesting comments about *rebase vs merge during a pull*!)
-
-#+begin_src shell :tangle ~/.dotfiles/bin/git-up-all
-#!/bin/bash
-
-REMOTES="$@";
-if [ -z "$REMOTES" ]; then
-    REMOTES=$(git remote);
-fi
-REMOTES=$(echo "$REMOTES" | xargs -n1 echo)
-
-CLB=$(git branch -l | awk '/^\*/{print $2}');
-
-echo "$REMOTES" | while read REMOTE; do
-    git remote update $REMOTE
-    git remote show $REMOTE -n \
-        | awk '/merges with remote/ {print $5" "$1}' \
-        | while read line; do
-              RB=$(echo "$line" | cut -f1 -d" ");
-              ARB="refs/remotes/$REMOTE/$RB";
-              LB=$(echo "$line" | cut -f2 -d" ");
-              ALB="refs/heads/$LB";
-              NBEHIND=$(( $(git rev-list --count $ALB..$ARB 2>/dev/null) +0));
-              NAHEAD=$(( $(git rev-list --count $ARB..$ALB 2>/dev/null) +0));
-              if [ "$NBEHIND" -gt 0 ]; then
-                  if [ "$NAHEAD" -gt 0 ]; then
-                      echo "$LB \tis $NBEHIND commit(s) behind and $NAHEAD commit(s) ahead of $REMOTE/$RB.  Could not be fast-forwarded";
-                  elif [ "$LB" = "$CLB" ]; then
-                      echo "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Fast-forwarding merge...";
-                      git merge -q $ARB;
-                  else
-                      echo "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Resetting local branch to remote...";
-                      git branch -l -f $LB -t $ARB >/dev/null;
-                  fi
-              fi
-    done
-done
-#+end_src

@@ -17,17 +17,17 @@ echo "$REMOTES" | while read REMOTE; do
               ARB="refs/remotes/$REMOTE/$RB";
               LB=$(echo "$line" | cut -f2 -d" ");
               ALB="refs/heads/$LB";
-              NBEHIND=$(( $(git rev-list --count $ALB..$ARB 2>/dev/null) +0));
-              NAHEAD=$(( $(git rev-list --count $ARB..$ALB 2>/dev/null) +0));
+              NBEHIND=$(( $(git rev-list --count $ALB..$ARB 2> /dev/null) + 0));
+              NAHEAD=$(( $(git rev-list --count $ARB..$ALB 2> /dev/null) + 0));
               if [ "$NBEHIND" -gt 0 ]; then
                   if [ "$NAHEAD" -gt 0 ]; then
                       echo "$LB \tis $NBEHIND commit(s) behind and $NAHEAD commit(s) ahead of $REMOTE/$RB.  Could not be fast-forwarded";
                   elif [ "$LB" = "$CLB" ]; then
                       echo "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Fast-forwarding merge...";
-                      git merge -q $ARB;
+                      echo git merge -q $ARB;
                   else
                       echo "$LB \twas $NBEHIND commit(s) behind of $REMOTE/$RB.  Resetting local branch to remote...";
-                      git branch -l -f $LB -t $ARB >/dev/null;
+                      echo git branch -l -f $LB -t $ARB > /dev/null;
                   fi
               fi
     done
