@@ -668,7 +668,7 @@ date".
 #+end_note
 
 #+begin_src conf
-    last = log -n 1
+    last = log -1 --stat
 #+end_src
 
 Prettier and concise ~whatchanged~:
