@@ -1,0 +1,26 @@
+#!/bin/bash
+
+git checkout -- .checkstyle .classpath .fbprefs .gitignore .pmd .project .springBeans
+git checkout -- .settings/
+git checkout -- ARCHIBUS-213-Applications-Jetty.launch ARCHIBUS.CheckStyle.xml ARCHIBUS.pmd.ruleset.xml
+git checkout -- META-INF/
+git checkout -- Readme.md
+git checkout -- WEB-INF/
+git checkout -- WEB-INF/.gitignore
+git checkout -- build.xml checkstyle-exclude.xml coreCss.bat findbugs-exclude.xml
+git checkout -- docs/
+git checkout -- index.htm javadoc.xml robots.txt
+git checkout -- lib/
+git checkout -- projects/
+
+# git checkout -- schema/
+git checkout -- schema/ab-core/
+git checkout -- schema/ab-products/
+git checkout -- schema/ab-system/
+git checkout -- schema/aos-products/
+git checkout -- schema/ar-products/
+git checkout -- schema/epo-products/
+git checkout -- schema/per-site/
+git checkout -- schema/.gitignore
+
+git checkout -- update-local-config.sh
