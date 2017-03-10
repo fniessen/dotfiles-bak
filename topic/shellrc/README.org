@@ -1225,6 +1225,13 @@ EOF
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 #+end_src
 
+Launch Windows applications from CLI (with ~start~ script -- see
+https://github.com/babun/babun/issues/299#issuecomment-123925935):
+
+#+begin_src shell
+compdef '_files -g "*"' start
+#+end_src
+
 ** Zsh Modules
 
 #+begin_src shell
@@ -1355,6 +1362,10 @@ checked for the folder you are trying to ~cd~ into.
 # Search current directory, home directory, and Tomcat folder
 export CDPATH=".:~:/cygdrive/d/Dev/Tools/Tomcat"
 #+end_src
+
+#+begin_tip
+To go to the directory ~1-Clients~, for example, simply type ~c~.
+#+end_tip
 
 *** Manpath
 
