@@ -1,0 +1,42 @@
+#!/bin/sed -f
+
+# Mappings between accented chars and ASCII chars.
+s/\o240/ /g
+s/\o300/A/g
+s/\o301/A/g
+s/\o302/A/g
+s/\o304/A/g
+s/\o310/E/g
+s/\o311/E/g
+s/\o312/E/g
+s/\o313/E/g
+s/\o315/I/g
+s/\o316/I/g
+s/\o323/O/g
+s/\o324/O/g
+s/\o325/O/g
+s/\o326/O/g
+s/\o331/U/g
+s/\o332/U/g
+s/\o333/U/g
+s/\o334/U/g
+s/\o340/a/g
+s/\o341/a/g
+s/\o342/a/g
+s/\o344/a/g
+s/\o347/c/g
+s/\o350/e/g
+s/\o351/e/g
+s/\o352/e/g
+s/\o353/e/g
+s/\o355/i/g
+s/\o356/i/g
+s/\o357/i/g
+s/\o363/o/g
+s/\o364/o/g
+s/\o365/o/g
+s/\o366/o/g
+s/\o371/u/g
+s/\o372/u/g
+s/\o373/u/g
+s/\o374/u/g
