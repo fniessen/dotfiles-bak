@@ -112,6 +112,7 @@ alias cyg-get="/cygdrive/c/cygwin64/setup-x86_64.exe -q -P"
   + [X] ~gdb~
   + [X] ~git~
   + [X] ~make~ (for making info for Git Org mode)
+  + [X] ~meld~ (for diffing)
   + [ ] ~mercurial~ (for ~hg~ command, used by Beamer)
   + [X] ~patch~
   + [X] ~patchutils~
@@ -125,6 +126,7 @@ alias cyg-get="/cygdrive/c/cygwin64/setup-x86_64.exe -q -P"
 - Graphics
   + [X] ~ghostscript~ (needed by various utilities -- ~texlive~ for example)
   + [ ] ~gnuplot~
+  + [X] ~graphviz~ (~dot~)
 
 - Interpreters
   + [ ] ~m4~
