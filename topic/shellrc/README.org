@@ -506,15 +506,15 @@ if tput setaf 1 &> /dev/null; then
 #** Controlling the Prompt
 
 # Regular colors.
-green=$(tput setaf 2)
-yellow=$(tput setaf 3)
+green="\[$(tput setaf 2)\]"
+yellow="\[$(tput setaf 3)\]"
 
 # Bold colors.
-BLACK=$(tput setaf 0; tput bold)
-RED=$(tput setaf 1; tput bold)
-GREEN=$(tput setaf 2; tput bold)
+BLACK="\[$(tput setaf 0; tput bold)\]"
+RED="\[$(tput setaf 1; tput bold)\]"
+GREEN="\[$(tput setaf 2; tput bold)\]"
 
-reset_color=$(tput sgr0)
+reset_color="\[$(tput sgr0)\]"
 
 #*** PROMPT_COMMAND + PS1 --- Default interaction prompt
 
@@ -1547,6 +1547,18 @@ ugly default 8 colors):
 #+begin_src shell
 export TERM=xterm-256color
 #+end_src
+
+Initialize the terminal according to the type of terminal in the environmental
+variable ~TERM~.
+
+#+begin_src shell
+tput init
+#+end_src
+
+#+begin_note
+This command should be included in everyone's =.profile= after the environmental
+variable ~TERM~ has been exported.
+#+end_note
 
 #+begin_seealso
 Use the script ~colortest~ (on Linux distros) to output the default colors.
