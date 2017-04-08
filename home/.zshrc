@@ -1,3 +1,4 @@
+
 ## .zshrc --- Z Shell configuration file (for interactive shells)
 
 # Copyright (C) 2009-2017 Fabrice Niessen
@@ -223,6 +224,8 @@ EOF
 
 # Case-insensitive completion.
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+compdef '_files -g "*"' start
 
 # Coloring stderr.
 STDERRRED=$'\e[1;31m'
