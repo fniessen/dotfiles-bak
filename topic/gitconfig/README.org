@@ -270,6 +270,14 @@ as prefixes for patches:
     mnemonicprefix = true
 #+end_src
 
+* Apply                                                                :ARCHIVE:
+
+#+begin_src conf
+[apply]
+    # Detect whitespace errors when applying a patch.
+    whitespace = fix
+#+end_src
+
 * Pull                                                                 :ARCHIVE:
 
 Configure Git to do the ~--rebase~ part automatically.
@@ -300,6 +308,9 @@ with the /same name/.
 [merge]
     stat = true
     summary = true
+
+    # Include summaries of merged commits in newly created merge commit messages.
+    log = true
 #+end_src
 
 * Rebase                                                               :ARCHIVE:
@@ -417,6 +428,41 @@ If you forget your aliases and don't want to open =.gitconfig= just to check, ty
     exec = '!exec '
 #+end_src
 
+#+begin_src conf
+    # Show the diff between the latest commit and the current state
+    d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+    # `git di $number` shows the diff between the state `$number` revisions ago and the current state
+    di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+
+    # Pull in remote changes for the current repository and all its submodules
+    p = !"git pull; git submodule foreach git pull origin master"
+
+    # Commit all changes
+    ca = !git add -A && git commit -av
+
+    # Credit an author on the latest commit
+    credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+
+    # Interactive rebase with the given number of latest commits
+    reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+    # Find branches containing commit
+    fb = "!f() { git branch -a --contains $1; }; f"
+
+    # Find tags containing commit
+    ft = "!f() { git describe --always --contains $1; }; f"
+
+    # Find commits by source code
+    fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+
+    # Find commits by commit message
+    fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+    # Remove branches that have already been merged with master
+    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+#+end_src
+
 So, I can do things like ~git exec make~. This works because shell aliases are
 always executed in the top-level directory.
 
@@ -465,7 +511,8 @@ Basic shortcuts.
 *** Clone an existing repository
 
 #+begin_src conf
-    cl = clone
+    # Clone a repository including all submodules.
+    cl = clone --recursive
 #+end_src
 
 ** Check the status of your files
@@ -616,7 +663,7 @@ Removing multiple files from a Git repo that have already been deleted from
 disk:
 
 #+begin_src conf
-    r = !git ls-files --deleted -z | xargs -0 git rm
+    rma = !git ls-files --deleted -z | xargs -0 git rm
 #+end_src
 
 ** View the commit history
@@ -712,6 +759,10 @@ git changed bAda55..ff0021              # List files modified between those comm
     lf = "log --follow"
     logfile = log --follow -C
 #+end_src
+
+#+begin_warning
+Put a end of options character (--) after lf and before the path!!
+#+end_warning
 
 Show a "top contributors" list:
 
@@ -1152,6 +1203,8 @@ Let's do a slightly different command: ~resync~
 List tags using (better) version sorting (if your ~sort~ supports it):
 
 #+begin_src conf
+    # Show verbose output about tags.
+    tags = tag -l
     tags = !git tag | sort -V
 #+end_src
 
@@ -1174,6 +1227,9 @@ Show the last tag:
 #+end_src
 
 #+begin_src conf
+    # Switch to a branch, creating it if necessary.
+    go = checkout -B
+
     cob = checkout -b
 # grow?
 #+end_src
@@ -1634,7 +1690,7 @@ One thing to keep in mind is that this command works in two different ways:
 - if we are on the branch we want to rename, we can just ~git rename new-name~.
 - If we are not on the branch, we have to use ~git rename target-branch new-name~.
 
-** Find out which branch contains a change
+** List branches that contain a given commit
 
 Filter the list of branches to only those which have the given commit among
 their ancestors.
