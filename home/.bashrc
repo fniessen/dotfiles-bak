@@ -1,3 +1,4 @@
+
 ## bash_profile --- Bourne Again Shell configuration file (for interactive shells)
 
 # Copyright (C) 2003-2017 Fabrice Niessen
@@ -25,15 +26,15 @@ HISTCONTROL=ignoredups
 #** Controlling the Prompt
 
 # Regular colors.
-green=$(tput setaf 2)
-yellow=$(tput setaf 3)
+green="\[$(tput setaf 2)\]"
+yellow="\[$(tput setaf 3)\]"
 
 # Bold colors.
-BLACK=$(tput setaf 0; tput bold)
-RED=$(tput setaf 1; tput bold)
-GREEN=$(tput setaf 2; tput bold)
+BLACK="\[$(tput setaf 0; tput bold)\]"
+RED="\[$(tput setaf 1; tput bold)\]"
+GREEN="\[$(tput setaf 2; tput bold)\]"
 
-reset_color=$(tput sgr0)
+reset_color="\[$(tput sgr0)\]"
 
 #*** PROMPT_COMMAND + PS1 --- Default interaction prompt
 
