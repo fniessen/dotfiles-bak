@@ -95,6 +95,10 @@ do
 done
 #+end_src
 
+*************** TODO Avoid superfluous slash
+=texmf -> /home/osboxes//.dotfiles/home/texmf/=
+*************** END
+
 * Files _local
 
 The ~xxx_local~ files (where ~xxx~ = ~.bashrc~, ~.zshrc~ or ~.gitconfig~, for example)
