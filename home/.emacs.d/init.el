@@ -1,6 +1,6 @@
 ;;; init.el --- Emacs configuration file
 
-;; Copyright (C) 2012-2016 Fabrice Niessen
+;; Copyright (C) 2012-2017 Fabrice Niessen
 
 ;;; Commentary:
 
@@ -121,7 +121,11 @@
 (if (file-exists-p "~/2-Output/emacs-leuven")
     (add-to-list 'load-path (expand-file-name "~/2-Output/emacs-leuven"))
   (add-to-list 'load-path (expand-file-name "~/.dotfiles/topic/emacs-leuven")))
+;; (let ((file-name-handler-alist nil))    ; Easy little known step to speed up
+;;                                         ; Emacs start up time.
+;; FIXME: When activated, breaks windows-path interpretation of 'es' results...
 (require 'emacs-leuven)
+;; )
 
 (let ((init-local "~/.emacs.d/init_local.el"))
   (when (file-exists-p init-local)
