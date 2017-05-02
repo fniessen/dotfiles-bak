@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Is the 'clean' target not good enough?
+find . -iname "build" | xargs rm -rf
