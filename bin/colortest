@@ -15,13 +15,13 @@ e "Cyan   (36): \033[00;36mThis is it.\033[01;36m And bold.\033[00m"
 e "White  (37): \033[00;37mThis is it.\033[01;37m And bold.\033[00m"
 e
 e
-e "Background\033[00;30m(Colour Example)\033[00m(Norm: Black ) is  47  79  79"
-e "Foreground\033[00;37m(Colour Example)\033[00m(Norm: White ) is 245 222 179"
-e "Ref-Prepro\033[00;35m(Colour Example)\033[00m(Norm:Magenta) is 127 205 212"
-e "Type Mod. \033[00;32m(Colour Example)\033[00m(Norm: Green ) is 152 251 152"
-e "Keyword   \033[00;33m(Colour Example)\033[00m(Norm: Yellow) is 176 196 222"
-e "Const/Str \033[00;31m(Colour Example)\033[00m(Norm: Red   ) is 255 160 122"
-e "Comment   \033[00;34m(Colour Example)\033[00m(Norm: Blue  ) is 255 127 80"
+e "Background\033[00;30m(Colour Example)\033[00m(Norm: Black )"
+e "Foreground\033[00;37m(Colour Example)\033[00m(Norm: White )"
+e "Ref-Prepro\033[00;35m(Colour Example)\033[00m(Norm:Magenta)"
+e "Type Mod. \033[00;32m(Colour Example)\033[00m(Norm: Green )"
+e "Keyword   \033[00;33m(Colour Example)\033[00m(Norm: Yellow)"
+e "Const/Str \033[00;31m(Colour Example)\033[00m(Norm: Red   )"
+e "Comment   \033[00;34m(Colour Example)\033[00m(Norm: Blue  )"
 
 e
 
