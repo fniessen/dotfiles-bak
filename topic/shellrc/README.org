@@ -805,15 +805,77 @@ interested in...
 
 I am fan of ~agnoster~.
 
+*** Solarized
+
+https://github.com/altercation/solarized/issues/90
+
 #+begin_src shell
 if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
     ZSH=$HOME/.dotfiles/repos/.oh-my-zsh
     # ZSH_THEME="random"
     ZSH_THEME="agnoster"
     HIST_STAMPS="yyyy-mm-dd"
-    # plugins=(git osx rails ruby github node rbenv npm brew byte)
-    plugins=(git osx xcode zshmarks history-substring-search)
+    plugins=(git svn osx xcode zshmarks history history-substring-search)
     . $ZSH/oh-my-zsh.sh
+
+    source ~/.dotfiles/plugins/solarized/mintty-solarized-dark.sh
+
+    echo -ne '\e]4;8;#404040\a'   # bold black (i.e. dark grey)
+    echo -ne '\e]4;9;#FF4040\a'   # bold red
+    echo -ne '\e]4;10;#40FF40\a'  # bold green
+    echo -ne '\e]4;11;#FFFF40\a'  # bold yellow
+    echo -ne '\e]4;12;#6060FF\a'  # bold blue
+    echo -ne '\e]4;13;#FF40FF\a'  # bold magenta
+    echo -ne '\e]4;14;#40FFFF\a'  # bold cyan
+fi
+#+end_src
+
+http://marc-abramowitz.com/archives/2012/04/10/fix-for-oh-my-zsh-git-svn-prompt-slowness/
+
+*** Agnoster Theme Adaption for SVN
+
+#+begin_src shell
+if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
+
+    prompt_svn() {
+        local rev branch
+        if in_svn; then
+            rev=$(svn_get_rev_nr)
+            branch=$(svn_get_branch_name)
+            if [[ $(svn_dirty_choose_pwd 1 0) -eq 1 ]]; then
+                prompt_segment yellow black
+                echo -n "$rev@$branch"
+                echo -n " ±"
+            else
+                prompt_segment green black
+                echo -n "$rev@$branch"
+            fi
+        fi
+    }
+
+    build_prompt() {
+        RETVAL=$?
+        prompt_status
+        prompt_context
+        prompt_dir
+        prompt_git
+        prompt_svn
+        prompt_end
+    }
+
+    # source ~/.dotfiles/repos/.oh-my-zsh/plugins/svn/svn.plugin.zsh
+fi
+#+end_src
+
+*** Zsh Syntax Highlighting
+
+#+begin_src shell :tangle no
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+#+end_src
+
+#+begin_src shell
+if [ -r "$HOME/.dotfiles/plugins/zsh-syntax-highlighting" ]; then
+    source ~/.dotfiles/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 #+end_src
 
@@ -845,8 +907,8 @@ Karlin Fox ported the Solarized theme to MinTTY (the terminal which comes by
 default with Cygwin), and it is available at [[https://github.com/karlin/mintty-colors-solarized][karlin/mintty-colors-solarized]].
 
 #+begin_src shell :tangle no
-git clone https://github.com/karlin/mintty-colors-solarized.git ~/.solarized
-echo 'source ~/.solarized/mintty-solarized-dark.sh' >> ~/.zshrc # for light, replace dark with light
+git clone https://github.com/karlin/mintty-colors-solarized.git ~/.dotfiles/plugins/solarized
+echo 'source ~/.dotfiles/plugins/solarized/mintty-solarized-dark.sh' >> ~/.zshrc # for light, replace dark with light
 #+end_src
 
 ** Command history
@@ -906,7 +968,7 @@ Useful commands:
      Interactively edit variable ~VAR~.
 
 #+begin_note
-See [[file:~/.oh-my-zsh/lib/key-bindings.zsh]] for extra key bindings.
+See [[file:~/.dotfiles/repos/.oh-my-zsh/lib/key-bindings.zsh]] for extra key bindings.
 #+end_note
 
 #+begin_src shell
@@ -1904,7 +1966,7 @@ svn_grep_all_rev() {
 }
 #+end_src
 
-See [[file:~/src/git-config/SVN.org][SVN aliases]] for more information about these:
+See [[file:~/.dotfiles/topic/gitconfig/SVN.org][SVN aliases]] for more information about these:
 
 #+begin_src shell
 alias svnlog="svn log | perl -l40pe 's/^-+/\n/'"
