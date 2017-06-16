@@ -15,9 +15,53 @@ if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
     # ZSH_THEME="random"
     ZSH_THEME="agnoster"
     HIST_STAMPS="yyyy-mm-dd"
-    # plugins=(git osx rails ruby github node rbenv npm brew byte)
-    plugins=(git osx xcode zshmarks history-substring-search)
+    plugins=(git svn osx xcode zshmarks history history-substring-search)
     . $ZSH/oh-my-zsh.sh
+
+    source ~/.dotfiles/plugins/solarized/mintty-solarized-dark.sh
+
+    echo -ne '\e]4;8;#404040\a'   # bold black (i.e. dark grey)
+    echo -ne '\e]4;9;#FF4040\a'   # bold red
+    echo -ne '\e]4;10;#40FF40\a'  # bold green
+    echo -ne '\e]4;11;#FFFF40\a'  # bold yellow
+    echo -ne '\e]4;12;#6060FF\a'  # bold blue
+    echo -ne '\e]4;13;#FF40FF\a'  # bold magenta
+    echo -ne '\e]4;14;#40FFFF\a'  # bold cyan
+fi
+
+if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
+
+    prompt_svn() {
+        local rev branch
+        if in_svn; then
+            rev=$(svn_get_rev_nr)
+            branch=$(svn_get_branch_name)
+            if [[ $(svn_dirty_choose_pwd 1 0) -eq 1 ]]; then
+                prompt_segment yellow black
+                echo -n "$rev@$branch"
+                echo -n " ±"
+            else
+                prompt_segment green black
+                echo -n "$rev@$branch"
+            fi
+        fi
+    }
+
+    build_prompt() {
+        RETVAL=$?
+        prompt_status
+        prompt_context
+        prompt_dir
+        prompt_git
+        prompt_svn
+        prompt_end
+    }
+
+    # source ~/.dotfiles/repos/.oh-my-zsh/plugins/svn/svn.plugin.zsh
+fi
+
+if [ -r "$HOME/.dotfiles/plugins/zsh-syntax-highlighting" ]; then
+    source ~/.dotfiles/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
 # History.
