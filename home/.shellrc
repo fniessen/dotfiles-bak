@@ -87,8 +87,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 export LANG=C.UTF-8
 
-export TERM=xterm-256color
-
 tput init
 
 # Find a suitable editor.

@@ -127,6 +127,7 @@ alias cyg-get="/cygdrive/c/cygwin64/setup-x86_64.exe -q -P"
   + [X] ~ghostscript~ (needed by various utilities -- ~texlive~ for example)
   + [ ] ~gnuplot~
   + [X] ~graphviz~ (~dot~)
+  + [X] ~poppler~ (for ~pdftotext~)
 
 - Interpreters
   + [ ] ~m4~
@@ -1632,9 +1633,18 @@ export LANG=C.UTF-8
 Set the *terminal type* explicitly to get a nice *256 color* palette (instead of the
 ugly default 8 colors):
 
-#+begin_src shell
+#+begin_src shell :tangle no
 export TERM=xterm-256color
 #+end_src
+
+#+begin_tip
+In fact, we are advised to *NOT* set ~TERM~ variable in dotfiles that are related to
+the shell, as opposed to dotfiles related to the terminal emulator program.
+This is because a shell may be used with multiple terminal emulators, and
+setting ~TERM~ there is obviously a misplacement mistake, an all too common one...
+The proper place to override the ~TERM~ value is in a terminal emulator dotfile,
+something like =~/.minttyrc=.
+#+end_tip
 
 Initialize the terminal according to the type of terminal in the environmental
 variable ~TERM~.
