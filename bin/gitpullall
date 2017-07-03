@@ -2,7 +2,11 @@
 
 printf "Searching for Git directories, please wait (this can take a while)...\n"
 
-for dir in $(find . -name ".git" -type d)
+# See https://stackoverflow.com/questions/17099564/make-a-shell-script-to-update-3-git-repos
+for repo in $(find . -name ".git" -type d)
 do
-    (cd ${dir%/*}; echo "Updating $(pwd)..."; git pull)
+    (cd ${repo%/*};
+     echo "Updating $(pwd)...";
+     git remote update -p;
+     git merge --ff-only @{u})
 done
