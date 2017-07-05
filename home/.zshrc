@@ -202,6 +202,10 @@ alias -- cdwd='cd `pwd`'
 alias -- cwd='echo $cwd'
 # alias h='history 1 | less +G'
 
+alias -g GLWEEK=' --since=1.week.ago'
+alias -g GLMONTH=' --since=1.month.ago'
+alias -g GLYEAR=' --since=1.year.ago'
+
 # When entering a directory, list the contents.
 cd() { builtin cd "$@" && ls; }
 

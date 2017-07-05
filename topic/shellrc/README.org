@@ -1204,6 +1204,16 @@ alias -- cwd='echo $cwd'
 # alias h='history 1 | less +G'
 #+end_src
 
+*** Git
+
+Git last week / month / year:
+
+#+begin_src shell
+alias -g GLWEEK=' --since=1.week.ago'
+alias -g GLMONTH=' --since=1.month.ago'
+alias -g GLYEAR=' --since=1.year.ago'
+#+end_src
+
 *** Directories
 
 #+begin_src shell
