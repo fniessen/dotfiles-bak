@@ -28,6 +28,10 @@ might have. So *BE EXTREMELY CAREFUL*!
 
 See https://blog.liip.ch/archive/2015/12/11/git-tips-tricks.html!!! XXX
 
+** TODO Look at Git Power Routines [course]
+
+https://www.youtube.com/playlist?list=PLDshL1Z581YYxLsjYwM25HkIYrymXb7H_
+
 ** TODO Read about Git
 
 http://marlacorinne.4parkers.com/2012/07/20/git-pull-vs-git-fetch-then-merge/
@@ -270,6 +274,10 @@ as prefixes for patches:
     mnemonicprefix = true
 #+end_src
 
+#+begin_src conf
+    tool = meld
+#+end_src
+
 * Apply                                                                :ARCHIVE:
 
 #+begin_src conf
@@ -311,6 +319,91 @@ with the /same name/.
 
     # Include summaries of merged commits in newly created merge commit messages.
     log = true
+#+end_src
+
+#+begin_src conf
+    conflictstyle = diff3
+#+end_src
+
+** Emacs as a Git mergetool
+
+Ediff or Emerge?  Or Magit???
+
+#+begin_src conf :tangle no
+[merge]
+    tool = ediff
+
+[mergetool "ediff"]
+    cmd = emacsclient -c -a \"\"  --eval \"(ediff-merge-files-with-ancestor \\\"$LOCAL\\\" \\\"$REMOTE\\\" \\\"$BASE\\\" nil \\\"$MERGED\\\")\"
+#+end_src
+
+** Meld as Git mergetool
+
+*How do I set up and use Meld as my git mergetool?*
+See https://stackoverflow.com/questions/34119866/setting-up-and-using-meld-as-your-git-difftool-and-mergetool.
+
+See ~auto-merge~ in
+https://stackoverflow.com/questions/11133290/git-merging-using-meld (first and
+second solution).
+
+#+begin_src conf
+    tool = meld
+#+end_src
+
+Firstly here is what the parameters mean:
+
+- ~$LOCAL~ is the file in the *current branch* (e.g. ~master~).
+
+- ~$REMOTE~ is the file in the *branch being merged* (e.g. ~branch_name~).
+
+- ~$MERGED~ is the *partially merged file* with the merge conflict information in
+  it.
+
+- ~$BASE~ is the *common ancestor* of ~$LOCAL~ and ~$REMOTE~, this is to say the file as
+  it was (before both changes) when the branch containing ~$REMOTE~ was originally
+  created.
+
+I suggest you use either:
+
+#+begin_src conf :tangle no
+[mergetool "meld"]
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+#+end_src
+
+or:
+
+#+begin_src conf :tangle no
+[mergetool "meld"]
+    cmd = meld "$LOCAL" "$BASE" "$REMOTE" --output "$MERGED"
+#+end_src
+
+The choice is whether to use ~$MERGED~ or ~$BASE~ in between ~$LOCAL~ and ~$REMOTE~.
+
+Either way, Meld will display 3 panes with:
+
+- ~$LOCAL~ in the left pane,
+- ~$REMOTE~ in the right pane and
+- either ~$MERGED~ or ~$BASE~ in the middle pane.
+
+In BOTH cases, *the middle pane is the file that you should edit to resolve the
+merge conflicts*.  The difference is just in which starting edit position you'd
+prefer:
+
+- ~$MERGED~ for the file which contains the partially merged file with the merge
+  conflict information or
+
+- ~$BASE~ for the shared commit ancestor of ~$LOCAL~ and ~$REMOTE~.
+
+#+begin_note
+Since both cmd lines can be useful, I keep them both in my =.gitconfig= file. Most
+of the time I use the ~$MERGED~ line and the ~$BASE~ line is commented out, but the
+commenting out can be swapped over if I want to use the ~$BASE~ line instead.
+#+end_note
+
+#+begin_src conf
+[mergetool "meld"]
+    cmd = meld --diff "$LOCAL" "$MERGED" "$REMOTE" --diff "$BASE" "$LOCAL" --diff "$BASE" "$REMOTE" --output "$MERGED"
+    # cmd = meld --diff "$LOCAL" "$BASE" "$REMOTE" --diff "$BASE" "$LOCAL" --diff "$BASE" "$REMOTE" --output "$MERGED"
 #+end_src
 
 * Rebase                                                               :ARCHIVE:
@@ -959,8 +1052,11 @@ any files from the tracked root directory that are not under Git tracking.
 *WARNING -- BE CAREFUL WITH THIS!*  It is helpful to run a dry-run with ~git clean~
 first, to see what it will delete.
 
-Use ~git clean -f~ (to remove the untracked files) and ~-fd~ (to also *remove
-untracked directories*).
+Use:
+- ~git clean -n~ to see what ~git clean -f~ will do, so you can be sure it's what
+  you want.
+- ~git clean -f~ (to *remove* the *untracked files*) and
+- ~git clean -fd~ (to also *remove untracked directories*).
 #+end_note
 
 Nuclear version:
@@ -1072,7 +1168,7 @@ XXX
 #+begin_src conf
     up = !git pull --ff-only
 # `up' used many times
-#+end_src
+    #+end_src
 
 is pretty safe.  It will abort the merge if it can't be done using fast-forward.
 (In other words, if the local branch has diverged from the remote.)
@@ -1082,6 +1178,15 @@ is pretty safe.  It will abort the merge if it can't be done using fast-forward.
 touch the locally changed files, but will fail otherwise.  Which makes a lot of
 sense.
 #+end_note
+
+with *all versions* of Git, I recommend using ~git up~ instead of ~git pull~.
+
+    #+begin_src conf
+    up = !git remote update -p; git merge --ff-only @{u}
+# `up' used many times
+#+end_src
+
+See https://stackoverflow.com/questions/15316601/in-what-cases-could-git-pull-be-harmful
 
 *** Update all local branches
 
@@ -1222,6 +1327,15 @@ Show the last tag:
 
 ** Branch
 
+See http://nuclearsquid.com/writings/git-tricks-tips-workflows/ for more
+interesting stuff, such as:
+
+- When branching off a remote branch, automatically let the local branch track
+  the remote branch:
+
+- When pushing without giving a refspec, push the current branch to its upstream
+  branch. See the git config man page for more possible options.
+
 #+begin_src conf
     co = checkout
 #+end_src
@@ -1286,7 +1400,8 @@ local machine, I use git bdone:
 
 1. Switch to master (though you can specify a different default branch)
 2. Run git up to bring master up to speed with the origin
-3. Delete all branches already merged into master using another alias, git bclean
+3. Delete all branches already merged into master using another alias,
+   ~git bclean~
 
 #+begin_src conf
     bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
@@ -1349,6 +1464,17 @@ git push origin master
 git branch -d branch_name               # Delete local branch.
 #+end_src
 
+Best answer I have seen on ~git merge~ *strategies*:
+https://stackoverflow.com/questions/366860/when-would-you-use-the-different-git-merge-strategies
+
+*** List conflicted files
+
+Unmerged files after a merge failure:
+
+#+begin_src conf
+    conflicts = "!git ls-files -u | cut -f 2 | sort -u"
+#+end_src
+
 ** Prepare a release
 
 Save a repo as a tarball:
@@ -1373,13 +1499,21 @@ will ~reset~ the index.
 
 A *stash* is nothing but a *(temporary) branch*.
 
-~git stash~ makes a temporary copy of the *index* and the *working tree*, and clears
-the decks so you can easily work on something else; it reverts your local
-modifications, allowing you to get rid of some incomplete changes:
+~git stash~ makes a temporary copy of the changes in your *index* (staging area) and
+*working tree*, and clears the decks so you can easily work on something else; it
+reverts your local modifications, allowing you to get rid of some incomplete
+changes:
 
 #+begin_src conf :tangle no
 git stash save "DESCRIBE WHAT YOU DID HERE"
 #+end_src
+
+This command is useful in saving all changes not ready to be committed and the
+user wants to have an updated repository.
+
+#+begin_tip
+Use ~git stash~ if Git refused to merge because it foresees conflicts.
+#+end_tip
 
 Take named stash:
 
@@ -1417,6 +1551,10 @@ You can operate on the "stash" ref as if it were any other ref.
     savescratch = stash save --keep-index
     pop = stash pop
 #+end_src
+
+~git stash pop~ removes the most recent stash or any stash specified and applies
+changes as a merge. If merge fails the stash is not removed from the list and
+must be removed manually.
 
 #+begin_src conf
     hide = stash
@@ -1839,6 +1977,11 @@ Make sure the ~master~ is up-to-date:
 #+begin_src shell
 git pull
 #+end_src
+
+** A GitHub test repository to experiment with conflicts
+
+You can experiment with resolving a Git conflict with this repository:
+https://github.com/brianleetest/testGit/blob/master/README.md
 
 * GitHub tasks
   :PROPERTIES:

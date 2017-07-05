@@ -16,7 +16,7 @@
 
     pager = "less -R"
 
-    whitespace = fix,-indent-with-non-tab,trailing-space,space-before-tab,cr-at-eol
+#    whitespace = fix,-indent-with-non-tab,trailing-space,space-before-tab,cr-at-eol
 
 [gc]
     auto = 1
@@ -28,6 +28,12 @@
 
     mnemonicprefix = true
 
+    tool = meld
+
+[apply]
+    # Detect whitespace errors when applying a patch.
+    whitespace = fix
+
 [pull]
     rebase = preserve
 
@@ -37,6 +43,17 @@
 [merge]
     stat = true
     summary = true
+
+    # Include summaries of merged commits in newly created merge commit messages.
+    log = true
+
+    conflictstyle = diff3
+
+    tool = meld
+
+[mergetool "meld"]
+    cmd = meld --diff "$LOCAL" "$MERGED" "$REMOTE" --diff "$BASE" "$LOCAL" --diff "$BASE" "$REMOTE" --output "$MERGED"
+    # cmd = meld --diff "$LOCAL" "$BASE" "$REMOTE" --diff "$BASE" "$LOCAL" --diff "$BASE" "$REMOTE" --output "$MERGED"
 
 [rebase]
     stat = true
@@ -99,6 +116,39 @@
 
     exec = '!exec '
 
+    # Show the diff between the latest commit and the current state
+    d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+
+    # `git di $number` shows the diff between the state `$number` revisions ago and the current state
+    di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+
+    # Pull in remote changes for the current repository and all its submodules
+    p = !"git pull; git submodule foreach git pull origin master"
+
+    # Commit all changes
+    ca = !git add -A && git commit -av
+
+    # Credit an author on the latest commit
+    credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+
+    # Interactive rebase with the given number of latest commits
+    reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+    # Find branches containing commit
+    fb = "!f() { git branch -a --contains $1; }; f"
+
+    # Find tags containing commit
+    ft = "!f() { git describe --always --contains $1; }; f"
+
+    # Find commits by source code
+    fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+
+    # Find commits by commit message
+    fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+    # Remove branches that have already been merged with master
+    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
     ci = commit
 
     cp = cherry-pick -x
@@ -119,7 +169,8 @@
     this = !git init && ( [[ -n $(ls) ]] || touch .gitignore ) && git add . && git commit -m \"Initial commit\"
 # plant?
 
-    cl = clone
+    # Clone a repository including all submodules.
+    cl = clone --recursive
 
     st = status -s -b
 
@@ -147,7 +198,7 @@
 
     log-local = log --oneline origin..HEAD
 
-    r = !git ls-files --deleted -z | xargs -0 git rm
+    rma = !git ls-files --deleted -z | xargs -0 git rm
 
     lp = log -p
     lg = log --decorate --oneline --graph
@@ -240,6 +291,9 @@
     up = !git pull --ff-only
 # `up' used many times
 
+    up = !git remote update -p; git merge --ff-only @{u}
+# `up' used many times
+
     when = !stat -c %y .git/FETCH_HEAD
 
     out = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' @{u}..
@@ -255,6 +309,8 @@
     # git resync -> sync repository and rebase current branch.
     resync = !sh -c 'BRANCH_NAME=master && git co master && git fe && git reset --hard origin/master && git rebase master'
 
+    # Show verbose output about tags.
+    tags = tag -l
     tags = !git tag | sort -V
 
     releases = log --decorate --oneline --simplify-by-decoration --all
@@ -262,6 +318,9 @@
     lasttag = describe --tags --abbrev=0
 
     co = checkout
+
+    # Switch to a branch, creating it if necessary.
+    go = checkout -B
 
     cob = checkout -b
 # grow?
@@ -286,6 +345,8 @@
 
     ours = "!f() { git checkout --ours $@ && git add $@; }; f"
     theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
+
+    conflicts = "!git ls-files -u | cut -f 2 | sort -u"
 
     export = archive -o latest.tar.gz -9 --prefix=latest/
 
