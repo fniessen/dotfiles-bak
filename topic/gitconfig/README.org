@@ -1712,7 +1712,7 @@ Alternative to ~stash~ (writing a commit with a default message):
 
 ** Search for commits
 
-*** Whose commit message mention your r-Segexp
+*** Whose commit message mention your regexp
 
 If you want to find all commits (*across all branches*, showing names and status
 of changed files) where *log message* matches a specified pattern (regular
@@ -1728,6 +1728,20 @@ For example, to find all commits referencing bug #382:
 
 #+begin_src shell :tangle no
 git find "Bug #382"
+#+end_src
+
+To find commits that match *either* of patterns (implicit *OR* semantic), you can
+use:
+
+#+begin_src shell :tangle no
+git log --grep=<foo> --grep=<bar>
+#+end_src
+
+To find /commit/ that has *both* line matching first and line matching second
+somewhere, use the *AND* semantic:
+
+#+begin_src shell :tangle no
+git log --all-match --grep=<foo> --grep=<bar>
 #+end_src
 
 Show the *last commit* which *message matches a regex*:
@@ -1784,6 +1798,11 @@ interface with your repository's Git database; for example, for searching:
 - files registered in the index, rather than the working tree,
 - for your regexp in some files from another branch (XXX does not work? XXX).
 
+#+begin_note
+It doesn't search files that are not revisioned (untracked, excluded/ignored,
+etc.).
+#+end_note
+
 More readable output, with grouping (like ~ack~):
 
 #+begin_src conf
@@ -1796,11 +1815,10 @@ Broader search (case-insensitive), output without grouping:
     gr = "grep -I -i"
 #+end_src
 
-XXX works only on files really in Git (bypassing ignored files)?
-
 *** Find files that contain some terms, not necessarily on the same line
 
-Search for all matches occurring somewhere in files that match both patterns:
+Match any of these patterns, but print matches only from files that have /all/ of
+them (files must have lines that match each of them):
 
 #+begin_src shell :tangle no
 git grep --all-match -e <regexp> -e <regexp>
