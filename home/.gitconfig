@@ -400,7 +400,6 @@
 
     rename = branch -m
 
-    sha1-branch = '!f() { git branch -a --contains "$@"; }; f'
     where = "branch -a --contains"
 
     praise = blame -w

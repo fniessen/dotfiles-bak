@@ -1828,17 +1828,19 @@ One thing to keep in mind is that this command works in two different ways:
 - if we are on the branch we want to rename, we can just ~git rename new-name~.
 - If we are not on the branch, we have to use ~git rename target-branch new-name~.
 
-** List branches that contain a given commit
+** List branches that contain a given commit ID (SHA1)
 
-Filter the list of branches to only those which have the given commit among
+Filter the list of *branches* to only those which have the given *commit ID* among
 their ancestors.
 
 #+begin_src conf
-    sha1-branch = '!f() { git branch -a --contains "$@"; }; f'
     where = "branch -a --contains"
 #+end_src
 
-This also includes *remote* tracking branches in the list.
+This also includes *remote tracking branches* in the list, that is "local
+branches that have a direct relationship to a remote branch".
+
+List all *tags* that contain a commit ID:
 
 #+begin_src shell :tangle no
 git tag --contains a2c71a6
