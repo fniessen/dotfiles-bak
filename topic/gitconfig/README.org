@@ -418,10 +418,16 @@ pull.
 
 * Grep                                                                 :ARCHIVE:
 
+https://git-scm.com/docs/git-grep
+
 #+begin_src conf
 [grep]
-    fullname = true
-    linenumber = true
+    lineNumber = true
+
+    # # Allow extended regular expressions
+    # extendedRegexp = true
+
+    fullName = true
 #+end_src
 
 * Color                                                                :ARCHIVE:
@@ -811,6 +817,8 @@ date".
     last = log -1 --stat
 #+end_src
 
+*** What changed
+
 Prettier and concise ~whatchanged~:
 
 #+begin_src conf
@@ -822,6 +830,8 @@ Prettier ~whatchanged~ with full diffs based on text search:
 #+begin_src conf
     whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=iso -p -S
 #+end_src
+
+*** List all the changed files in a commit
 
 *List all the ~changed~ files in a commit*:
 
@@ -846,6 +856,8 @@ git changed bAda55                      # List files modified in this commit.
 git changed bAda55..ff0021              # List files modified between those commits.
 #+end_src
 
+*** List all commits that changed a specific file
+
 *List all commits* that changed a *specific file* (it accounts for renames!):
 
 #+begin_src conf
@@ -856,6 +868,8 @@ git changed bAda55..ff0021              # List files modified between those comm
 #+begin_warning
 Put a end of options character (--) after lf and before the path!!
 #+end_warning
+
+*** Show a "top contributors" list
 
 Show a "top contributors" list:
 
@@ -1696,16 +1710,16 @@ Alternative to ~stash~ (writing a commit with a default message):
                grep commit | cut -d\  -f3 |
                xargs git log --merges --no-walk --grep=WIP
 
-** Search commits
+** Search for commits
 
-*** String in Log messages
+*** Whose commit message mention your r-Segexp
 
-If you want to find all commits (across all branches, showing names and status
+If you want to find all commits (*across all branches*, showing names and status
 of changed files) where *log message* matches a specified pattern (regular
 expression), use ~find~.
 
 #+begin_src conf
-    find = "log --all --grep"
+    find = "log --all -i --grep"
 #+end_src
 
 Add ~--name-status~ to show only names and status of *changed files*.
@@ -1732,40 +1746,65 @@ If you want to find all commits where a *string* was *added or removed* in the /
 contents/ (to be more exact: where its *number of occurrences changed*),
 i.e. search the /commit contents/, use ~-S~.
 
-By default, ~-S~ accepts a string, but can be modified to accept a regexp with
-~--pickaxe-regex~.  You can dig up commits that have, for example, removed calls
-to a specific function, or added a certain CSS classname.
+You can dig up commits that have, for example,
+- removed calls to a specific function, or
+- added a certain CSS classname.
+
+#+begin_note
+If the number of times "foo" appears in the file is the same before and after
+a commit, it will not match using ~-S "foo"~.
+#+end_note
 
 #+begin_src shell :tangle no
-git log -S "foo" --since="1 week ago"
+git log --all -S "foo" --since="1 week ago"
 #+end_src
 
-*** String contained in added/removed lines from Commit contents (Diff)
+By default, ~-S~ accepts a string, but can be modified to accept a *regexp* with
+~--pickaxe-regex~.
 
-~-G~ looks for *differences* whose added or removed *line* matches the given *regexp*.
+*** Whose changes include your regexp
 
-I think you'd want this with ~--all~ as well (whether using ~-S~ or ~-G~).
+String contained in added/removed lines from Commit contents (Diff)
 
-*** String in (current?) Code base
+With the ~-G~ option, the commit is shown in the log if your *regexp* search matches
+any *line* that was added, removed, or changed.
+
+#+begin_src shell :tangle no
+git log --all -G "foo" --since="1 week ago"
+#+end_src
+
+** Grep (Print lines matching a pattern)
+
+*** Pattern in working directory (and its subdirectories)
 
 The advantages of ~git grep~ are not only its *speed*, and the fact it only searches
 your project files (i.e. no files in =.git=), but also that is allows you to
 interface with your repository's Git database; for example, for searching:
 
-- for your regexp in some files from another branch (XXX does not work? XXX),
-- files registered in the index, rather than the working tree.
+- files registered in the index, rather than the working tree,
+- for your regexp in some files from another branch (XXX does not work? XXX).
+
+More readable output, with grouping (like ~ack~):
 
 #+begin_src conf
-    gr = "grep --break --heading"
+    g = "grep --break --heading"
 #+end_src
 
-Make the search broader:
+Broader search (case-insensitive), output without grouping:
 
 #+begin_src conf
-    g = "grep -Ii"
+    gr = "grep -I -i"
 #+end_src
 
 XXX works only on files really in Git (bypassing ignored files)?
+
+*** Find files that contain some terms, not necessarily on the same line
+
+Search for all matches occurring somewhere in files that match both patterns:
+
+#+begin_src shell :tangle no
+git grep --all-match -e <regexp> -e <regexp>
+#+end_src
 
 ** Dangling
 

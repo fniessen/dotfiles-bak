@@ -59,8 +59,12 @@
     stat = true
 
 [grep]
-    fullname = true
-    linenumber = true
+    lineNumber = true
+
+    # # Allow extended regular expressions
+    # extendedRegexp = true
+
+    fullName = true
 
 [color]
     ui = auto
@@ -386,11 +390,11 @@
     sp = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git stash pop
     spp = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git push && git stash pop
 
-    find = "log --all --grep"
+    find = "log --all -i --grep"
 
-    gr = "grep --break --heading"
+    g = "grep --break --heading"
 
-    g = "grep -Ii"
+    gr = "grep -I -i"
 
     lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset  %s' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
 
