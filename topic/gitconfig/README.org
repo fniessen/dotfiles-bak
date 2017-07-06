@@ -325,6 +325,10 @@ with the /same name/.
     conflictstyle = diff3
 #+end_src
 
+- For small changes, ~git diff~ and ~vc-diff~ are perfect.
+- For medium changes, ~magit~ is perfect.
+- For large changes, [[https://www.deltawalker.com/][DeltaWalker]] (39.95 USD) is perfect.
+
 ** Emacs as a Git mergetool
 
 Ediff or Emerge?  Or Magit???
