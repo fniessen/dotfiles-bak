@@ -68,7 +68,7 @@ On_Purple='\e[45m'      # Purple
 On_Cyan='\e[46m'        # Cyan
 On_White='\e[47m'       # White
 
-# High Intensty
+# High Intensity
 IBlack='\e[0;90m'       # Black
 IRed='\e[0;91m'         # Red
 IGreen='\e[0;92m'       # Green
@@ -78,7 +78,7 @@ IPurple='\e[0;95m'      # Purple
 ICyan='\e[0;96m'        # Cyan
 IWhite='\e[0;97m'       # White
 
-# Bold High Intensty
+# Bold High Intensity
 BIBlack='\e[1;90m'      # Black
 BIRed='\e[1;91m'        # Red
 BIGreen='\e[1;92m'      # Green
@@ -147,3 +147,32 @@ for ((i=0;i<6;i++)); do
     color $(seq $((i*36+16)) $((i*36+51)))
 done
 color {232..255}
+
+ansi-test()
+{
+    for a in 0 1 4 5 7; do
+        echo "a=$a "
+        for (( f=0; f<=9; f++ )) ; do
+            for (( b=0; b<=9; b++ )) ; do
+                #echo -ne "f=$f b=$b"
+                echo -ne "\\033[${a};3${f};4${b}m"
+                echo -ne "\\\\\\\\033[${a};3${f};4${b}m"
+                echo -ne "\\033[0m "
+            done
+            echo
+        done
+        echo
+    done
+    echo
+}
+
+ansi-test
+
+for b in {0..7} 9; do
+    for f in {0..7} 9; do
+        for attr in "" bold; do
+            echo -e -n "$(tput setab $b; tput setaf $f; [ -n "$attr" ] && tput $attr) $f ON $b $attr. $(tput sgr0)"
+        done
+        echo ""
+    done
+done
