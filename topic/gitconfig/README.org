@@ -549,7 +549,9 @@ If you forget your aliases and don't want to open =.gitconfig= just to check, ty
 
     # Interactive rebase with the given number of latest commits
     reb = "!r() { git rebase -i HEAD~$1; }; r"
+#+end_src
 
+#+begin_src conf
     # Find branches containing commit
     fb = "!f() { git branch -a --contains $1; }; f"
 
@@ -561,7 +563,9 @@ If you forget your aliases and don't want to open =.gitconfig= just to check, ty
 
     # Find commits by commit message
     fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+#+end_src
 
+#+begin_src conf
     # Remove branches that have already been merged with master
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 #+end_src
