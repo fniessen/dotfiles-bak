@@ -811,8 +811,8 @@ I am fan of ~agnoster~.
 https://github.com/altercation/solarized/issues/90
 
 #+begin_src shell
-if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
-    ZSH=$HOME/.dotfiles/repos/.oh-my-zsh
+if [ -r "$HOME/.dotfiles/plugins/.oh-my-zsh" ]; then
+    ZSH=$HOME/.dotfiles/plugins/.oh-my-zsh
     # ZSH_THEME="random"
     ZSH_THEME="agnoster"
     HIST_STAMPS="yyyy-mm-dd"
@@ -836,7 +836,7 @@ http://marc-abramowitz.com/archives/2012/04/10/fix-for-oh-my-zsh-git-svn-prompt-
 *** Agnoster Theme Adaption for SVN
 
 #+begin_src shell
-if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
+if [ -r "$HOME/.dotfiles/plugins/.oh-my-zsh" ]; then
 
     prompt_svn() {
         local rev branch
@@ -864,7 +864,7 @@ if [ -r "$HOME/.dotfiles/repos/.oh-my-zsh" ]; then
         prompt_end
     }
 
-    # source ~/.dotfiles/repos/.oh-my-zsh/plugins/svn/svn.plugin.zsh
+    # source ~/.dotfiles/plugins/.oh-my-zsh/plugins/svn/svn.plugin.zsh
 fi
 #+end_src
 
