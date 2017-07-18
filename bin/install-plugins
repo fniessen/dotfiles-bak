@@ -3,6 +3,7 @@
 DOTFILES="${HOME}/.dotfiles"            # Base it on `pwd'!
 PLUGINS="${DOTFILES}/plugins"
 
+mkdir "${PLUGINS}"
 cd "${PLUGINS}"
 
 for repo in \
