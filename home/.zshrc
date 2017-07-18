@@ -10,8 +10,8 @@
 # Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
 PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
 
-if [ -r "$HOME/.dotfiles/plugins/.oh-my-zsh" ]; then
-    ZSH=$HOME/.dotfiles/plugins/.oh-my-zsh
+if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+    ZSH=$HOME/.dotfiles/plugins/oh-my-zsh
     # ZSH_THEME="random"
     ZSH_THEME="agnoster"
     HIST_STAMPS="yyyy-mm-dd"
@@ -29,7 +29,7 @@ if [ -r "$HOME/.dotfiles/plugins/.oh-my-zsh" ]; then
     echo -ne '\e]4;14;#40FFFF\a'  # bold cyan
 fi
 
-if [ -r "$HOME/.dotfiles/plugins/.oh-my-zsh" ]; then
+if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
 
     prompt_svn() {
         local rev branch
@@ -57,7 +57,7 @@ if [ -r "$HOME/.dotfiles/plugins/.oh-my-zsh" ]; then
         prompt_end
     }
 
-    # source ~/.dotfiles/plugins/.oh-my-zsh/plugins/svn/svn.plugin.zsh
+    # source ~/.dotfiles/plugins/oh-my-zsh/plugins/svn/svn.plugin.zsh
 fi
 
 if [ -r "$HOME/.dotfiles/plugins/zsh-syntax-highlighting" ]; then
