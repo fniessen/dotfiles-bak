@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+DOTFILES="${HOME}/.dotfiles"            # Base it on `pwd'!
+PLUGINS="${DOTFILES}/plugins"
+
+cd "${PLUGINS}"
+
+for repo in \
+    git://github.com/robbyrussell/oh-my-zsh.git \
+    https://github.com/fniessen/git-config.git \
+    ;
+do
+    git clone $repo
+done
