@@ -137,6 +137,9 @@ alias agrep='alias | grep -i'
 
 LS_OPTIONS="$LS_OPTIONS --show-control-chars"
 
+# Make `ls' produce ISO 8601 format.
+export TIME_STYLE=long-iso
+
 # Enable color support of `ls'.
 if [ "$TERM" != "dumb" ]; then
 
