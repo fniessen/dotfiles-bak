@@ -31,7 +31,7 @@ function symlinkifne {
 
 cd "${HOME}"
 
-for config_file in $(ls --almost-all "${DOTHOME}")
+for config_file in $(ls --almost-all "${DOTHOME}");
 do
     symlinkifne $(basename $config_file)
 done
