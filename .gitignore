@@ -4,13 +4,7 @@ home/.emacs.d/auto-save-list
 home/.emacs.d/bookmarks.bmk
 home/.emacs.d/init_local.el
 home/.emacs.d/recentf
-home/.gnupg/random_seed
-home/.ssh/id_github.com_rsa
-home/.ssh/id_github.com_rsa
-home/.ssh/id_github.com_rsa.pub
-home/.ssh/id_repo.or.cz_rsa
-home/.ssh/id_repo.or.cz_rsa.pub
-home/.ssh/known_hosts
 home/texmf/tex/latex/images/signature-F-Niessen.png
-org/theme-readtheorg-local-abs.setup
 local
+org/theme-readtheorg-local-abs.setup
+plugins
