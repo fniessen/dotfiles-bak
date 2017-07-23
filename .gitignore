@@ -4,6 +4,7 @@ home/.emacs.d/auto-save-list
 home/.emacs.d/bookmarks.bmk
 home/.emacs.d/init_local.el
 home/.emacs.d/recentf
+home/.emacs.d/var
 home/texmf/tex/latex/images/signature-F-Niessen.png
 local
 org/theme-readtheorg-local-abs.setup
