@@ -18,7 +18,8 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     plugins=(git svn osx xcode zshmarks history history-substring-search)
     . $ZSH/oh-my-zsh.sh
 
-    source ~/.dotfiles/plugins/solarized/mintty-solarized-dark.sh
+    # source ~/.dotfiles/plugins/solarized/mintty-solarized-dark.sh
+    source ~/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh
 
     echo -ne '\e]4;8;#404040\a'   # bold black (i.e. dark grey)
     echo -ne '\e]4;9;#FF4040\a'   # bold red
