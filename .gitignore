@@ -1,8 +1,11 @@
 backup
 home/.emacs.d/.mc-lists.el
 home/.emacs.d/auto-save-list
+home/.emacs.d/backups
+home/.emacs.d/bbdb
 home/.emacs.d/bookmarks.bmk
 home/.emacs.d/init_local.el
+home/.emacs.d/org-clock-save.el
 home/.emacs.d/recentf
 home/.emacs.d/var
 home/texmf/tex/latex/images/signature-F-Niessen.png
