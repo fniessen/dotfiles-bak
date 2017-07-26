@@ -847,7 +847,7 @@ Prettier ~whatchanged~ with full diffs based on text search:
     changed = show --pretty="format:" --name-only
     #+end_src
 
-List all the changed files between 2 commits:
+List all the changed files *between 2 commits*:
 
     #+begin_src conf
     diffn = diff --name-only
