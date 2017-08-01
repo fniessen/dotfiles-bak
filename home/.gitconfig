@@ -132,7 +132,7 @@
     # Commit all changes
     ca = !git add -A && git commit -av
 
-    # Credit an author on the latest commit
+    # Credit an author on the LATEST commit
     credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
 
     # Interactive rebase with the given number of latest commits
