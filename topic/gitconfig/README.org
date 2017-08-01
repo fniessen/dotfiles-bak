@@ -544,7 +544,7 @@ If you forget your aliases and don't want to open =.gitconfig= just to check, ty
     # Commit all changes
     ca = !git add -A && git commit -av
 
-    # Credit an author on the latest commit
+    # Credit an author on the LATEST commit
     credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
 
     # Interactive rebase with the given number of latest commits
@@ -900,7 +900,7 @@ The ~--~ signals the end of options, that the rest of the parameters are limiter
 > I decide it is ready to install.
 
 That is a good reason. However, for your information there is the variant “git
-commit --amend”, which as the option suggests amends the current commit. Just
+commit --amend”, which as the option suggests amends the *current* commit. Just
 “git add“ the files you changed and run “git commit --amend”. It also lets you
 edit the commit message. After discovering this option, I find I am less fearful
 of making premature commits, since they are easily fixed. (But not after
@@ -937,7 +937,7 @@ you've already entered).
     amend = "!git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend"
 #+end_src
 
-Modify the last commit:
+Modify the *last* commit:
 
 #+begin_src conf
     amend = commit -a -v --amend
@@ -955,12 +955,15 @@ Note that the ~-a~ switch which tells Git to automatically *stage all your chang
 as if you ran ~git add .~ right before the commit.
 
 #+begin_src shell :tangle no
-git commit --amend                      # Correct the previous commit, with the staged changes.
+git commit --amend                      # Correct the PREVIOUS commit, with the staged changes.
 #+end_src
 
 #+begin_warning
 Never do this to a commit that you've already pushed to a remote repository.
 #+end_warning
+
+Solution for amending older commits:
+https://stackoverflow.com/questions/3042437/change-commit-author-at-one-specific-commit
 
 *** Unmodify a modified file / Undelete a deleted file
 
@@ -1647,7 +1650,7 @@ Alternative to ~stash~ (writing a commit with a default message):
    git reset --soft                        # Or this one???
    #+end_src
 
-   Or, if I merely need to modify the previous commit:
+   Or, if I merely need to modify the *previous* commit:
 
    #+begin_src shell :tangle no
    git commit -a --amend
@@ -1657,7 +1660,7 @@ Alternative to ~stash~ (writing a commit with a default message):
    but ignores brand new files.
 
    The ~--amend~ launches your default commit editor and lets you change the
-   commit message of the most recent commit.
+   commit message of the *most recent* commit.
 
 *** From git help stash
 
