@@ -49,6 +49,34 @@ For similar collections, see:
 - Diff
 - Iconv
 
+* Shell aliases
+
+** Find all of the distinct file extensions in a folder hierarchy
+
+Recursive version:
+
+#+begin_src shell
+alias file_ext=$'find . -type f -name "*.*" | awk -F. \'!a[$NF]++{print $NF}\''
+#+end_src
+
+Recursive version:
+
+#+begin_src shell
+find . -type f | sed -e 's/.*\.//' | sed -e 's/.*\///' | sort -u
+#+end_src
+
+If you want totals (how may times the extension was seen):
+
+#+begin_src shell
+find . -type f | sed -e 's/.*\.//' | sed -e 's/.*\///' | sort | uniq -c | sort -rn
+#+end_src
+
+Non-recursive (single folder):
+
+#+begin_src shell
+for f in *.*; do printf "%s\n" "${f##*.}"; done | sort -u
+#+end_src
+
 * Shell functions
   :PROPERTIES:
   :header-args+: :tangle ~/.dotfiles/bin/shellutils :shebang #!/usr/bin/env bash
