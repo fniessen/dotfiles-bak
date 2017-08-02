@@ -68,7 +68,7 @@ If you want to know if the same file has been modified both in your local
 working copy and in svn server repository, run command:
 
 #+begin_src shell
-svn st -u |grep -i "^M \{7\}\*"
+svn st -u | grep -i "^M \{7\}\*"
 #+end_src
 
 If you want to get list of files changed between a particular revision and HEAD,
@@ -156,4 +156,12 @@ Quand problème avec psvn, s'en sortir en faisant :
 svn status (-q)
 svn resolved (FILE)
 svn status (-q)
+#+end_src
+
+* Checkout a specific older version of the source code
+
+Update the revision (say we want to get r4732):
+
+#+begin_src shell
+svn update -r4732
 #+end_src
