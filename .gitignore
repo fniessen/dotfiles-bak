@@ -11,4 +11,7 @@ home/.emacs.d/var
 home/texmf/tex/latex/images/signature-F-Niessen.png
 local
 org/theme-readtheorg-local-abs.setup
-plugins
+
+# Don't ignore plugins dir, but ignore everything inside.
+!/plugins
+/plugins/*
