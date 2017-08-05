@@ -1610,6 +1610,12 @@ See http://www.cyberciti.biz/faq/unix-linux-color-man-pages-configuration/.
 to the location...
 #+end_note
 
+** Display
+
+#+begin_src shell
+export DISPLAY=localhost:0.0
+#+end_src
+
 ** Alert
 
 Add an "alert" alias for long running commands.

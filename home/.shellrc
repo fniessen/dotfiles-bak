@@ -83,6 +83,8 @@ export LESS_TERMCAP_se=$'\E[0m'         # exit_standout_mode.
 export LESS_TERMCAP_ue=$'\E[0m'         # exit_underline_mode.
 # See `terminfo'.
 
+export DISPLAY=localhost:0.0
+
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 export LANG=C.UTF-8
