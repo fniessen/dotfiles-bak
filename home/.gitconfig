@@ -392,9 +392,9 @@
 
     find = "log --all -i --grep"
 
-    g = "grep --break --heading"
+    rg = "grep --break --heading"
 
-    gr = "grep -I -i"
+    gr = "grep -i -I"
 
     lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset  %s' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
 

@@ -1814,16 +1814,16 @@ It doesn't search files that are not revisioned (untracked, excluded/ignored,
 etc.).
 #+end_note
 
-More readable output, with grouping (like ~ack~):
+More readable output, with *grouping* (like Ripgrep, ~rg~):
 
 #+begin_src conf
-    g = "grep --break --heading"
+    rg = "grep --break --heading"
 #+end_src
 
-Broader search (case-insensitive), output without grouping:
+Broader search (*case-insensitive*), output without grouping:
 
 #+begin_src conf
-    gr = "grep -I -i"
+    gr = "grep -i -I"
 #+end_src
 
 *** Find files that contain some terms, not necessarily on the same line
