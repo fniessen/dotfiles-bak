@@ -1615,7 +1615,7 @@ to the location...
 ** Display
 
 #+begin_src shell
-export DISPLAY=localhost:0.0
+export DISPLAY=:0.0
 #+end_src
 
 ** Alert
