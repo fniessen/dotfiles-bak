@@ -21,13 +21,15 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     # source ~/.dotfiles/plugins/solarized/mintty-solarized-dark.sh
     source ~/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh
 
-    echo -ne '\e]4;8;#404040\a'   # bold black (i.e. dark grey)
-    echo -ne '\e]4;9;#FF4040\a'   # bold red
-    echo -ne '\e]4;10;#40FF40\a'  # bold green
-    echo -ne '\e]4;11;#FFFF40\a'  # bold yellow
-    echo -ne '\e]4;12;#6060FF\a'  # bold blue
-    echo -ne '\e]4;13;#FF40FF\a'  # bold magenta
-    echo -ne '\e]4;14;#40FFFF\a'  # bold cyan
+# XXX Test for Mintty
+
+    # echo -ne '\e]4;8;#404040\a'   # bold black (i.e. dark grey)
+    # echo -ne '\e]4;9;#FF4040\a'   # bold red
+    # echo -ne '\e]4;10;#40FF40\a'  # bold green
+    # echo -ne '\e]4;11;#FFFF40\a'  # bold yellow
+    # echo -ne '\e]4;12;#6060FF\a'  # bold blue
+    # echo -ne '\e]4;13;#FF40FF\a'  # bold magenta
+    # echo -ne '\e]4;14;#40FFFF\a'  # bold cyan
 fi
 
 if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
@@ -130,6 +132,7 @@ setopt autolist
 
 BEL=$(tput bel)
 PROMPT+='%(?::$BEL)'
+# Does not work on Bash on Ubuntu on Windows.
 
 function echo_blank() {
     echo

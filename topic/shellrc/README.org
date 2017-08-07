@@ -1065,6 +1065,7 @@ to avoid an unnecessary shellout at each prompt evaluation.
 #+begin_src shell
 BEL=$(tput bel)
 PROMPT+='%(?::$BEL)'
+# Does not work on Bash on Ubuntu on Windows.
 #+end_src
 
 To get a blank line before the prompt, you can write a function to echo a blank
