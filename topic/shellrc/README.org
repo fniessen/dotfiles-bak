@@ -9,6 +9,8 @@
 #+PROPERTY:  header-args :eval no
 #+SETUPFILE: ~/.dotfiles/org/theme-readtheorg.setup
 
+Look at https://github.com/jlevy/the-art-of-command-line!
+
 * Summary
 
 ShellRC is a set of configuration files to take advantage of Bash and Zsh on Mac

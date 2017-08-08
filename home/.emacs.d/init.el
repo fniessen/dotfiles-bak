@@ -43,14 +43,14 @@
            (display-graphic-p))         ; Detect whether Emacs is running in
                                         ; a text-only terminal.
   (cond
-   ((and (font-info "Consolas") leuven--win32-p)
+   ((and (font-info "Consolas") (eq system-type 'windows-nt))
     (set-frame-font "Consolas-8" nil t))
    ;; ((font-info "Courier New")
    ;;  (set-frame-font "Courier New-9" nil t))
-   ((font-info "DejaVu Sans Mono")
-    (set-frame-font "DejaVu Sans Mono-8" nil t))
    ((font-info "Hack")
     (set-frame-font "Hack-8" nil t))
+   ((font-info "DejaVu Sans Mono")
+    (set-frame-font "DejaVu Sans Mono-8" nil t))
    ;; ((font-info "Lucida Sans Typewriter")
    ;;  (set-frame-font "Lucida Sans Typewriter-9" nil t))
    ;; ((font-info "Lucida Console")
