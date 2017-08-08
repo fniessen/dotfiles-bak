@@ -962,8 +962,9 @@ git commit --amend                      # Correct the PREVIOUS commit, with the 
 Never do this to a commit that you've already pushed to a remote repository.
 #+end_warning
 
-Solution for amending older commits:
+Solution for *amending older commits*:
 https://stackoverflow.com/questions/3042437/change-commit-author-at-one-specific-commit
+(see 1st and 2nd answers!)
 
 *** Unmodify a modified file / Undelete a deleted file
 
