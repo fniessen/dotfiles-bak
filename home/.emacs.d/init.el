@@ -10,7 +10,8 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)
+(ignore-errors
+  (package-initialize))
 
 (message "(Info) Loading `%s'..." load-file-name)
 
@@ -22,7 +23,7 @@
 ;; (add-to-list 'load-path "~/Public/Repositories/org-mode/contrib/lisp") ; htmlize
 ;; (add-to-list 'load-path "~/Public/Repositories/org-mode/lisp")
 
-;; directory containing additional Emacs Lisp packages (from the Internet)
+;; Directory containing additional Emacs Lisp packages (from the Internet).
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
 ;; (add-to-list 'load-path "~/.emacs.d/site-lisp/ecb-2.40")
@@ -38,12 +39,14 @@
 ;; - `boxquote' (side and corners)
 ;; - `calfw'
 
-;; set default font for all frames
+;; Set default font for all frames.
 (when (and (string-match "GNU Emacs" (version))
            (display-graphic-p))         ; Detect whether Emacs is running in
                                         ; a text-only terminal.
   (cond
    ((and (font-info "Consolas") (eq system-type 'windows-nt))
+    (set-frame-font "Consolas-10" nil t))
+   ((and (font-info "Consolas") (not (eq system-type 'windows-nt)))
     (set-frame-font "Consolas-8" nil t))
    ;; ((font-info "Courier New")
    ;;  (set-frame-font "Courier New-9" nil t))
@@ -90,7 +93,7 @@
 ;; (setq leuven-load-chapter-22-international nil)
 ;; (setq leuven-load-chapter-23-major-and-minor-modes nil)
 ;; (setq leuven-load-chapter-24-indentation nil)
-;; (setq leuven-load-chapter-25-text nil)       ; XXX loads Org at startup, if 25 commented and 27 uncommented!
+;; (setq leuven-load-chapter-25-text nil)       ; XXX Loads Org at startup, if 25 commented and 27 uncommented!
 ;; (setq leuven-load-chapter-25.10-org-mode nil)
 ;; (setq leuven-load-chapter-25.11-tex-mode nil)
 ;; (setq leuven-load-chapter-26-programs nil)
@@ -120,8 +123,8 @@
 ;;       '(useless-package
 ;;         other-annoying-package))
 
-(if (file-exists-p "~/2-Output/emacs-leuven")
-    (add-to-list 'load-path (expand-file-name "~/2-Output/emacs-leuven"))
+(if (file-exists-p "~/.dotfiles/plugins/emacs-leuven")
+    (add-to-list 'load-path (expand-file-name "~/.dotfiles/plugins/emacs-leuven"))
   (add-to-list 'load-path (expand-file-name "~/.dotfiles/plugins/emacs-leuven")))
 ;; (let ((file-name-handler-alist nil))    ; Easy little known step to speed up
 ;;                                         ; Emacs start up time.
