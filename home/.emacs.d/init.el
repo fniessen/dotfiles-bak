@@ -44,9 +44,9 @@
            (display-graphic-p))         ; Detect whether Emacs is running in
                                         ; a text-only terminal.
   (cond
-   ((and (font-info "Consolas") (eq system-type 'windows-nt))
-    (set-frame-font "Consolas-10" nil t))
-   ((and (font-info "Consolas") (not (eq system-type 'windows-nt)))
+   ((and (font-info "Consolas")
+         (or (eq system-type 'windows-nt)
+             (eq system-type 'cygwin)))
     (set-frame-font "Consolas-8" nil t))
    ;; ((font-info "Courier New")
    ;;  (set-frame-font "Courier New-9" nil t))
