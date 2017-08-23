@@ -23,4 +23,12 @@ git checkout -- schema/epo-products/
 git checkout -- schema/per-site/
 git checkout -- schema/.gitignore
 
+git checkout -- .idea/
+git checkout -- ARCHIBUS.CheckStyle.xml
+git checkout -- ARCHIBUS.pmd.ruleset.xml
+git checkout -- archibus.iml
+git checkout -- build.xml
+git checkout -- checkstyle-exclude.xml
+git checkout -- findbugs-exclude.xml
+
 git checkout -- update-local-config.sh
