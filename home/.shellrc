@@ -295,6 +295,9 @@ export GREP_COLOR="0;30;43"
 # Grep through the running processes.
 alias pgrep='pgrep -fl'
 
+alias rg="rg --colors 'match:bg:yellow' --colors 'match:fg:black' --colors 'match:style:bold'"
+alias srg="rg --colors 'match:bg:yellow' --colors 'match:fg:black' --colors 'match:style:bold' --sort-files"
+
 # GraphicsMagick.
 alias GIF="gm convert -verbose -interlace LINE"
 alias thumb="gm convert -geometry 100x100 -interlace LINE -verbose"
