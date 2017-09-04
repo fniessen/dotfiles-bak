@@ -1,20 +1,33 @@
-BackgroundColour=0,24,40
-BellFlash=yes
-BellSound=yes
-BoldAsColour=yes
-BoldAsFont=no
-Columns=132
-CursorColour=255,255,128
-CursorType=underscore
-Font=Powerline Consolas
-FontHeight=8
+# See `man mintty'.
+
+# Looks
 ForegroundColour=108,131,134
-RightClickAction=paste
-Rows=50
-ScrollbackLines=100000
-SwitchShortcuts=no
-Term=xterm-256color
+BackgroundColour=0,24,40
+CursorColour=255,255,128
 Transparency=off
 OpaqueWhenFocused=yes
+CursorType=underscore
+
+# Text
+Font=Powerline Consolas
+FontHeight=8
+BoldAsFont=no
+BoldAsColour=yes
 Locale=C
 Charset=UTF-8
+
+# Keys
+SwitchShortcuts=no
+
+# Mouse
+RightClickAction=paste
+
+# Window
+Columns=132
+Rows=50
+ScrollbackLines=100000
+
+# Terminal
+Term=xterm-256color
+BellSound=yes
+BellFlash=yes
