@@ -1,0 +1,20 @@
+#!/bin/sh
+## jar-uptodate -- Find JAR/Java files and sort them by date modified.
+
+find ./WEB-INF/lib -name "archibus*.jar" -printf "%T@ %CY-%Cm-%CdT%CH:%CM:%CS %p\n" | sort -n | cut -d " " -f 2-
+
+echo "  "
+
+find . -name "*.java" -printf "%T@ %CY-%Cm-%CdT%CH:%CM:%CS %p\n" | grep "src/main/" | grep -v "schema/ab-products/solutions/common" | sort -n | cut -d " " -f 2-
+# %Tk: File's last modification time in the format specified by k.
+# @: seconds since Jan. 1, 1970, 00:00 GMT, with fractional part.
+# %CY-%Cm-%CdT%CH:%CM:%CS: ISO 8601 date and time.
+# %p: File's name.
+
+echo " "
+
+# Print all Java files newer than reference.
+reference="./schema/epo-products/epo-contract/common/src/main/com/microsoft/schemas/sharepoint/soap/UpdateListResponse.java"
+find . -type f -name "*.java" -newer "$reference" -printf "%T@ %CY-%Cm-%CdT%CH:%CM:%CS %p\n" | sort -n | cut -d " " -f 2-
+
+## jar-uptodate ends here
