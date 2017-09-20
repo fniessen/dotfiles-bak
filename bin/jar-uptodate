@@ -1,11 +1,11 @@
 #!/bin/sh
 ## jar-uptodate -- Find JAR/Java files and sort them by date modified.
 
-echo "Sorted list of archibus-*.jar files (by last modification date) in working directory './dist':"
+echo "Sorted list of 'ar(chibus)-*.jar' files (by last modification date) in working directory './dist':"
 find ./dist \( -name "archibus-*.jar" -o -name "ar-*.jar" \) -printf "%T@ %CY-%Cm-%CdT%CH:%CM:%CS %p\n" | sort -n | cut -d " " -f 2- | sed "s/$(date +%F)T/   TODAY   /g"
 
 echo ""
-echo "Sorted list of archibus-*.jar files (by last modification date) in Git directory './WEB-INF/lib':"
+echo "Sorted list of 'ar(chibus)-*.jar' files (by last modification date) in Git directory './WEB-INF/lib':"
 find ./WEB-INF/lib \( -name "archibus-*.jar" -o -name "ar-*.jar" \) -printf "%T@ %CY-%Cm-%CdT%CH:%CM:%CS %p\n" | sort -n | cut -d " " -f 2- | sed "s/$(date +%F)T/   TODAY   /g"
 # %Tk: File's last modification time in the format specified by k.
 # @: seconds since Jan. 1, 1970, 00:00 GMT, with fractional part.
