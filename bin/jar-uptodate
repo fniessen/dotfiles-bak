@@ -23,9 +23,12 @@ find . -type f -name "*.java" -newer "$REFERENCE_FILE" -printf "%T@ %CY-%Cm-%CdT
 
 echo ""
 echo ""
-echo "To build the JARs for the project, don't forget to first CLEAN the project (JARs from ./dist):"
+echo "To build the JARs for the project -- in case of (strange) compilation errors in untouched files --"
+echo "don't forget to first CLEAN the project (JARs from ./dist):"
 echo ""
 echo "  ant clean; ant deploy-jetty"
 echo "  ^^^^^^^^^^"
+echo ""
+echo "Though, NOT cleaning will only generate the necessary JAR files -- and not all of them!"
 
 ## jar-uptodate ends here
