@@ -102,4 +102,11 @@ do
     git diff "$TAG_BASE" "$TAG_OTHER" -- $FILE;
 done
 
+echo
+echo "Merged item(s):"
+for FILE in $INCLUDE_FILES;
+do
+    grep $FILE XXX-merge-results.txt;
+done
+
 # diff-ab-core-js ends here
