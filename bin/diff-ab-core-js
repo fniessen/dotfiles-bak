@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# diff-ab-core-js --- View the changes between old-standard and old-custom in ab-core.js source files.
+
+# Commentary:
+# git diff <TAG_BASE> <TAG_OTHER> <FILE>
+
+# Code:
 TAG_BASE=6ed039e
 # TAG_BASE=old-standard                   # Tag name.
 TAG_OTHER=custom
@@ -95,3 +101,5 @@ for FILE in $INCLUDE_FILES;
 do
     git diff "$TAG_BASE" "$TAG_OTHER" -- $FILE;
 done
+
+# diff-ab-core-js ends here
