@@ -1,0 +1,32 @@
+
+# find /space/music -name "*.jpg" -exec chmod -x {} +
+
+echo "Remove exe perm"
+find . -name "*.DTD"       -exec chmod -x {} +
+find . -name "*.R"         -exec chmod -x {} +
+find . -name "*.Txt"       -exec chmod -x {} +
+find . -name "*.VWAPFLOW"  -exec chmod -x {} +
+find . -name "*.VWPPFLOW"  -exec chmod -x {} +
+find . -name "*.asa"       -exec chmod -x {} +
+find . -name "*.asp"       -exec chmod -x {} +
+find . -name "*.css"       -exec chmod -x {} +
+find . -name "*.csv"       -exec chmod -x {} +
+find . -name "*.dtd"       -exec chmod -x {} +
+find . -name "*.gif"       -exec chmod -x {} +
+find . -name "*.gitignore" -exec chmod -x {} +
+find . -name "*.htm"       -exec chmod -x {} +
+find . -name "*.html"      -exec chmod -x {} +
+find . -name "*.idx"       -exec chmod -x {} +
+find . -name "*.m"         -exec chmod -x {} +
+find . -name "*.md5"       -exec chmod -x {} +
+find . -name "*.org"       -exec chmod -x {} +
+find . -name "*.pack"      -exec chmod -x {} +
+find . -name "*.pdf"       -exec chmod -x {} +
+find . -name "*.pid"       -exec chmod -x {} +
+find . -name "*.png"       -exec chmod -x {} +
+find . -name "*.sample"    -exec chmod -x {} +
+find . -name "*.sql"       -exec chmod -x {} +
+find . -name "*.tex"       -exec chmod -x {} +
+find . -name "*.txt"       -exec chmod -x {} +
+find . -name "*.xls"       -exec chmod -x {} +
+find . -name "*.xml"       -exec chmod -x {} +
