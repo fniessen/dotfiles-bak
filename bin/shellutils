@@ -23,3 +23,8 @@ files_cygwin_executables_p () {
 pname () {
     ps -o command= -p $PPID | tail -n 1 | awk '{print $1}' | awk -F/ '{print $NF}'
 }
+
+fr () {
+    find ./ -iname "*"$@"*" -printf "%T@ %Td-%Tb-%TY %Tk:%TM %p\n" | sort -n |
+    cut -d " " -f 2- | grep -i "$@";
+}
