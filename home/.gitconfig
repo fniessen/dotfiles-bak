@@ -1,3 +1,4 @@
+
 [user]
     name = John Doe
     email = johndoe@example.com
@@ -343,9 +344,22 @@
 
     sincemaster = diff master...
 
+    # Will only try to "merge" if your current HEAD commit is in the branch
+    # you're merging in.  This will allow you to merge some commits whilst being
+    # sure you won't get conflicts.
     ff = merge --ff-only
     ff = merge --ff-only @{u}
+
+    # Avoid a fast-forward commit.
     mm = merge --no-ff
+
+    mergetest = "!f() { git merge --no-commit --no-ff $1; git merge --abort; echo 'Merge aborted'; }; f"
+
+    # Check how the merge of `dev' into master will go: git mergedryrun dev.
+    mergedryrun = "!f() { grep -q 'changed in both' <<< $(git merge-tree $(git merge-base FETCH_HEAD $1) FETCH_HEAD $1) && echo 'Merge conflict detected' || echo 'Merged cleanly'; }; f"
+
+    # Extract the "changed in both" lines as well as the conflicting parts.
+    mergedryrunconflicts = "!f() { git merge-tree $(git merge-base $1 $2) $1 $2 | sed -n '/+<<<<<<< .our/,/+>>>>>>> .their/p;/^changed in both/{n;N;N;s/^/#/mg;p}' | cdiff; }; f"
 
     ours = "!f() { git checkout --ours $@ && git add $@; }; f"
     theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
