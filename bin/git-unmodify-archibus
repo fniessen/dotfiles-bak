@@ -4,7 +4,7 @@ git checkout -- .checkstyle .classpath .fbprefs .gitignore .pmd .project .spring
 git checkout -- .settings/
 git checkout -- ARCHIBUS-213-Applications-Jetty.launch ARCHIBUS.CheckStyle.xml ARCHIBUS.pmd.ruleset.xml
 git checkout -- META-INF/
-git checkout -- Readme.md
+git checkout -- Readme.md CHANGELOG.md
 git checkout -- WEB-INF/
 git checkout -- WEB-INF/.gitignore
 git checkout -- build.xml checkstyle-exclude.xml coreCss.bat findbugs-exclude.xml
@@ -18,6 +18,7 @@ git checkout -- schema/ab-core/
 git checkout -- schema/ab-products/
 git checkout -- schema/ab-system/
 git checkout -- schema/aos-products/
+git checkout -- schema/asc-products/
 git checkout -- schema/ar-products/
 git checkout -- schema/epo-products/
 git checkout -- schema/per-site/
