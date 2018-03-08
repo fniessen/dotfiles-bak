@@ -12,6 +12,6 @@ then
 fi
 
 find . -name "*.jar" \
-     -exec sh -c 'jar -tvf {} | grep --color=auto --label={} -H '$1'' \;
+     -exec sh -c 'jar -tvf {} | grep -i --color=auto --label={} -H '$1'' \;
 
 ## findinjars ends here
