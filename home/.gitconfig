@@ -154,6 +154,8 @@
     # Remove branches that have already been merged with master
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
+    debug  = "!set -x; GIT_TRACE=2 GIT_CURL_VERBOSE=2 GIT_TRACE_PERFORMANCE=2 GIT_TRACE_PACK_ACCESS=2 GIT_TRACE_PACKET=2 GIT_TRACE_PACKFILE=2 GIT_TRACE_SETUP=2 GIT_TRACE_SHALLOW=2 git"
+
     ci = commit
 
     cp = cherry-pick -x
@@ -298,6 +300,15 @@
 
     up = !git remote update -p; git merge --ff-only @{u}
 # `up' used many times
+
+    # Git config alias escaping...  This DOES NOT work.
+    # prunelocal = !sh -c 'git fetch -p && git branch -vv | grep \": gone]\" | awk \"{print $1}\" | xargs git branch -d'
+
+    # Here is a correct solution (using bash as a command-line).
+    prunelocal = "!f() { git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d ; }; f"
+
+    # Here is a correct solution (which does not need access to the remote Git repo).
+    prunelocal = "!f() { git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d ; }; f"
 
     when = !stat -c %y .git/FETCH_HEAD
 
