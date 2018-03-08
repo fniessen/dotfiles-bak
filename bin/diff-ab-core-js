@@ -103,7 +103,7 @@ do
 done
 
 echo
-echo "Merged item(s):"
+echo "Merged item(s) from \`$TAG_OTHER' into \`HEAD' (new-standard):"
 for FILE in $INCLUDE_FILES;
 do
     grep $FILE XXX-merge-results.txt;
