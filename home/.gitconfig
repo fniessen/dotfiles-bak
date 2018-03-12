@@ -137,7 +137,7 @@
     credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
 
     # Interactive rebase with the given number of latest commits
-    reb = "!r() { git rebase -i HEAD~$1; }; r"
+    ireb = "!r() { git rebase -i HEAD~$1; }; r"
 
     # Find branches containing commit
     fb = "!f() { git branch -a --contains $1; }; f"
@@ -264,7 +264,6 @@
 # Append additional changes to the previous commit.
     fixup = commit --amend --reuse-message HEAD
 
-    # undo = checkout --
     unmodify = checkout --
     undelete = checkout --
 
@@ -289,17 +288,19 @@
 
     in-what = diff --stat ...@{u}
 
-    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
-# `up' used many times
+    update = !git pull --rebase --prune $@ && git submodule update --init --recursive
     update = !git pull && git submodule update --init --recursive
 
+    up = pull --rebase --autostash
+# `up' used many times
+
+    up = "!f() { git remote update -p; git merge --ff-only @{u} ; }; f"
+# `up' used many times
+
+    # Rebasing non-linear changes (when the fast-forward merge is not possible).
+    upr = "!f() { git remote update -p; git rebase -p @{u} ; }; f"
+
     pull-all = !"old=$(git rev-parse --abbrev-ref HEAD) ; for b in $(git for-each-ref refs/heads --format='%(refname)') ; do git checkout ${b#refs/heads/} ; git pull --ff-only ; done; git checkout ${old}"
-
-    up = !git pull --ff-only
-# `up' used many times
-
-    up = !git remote update -p; git merge --ff-only @{u}
-# `up' used many times
 
     # Git config alias escaping...  This DOES NOT work.
     # prunelocal = !sh -c 'git fetch -p && git branch -vv | grep \": gone]\" | awk \"{print $1}\" | xargs git branch -d'
@@ -404,8 +405,8 @@
     stashdiff = stash show -p -w stash@{0}
     stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
 
-    plop = "!git stash && git pull && git stash pop"
-    up = !git stash && git pull origin master && git stash apply
+    # plop = "!git stash && git pull && git stash pop"
+    # up = !git stash && git pull origin master && git stash apply
 # `up' used many times
 
 # cleanpull
