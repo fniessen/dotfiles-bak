@@ -1,7 +1,8 @@
+
 # Hey Emacs, this is a -*- sh -*- file
 ## .shellrc --- Common features between Bash and Z Shell
 
-# Copyright (C) 2009-2017 Fabrice Niessen
+# Copyright (C) 2009-2018 Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: bash, zsh, dotfile, config
@@ -89,7 +90,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 export LANG=C.UTF-8
 
-tput init
+# tput init                             # This resets the Solarized color theme!!!
 
 # Find a suitable editor.
 for editor in emacsclientw emacsclient emacs; do
@@ -225,7 +226,11 @@ alias j='jobs -l'
 alias l='ls'
 
 alias g='git'
+
 # alias gitroot="cd $(git rev-parse --show-toplevel)" # Conflict with Oh-My-ZShell?
+
+# Good alias that will not blow up cd if you aren't in a Git directory.
+alias cdroot='git rev-parse && cd "$(git rev-parse --show-toplevel)"'
 
 alias tigs='tig status'                 # Use it all of the time!
 alias tigb='tig blame'
