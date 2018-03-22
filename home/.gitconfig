@@ -55,6 +55,7 @@
 [mergetool "meld"]
     cmd = meld --diff "$LOCAL" "$MERGED" "$REMOTE" --diff "$BASE" "$LOCAL" --diff "$BASE" "$REMOTE" --output "$MERGED"
     # cmd = meld --diff "$LOCAL" "$BASE" "$REMOTE" --diff "$BASE" "$LOCAL" --diff "$BASE" "$REMOTE" --output "$MERGED"
+    keepBackup = false
 
 [rebase]
     stat = true
@@ -174,10 +175,14 @@
 
     this = !git init && git add . && git commit -m \"Initial commit\"
     this = !git init && ( [[ -n $(ls) ]] || touch .gitignore ) && git add . && git commit -m \"Initial commit\"
-# plant?
 
     # Clone a repository including all submodules.
     cl = clone --recursive
+
+    root = rev-parse --show-toplevel
+
+    # Get the path cleaned up.
+    root = !pwd -P
 
     st = status -s -b
 
@@ -282,14 +287,14 @@
     remotes = remote -v
 
     in = !(echo "Please fetch origin before." && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
-    inf = !(git remote update -p && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
+    inf = !(git remote update -p              && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
 
     incoming = log ..@{u} --stat
 
     in-what = diff --stat ...@{u}
 
     update = !git pull --rebase --prune $@ && git submodule update --init --recursive
-    update = !git pull && git submodule update --init --recursive
+    update = !git pull                     && git submodule update --init --recursive
 
     up = pull --rebase --autostash
 # `up' used many times
