@@ -186,9 +186,14 @@
 
     st = status -s -b
 
-    ignore = "!f() { echo $1 >> \"${GIT_PREFIX}.gitignore\"; }; f"
+    check-file = "!f() { tracked=$(git ls-files ${1}); if [[ -z ${tracked} ]]; then echo 'File NOT tracked'; else echo 'File tracked'; fi;  };  f"
+
+    # List all untracked files.
+    ls-untracked = ls-files --others
 
     ignored = ls-files --others --ignored --exclude-standard
+
+    ignore = "!f() { echo $1 >> \"${GIT_PREFIX}.gitignore\"; }; f"
 
     assume = update-index --assume-unchanged
     unassume = update-index --no-assume-unchanged
@@ -234,10 +239,6 @@
     ls-copied    = "!git status --porcelain -uno | awk 'match($1, /C/) {print $2}'"
     ls-updated   = "!git status --porcelain -uno | awk 'match($1, /U/) {print $2}'"
     ls-staged    = "!git status --porcelain -uno | grep -P '^[MA]' | awk '{ print $2 }'"
-    ls-untracked = "!git status --porcelain -uall | awk '$1 == \"??\" {print $2}'"
-
-    # List all untracked files.
-    untracked = ls-files --others
 
     heads = !"git log --format='%C(yellow)%h%Creset;%C(cyan)%H%Creset;%s %Cgreen<%an>%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
 
