@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# Almost what the Gradle 'clean' task does.  To be checked...
+
+find . -wholename '*/build/classes' -type d -print0 | xargs -0 rm -rf
+find . -wholename '*/build/libs' -type d -print0 | xargs -0 rm -rf
+find . -wholename '*/build/tmp' -type d -print0 | xargs -0 rm -rf
