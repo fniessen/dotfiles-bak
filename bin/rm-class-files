@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
-find . -type f -name '*.class' -exec rm "{}" +
+find . -name '*.class' -type f -print0 | xargs -0 rm
+# Quicker than:
+# find . -name '*.class' -type f -exec rm "{}" +
