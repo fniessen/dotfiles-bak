@@ -84,6 +84,11 @@ export LESS_TERMCAP_se=$'\E[0m'         # exit_standout_mode.
 export LESS_TERMCAP_ue=$'\E[0m'         # exit_underline_mode.
 # See `terminfo'.
 
+# Start x11 server.
+startxwin >/dev/null 2>&1 &
+# To check that have the package xinit installed, try 'startxwin' without redirecting anything.
+
+# Set DISPLAY environment variable.
 export DISPLAY=:0.0
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -252,9 +257,17 @@ svn_grep_all_rev() {
     )
 }
 
-alias svnlog="svn log | perl -l40pe 's/^-+/\n/'"
-alias svnshow="svn diff -c"
-alias svnwhatchanged="svn log -v"
+alias svn-log="svn log | perl -l40pe 's/^-+/\n/' | less"
+
+alias svn-show="svn diff -c"
+
+# svn-showtool 123 path/to/file
+function svn-showtool {
+    svn diff --diff-cmd='meld' -c $1 $2
+}
+
+# svn-whatchanged path/to/file
+alias svn-whatchanged="svn log -v"
 
 alias hgrep="history | grep -i"
 
