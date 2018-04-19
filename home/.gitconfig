@@ -31,6 +31,18 @@
 
     tool = meld
 
+[difftool]
+    prompt = false
+
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
+
+[alias]
+    showtool = "!f () { rev=$(git rev-parse \"${*:-HEAD}\"); git difftool $rev~1 $rev; }; f"
+
+[alias]
+    diffall = "!git difftool -t meld --dir-diff"
+
 [apply]
     # Detect whitespace errors when applying a patch.
     whitespace = fix
@@ -186,7 +198,10 @@
 
     st = status -s -b
 
-    tracked = "!f() { if [ ! -f ${1} ]; then echo 'No such file!'; else tracked=$(git ls-files ${1}); if [[ -z ${tracked} ]]; then echo 'File NOT tracked'; else echo 'File tracked'; fi; fi; }; f"
+    tracked1 = "!f() { tracked=$(git ls-files ${1}); if [[ -z ${tracked} ]]; then echo 'File NOT tracked (or No such file)'; else echo 'File tracked'; fi; }; f"
+
+    tracked2 = "!f() { echo -n ${1}': '; if [[ -f ${1} ]]; then tracked=$(git ls-files ${1}); if [[ -z ${tracked} ]]; then echo 'File NOT tracked'; else echo 'File tracked'; fi; else echo 'No such file!'; fi; }; f"
+# does not work!?
 
     # List all untracked files.
     ls-untracked = ls-files --others
