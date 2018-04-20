@@ -84,8 +84,8 @@ export LESS_TERMCAP_se=$'\E[0m'         # exit_standout_mode.
 export LESS_TERMCAP_ue=$'\E[0m'         # exit_underline_mode.
 # See `terminfo'.
 
-# Start x11 server.
-startxwin >/dev/null 2>&1 &
+# Start x11 server (if a process instance is not already running).
+ps eax | grep XWin || startxwin >/dev/null 2>&1 &
 # To check that have the package xinit installed, try 'startxwin' without redirecting anything.
 
 # Set DISPLAY environment variable.
