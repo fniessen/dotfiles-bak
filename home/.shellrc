@@ -269,6 +269,16 @@ function svn-showtool {
 # svn-whatchanged path/to/file
 alias svn-whatchanged="svn log -v"
 
+# svn-logfile path/to/file
+function svn-logfile {
+    svn log -q $1 | grep "^r"
+}
+
+# svn-logfile-p path/to/file
+function svn-logfile-p {
+    svn log --diff $1 | less
+}
+
 alias hgrep="history | grep -i"
 
 update_org () {
