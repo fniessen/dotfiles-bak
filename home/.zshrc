@@ -1,6 +1,6 @@
 ## .zshrc --- Z Shell configuration file (for interactive shells)
 
-# Copyright (C) 2009-2017 Fabrice Niessen
+# Copyright (C) 2009-2018 Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: zsh, dotfile, config
@@ -21,16 +21,45 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     # source ~/.dotfiles/plugins/solarized/mintty-solarized-dark.sh
     source ~/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh
 
-# XXX Test for Mintty
+# XXX Test for MinTTY
+    if [ -d /cygdrive/c/ ]; then
+        echo -ne '\e]4;8;#404040\a'   # bold blk
+        echo -ne '\e]4;9;#FF4040\a'   # bold red
+        echo -ne '\e]4;10;#40FF40\a'  # bold grn
+        echo -ne '\e]4;11;#FFFF40\a'  # bold yel
+        echo -ne '\e]4;12;#6060FF\a'  # bold blu
+        echo -ne '\e]4;13;#FF40FF\a'  # bold mag
+        echo -ne '\e]4;14;#40FFFF\a'  # bold cyn
+        echo -ne '\e]4;15;#FFFFFF\a'  # bold wht
 
-    # echo -ne '\e]4;8;#404040\a'   # bold black (i.e. dark grey)
-    # echo -ne '\e]4;9;#FF4040\a'   # bold red
-    # echo -ne '\e]4;10;#40FF40\a'  # bold green
-    # echo -ne '\e]4;11;#FFFF40\a'  # bold yellow
-    # echo -ne '\e]4;12;#6060FF\a'  # bold blue
-    # echo -ne '\e]4;13;#FF40FF\a'  # bold magenta
-    # echo -ne '\e]4;14;#40FFFF\a'  # bold cyan
+        # From: https://github.com/altercation/ethanschoonover.com/tree/master/projects/solarized/osx-terminal.app-colors-solarized
+# Col Hex
+        # echo -ne '\e]4;8;#002B36\a'   # bold blk
+        # echo -ne '\e]4;9;#CB4B16\a'   # bold red
+        # echo -ne '\e]4;10;#586E75\a'  # bold grn
+        # echo -ne '\e]4;11;#657B83\a'  # bold yel
+        # echo -ne '\e]4;12;#839496\a'  # bold blu
+        # echo -ne '\e]4;13;#6C71C4\a'  # bold mag
+        # echo -ne '\e]4;14;#93A1A1\a'  # bold cyn
+        # echo -ne '\e]4;15;#FDF6E3\a'  # bold wht
+
+        # From: https://github.com/altercation/ethanschoonover.com/tree/master/projects/solarized/osx-terminal.app-colors-solarized
+# Col Xterm/Hex
+        # echo -ne '\e]4;8;#1C1C1C\a'   # bold blk
+        # echo -ne '\e]4;9;#D75F00\a'   # bold red
+        # echo -ne '\e]4;10;#585858\a'  # bold grn
+        # echo -ne '\e]4;11;#626262\a'  # bold yel
+        # echo -ne '\e]4;12;#808080\a'  # bold blu
+        # echo -ne '\e]4;13;#5F5FAF\a'  # bold mag
+        # echo -ne '\e]4;14;#8A8A8A\a'  # bold cyn
+        # echo -ne '\e]4;15;#FFFFD7\a'  # bold wht
+    fi
 fi
+
+function parse_git_branch ()
+{
+   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
+}
 
 if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
 
