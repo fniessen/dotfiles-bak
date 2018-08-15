@@ -16,6 +16,25 @@ https://github.com/alebcay/awesome-shell
 
 http://blog.smalleycreative.com/tutorials/using-git-and-github-to-manage-your-dotfiles/
 
+* Tasks
+
+** TODO Manage my dot-files (idempotent script + local files with branches)
+
+http://www.anishathalye.com/2014/08/03/managing-your-dotfiles/
+
+https://medium.com/@porteneuve/mastering-git-submodules-34c65e940407
+https://deliciousbrains.com/git-submodules-manage-wordpress-themes-and-plugins/
+
+#+begin_src shell
+git submodule add -f https://github.com/fniessen/emacs-leuven.git ./plugins/emacs-leuven
+git commit -m "Add Emacs-Leuven plugin"
+#+end_src
+
+** TODO Pb with dotlocalfiles
+
+ln: failed to create symbolic link '/home/fni/.gnupg/.gnupg': File exists
+ln: failed to create symbolic link '/home/fni/.subversion/.subversion': File exists
+
 * Context
 
 I revision-control my configuration files using Git. I have a Bash script
