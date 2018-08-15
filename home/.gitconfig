@@ -1,4 +1,3 @@
-
 [user]
     name = John Doe
     email = johndoe@example.com
@@ -122,8 +121,7 @@
     function = red
 
 [format]
-    pretty = format:%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset
-    # pretty = format:%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset
+    pretty = format:%C(yellow)%h%C(reset) %C(green)%ad%C(auto)%d%C(reset) %s %C(blue)<%an>%C(reset)
 
 [alias]
 
@@ -159,44 +157,86 @@
     ft = "!f() { git describe --always --contains $1; }; f"
 
     # Find commits by source code
-    fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+    fc = "!f() { git log --pretty=format:'%C(yellow)%h  %C(blue)%ad  %C(reset)%s%C(green)  <%cn> %C(red)%d' --decorate --date=short -S$1; }; f"
 
     # Find commits by commit message
-    fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+    fm = "!f() { git log --pretty=format:'%C(yellow)%h  %C(blue)%ad  %C(reset)%s%C(green)  <%cn> %C(red)%d' --decorate --date=short --grep=$1; }; f"
 
     # Remove branches that have already been merged with master
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 
-    debug  = "!set -x; GIT_TRACE=2 GIT_CURL_VERBOSE=2 GIT_TRACE_PERFORMANCE=2 GIT_TRACE_PACK_ACCESS=2 GIT_TRACE_PACKET=2 GIT_TRACE_PACKFILE=2 GIT_TRACE_SETUP=2 GIT_TRACE_SHALLOW=2 git"
-
-    ci = commit
-
-    cp = cherry-pick -x
-    pick = cherry-pick -s
-
-    ls = ls-files
-
-    h = help
-
-    grep4d = !sh -c 'git log -p -S'$1' $2' -
-
-    # 2009-05-26  (merged-bed-bug) 6fe85ff regenerate rules Brad Bowman
-    logdate = log --format=format:'%ad %d %h %s %an%n' --date=short
-    brdate = !"sh -c 'for b in `git branch --no-merged` ; \
-               do git logdate -1 -r $b --; done'"
-
-    this = !git init && git add . && git commit -m \"Initial commit\"
     this = !git init && ( [[ -n $(ls) ]] || touch .gitignore ) && git add . && git commit -m \"Initial commit\"
 
     # Clone a repository including all submodules.
     cl = clone --recursive
 
-    root = rev-parse --show-toplevel
-
-    # Get the path cleaned up.
-    root = !pwd -P
-
     st = status -s -b
+
+    df = diff
+    diff = diff --word-diff
+    dw = diff --word-diff
+
+    dc = diff --cached
+
+    precommit = diff --cached --diff-algorithm=minimal -w
+
+    today = !git log --since=midnight --author=\"`git config user.name`\" --no-merges --all
+
+    today-all = !git log --since=midnight --no-merges --all
+
+    forkdiff = !bash -c 'git diff $(git merge-base "$1" "$2") "$2" "${@: 3}" ' -
+
+    log-local = log --oneline origin..HEAD
+
+    ls = log --decorate --date=short
+    ld = log --decorate --date=relative
+
+    ll = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%C(auto)%d\\ %C(reset)%s%C(blue)\\ <%cn>" --decorate --date=short --numstat
+
+    lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[33m%s\\033[0m %-80s \\033[34m%14s\\033[0m \\033[32m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
+
+    lg = log --decorate --graph --date=short
+
+    graph = log --graph -10 --branches --remotes --tags --format=format:'%C(yellow)%h %C(reset) %<(75,trunc)%s <%cn> (%cr) %C(red)%d' --date-order
+
+    ls-modified  = "!git status --porcelain -uno | awk 'match($1, /M/) {print $2}'"
+    ls-added     = "!git status --porcelain -uno | awk 'match($1, /A/) {print $2}'"
+    ls-deleted   = "!git status --porcelain -uno | awk 'match($1, /D/) {print $2}'"
+    ls-renamed   = "!git status --porcelain -uno | awk 'match($1, /R/) {print $2}'"
+    ls-copied    = "!git status --porcelain -uno | awk 'match($1, /C/) {print $2}'"
+    ls-updated   = "!git status --porcelain -uno | awk 'match($1, /U/) {print $2}'"
+    ls-staged    = "!git status --porcelain -uno | grep -P '^[MA]' | awk '{ print $2 }'"
+
+    last = log -1 --stat
+
+    what = log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ad)%C(reset)' --date=short --stat
+
+    whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ad)%C(reset)' --date=iso -p -S
+
+    changed = show --pretty="format:" --name-only
+
+    diffn = diff --name-only
+
+    lf = "log --follow"
+    logfile = log --follow -C
+    filelog = log -u
+    fl = log -u
+
+    related = !sh -c 'git log --follow --format=format:%H $1 | xargs -L1 git diff-tree --no-commit-id --name-only -r | sort | uniq -c | sort -b -n -r'
+
+    who = shortlog -n -s --
+    # who = shortlog -n -s -e --
+
+    praise = blame -w
+    archeology = blame -w -C -n
+    whodoikill = blame -w -C -n
+
+    find = "log --all -i --grep"
+
+    rg = "grep --break --heading"
+
+    g = "grep -I"
+    gno = "grep -I --name-only"
 
     tracked1 = "!f() { tracked=$(git ls-files ${1}); if [[ -z ${tracked} ]]; then echo 'File NOT tracked (or No such file)'; else echo 'File tracked'; fi; }; f"
 
@@ -215,69 +255,20 @@
 
     assumed = "!git ls-files -v | grep '^h' | cut -c 3-"
 
-    df = diff
-    dw = diff --word-diff
+    unassumeall = "!git assumed | xargs git update-index --no-assume-unchanged"
 
-    dc = diff --cached
-
-    precommit = diff --cached --diff-algorithm=minimal -w
-
-    today = !git log --since=midnight --author=\"`git config user.name`\" --no-merges --all
-
-    today-all = !git log --since=midnight --no-merges --all
-
-    forkdiff = !bash -c 'git diff $(git merge-base "$1" "$2") "$2" "${@: 3}" ' -
-
-    log-local = log --oneline origin..HEAD
-
-    rma = !git ls-files --deleted -z | xargs -0 git rm
-
-    lp = log -p
-    lg = log --decorate --oneline --graph
-    lgr = log --decorate --date=relative --graph
-    lga = log --decorate --date=short --graph
-
-    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-    ld = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --graph
-    ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ad]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
-    ls = "!git status -suno"
-
-    lg50 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-50s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{49}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
-    lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[31m%s\\033[0m %-80s \\033[32m%14s\\033[0m \\033[30;1m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
-
-    graph = log --graph -10 --branches --remotes --tags --format=format:'%C(yellow)%h %Creset %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
-
-    ls-modified  = "!git status --porcelain -uno | awk 'match($1, /M/) {print $2}'"
-    ls-added     = "!git status --porcelain -uno | awk 'match($1, /A/) {print $2}'"
-    ls-deleted   = "!git status --porcelain -uno | awk 'match($1, /D/) {print $2}'"
-    ls-renamed   = "!git status --porcelain -uno | awk 'match($1, /R/) {print $2}'"
-    ls-copied    = "!git status --porcelain -uno | awk 'match($1, /C/) {print $2}'"
-    ls-updated   = "!git status --porcelain -uno | awk 'match($1, /U/) {print $2}'"
-    ls-staged    = "!git status --porcelain -uno | grep -P '^[MA]' | awk '{ print $2 }'"
-
-    heads = !"git log --format='%C(yellow)%h%Creset;%C(cyan)%H%Creset;%s %Cgreen<%an>%Creset' | git name-rev --stdin --always --name-only | column -t -s';'"
-
-    last = log -1 --stat
-
-    what = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=short --stat
-
-    whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ad)%Creset' --date=iso -p -S
-
-    changed = show --pretty="format:" --name-only
-
-    diffn = diff --name-only
-
-    lf = "log --follow"
-    logfile = log --follow -C
-
-    who = shortlog -n -s --
-    # who = shortlog -n -s -e --
+    assumeall = "!git status -s | awk {'print $2'} | xargs git assume"
 
     amend = "!git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend"
 
     amend = commit -a -v --amend
     amend = commit --amend
 # fixlastcommit?
+
+
+    ca = commit --amend
+    cm = commit -a --amend -C HEAD
+
 
 # Commit changes to current head as amended commit.
     plus = commit --amend -a -C HEAD
@@ -302,12 +293,14 @@
     r = "remote -v"
     remotes = remote -v
 
-    in = !(echo "Please fetch origin before." && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
-    inf = !(git remote update -p              && git log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' ..@{u})
+    in = !(echo "Please fetch origin before." && git log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)' ..@{u})
+    inf = !(git remote update -p              && git log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)' ..@{u})
 
     incoming = log ..@{u} --stat
 
     in-what = diff --stat ...@{u}
+
+    pull = pull -v
 
     update = !git pull --rebase --prune $@ && git submodule update --init --recursive
     update = !git pull                     && git submodule update --init --recursive
@@ -332,50 +325,7 @@
     # Here is a correct solution (which does not need access to the remote Git repo).
     prunelocal = "!f() { git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d ; }; f"
 
-    when = !stat -c %y .git/FETCH_HEAD
-
-    out = log --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset' @{u}..
-
-    outgoing = log @{u}.. --stat
-
-    out-all = log --branches --not --remotes --pretty=format:'%C(yellow)%h%C(auto)%d%Creset %s %Cgreen<%an>%Creset %C(bold blue)(%ar)%Creset'
-
-    sync = !git pull && git push
-
-    sync = !git update && git co master && git pull && git co @{-1}
-
-    # git resync -> sync repository and rebase current branch.
-    resync = !sh -c 'BRANCH_NAME=master && git co master && git fe && git reset --hard origin/master && git rebase master'
-
-    # Show verbose output about tags.
-    tags = tag -l
-    tags = !git tag | sort -V
-
-    releases = log --decorate --oneline --simplify-by-decoration --all
-
-    lasttag = describe --tags --abbrev=0
-
-    co = checkout
-
-    # Switch to a branch, creating it if necessary.
-    go = checkout -B
-
-    cob = checkout -b
-# grow?
-
-    master = checkout master
-    develop = checkout develop
-
-    br = branch -a -vv
-
-    bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
-
-    bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
-
-    # Current branch.
-    cb = "name-rev --name-only HEAD"
-
-    sincemaster = diff master...
+    when = !stat -c %y .git/FETCH_HEAD | cut -d'.' -f1
 
     # Will only try to "merge" if your current HEAD commit is in the branch
     # you're merging in.  This will allow you to merge some commits whilst being
@@ -399,63 +349,122 @@
 
     conflicts = "!git ls-files -u | cut -f 2 | sort -u"
 
-    export = archive -o latest.tar.gz -9 --prefix=latest/
+    co = checkout
 
-    record = !sh -c '(git add -p -- $@ && git commit) || git reset' --
+    # Switch to a branch, creating it if necessary.
+    cob = checkout -b
 
-    snapshot = !git stash save "Snapshot: $(date +\"%F %a %R\")" && git stash apply "stash@{0}"
+    master = checkout master
+    develop = checkout develop
 
-    ss = stash save
-    sl = stash list
-    sa = stash apply
+    br = branch -a -vv
 
-    stashes = stash list
+    bd = branch -d
 
-    save = stash save
-    savepatch = stash save --patch
-    savescratch = stash save --keep-index
-    pop = stash pop
+    bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
 
-    hide = stash
-    unhide = stash apply
-# bad aliases, used by some instead to mean assume and unassume...
+    bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
 
-    stp = stash pop
-    std = stash drop
+    # Current branch.
+    cb = "name-rev --name-only HEAD"
 
-    stashdiff = stash show -p -w stash@{0}
-    stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
-
-    # plop = "!git stash && git pull && git stash pop"
-    # up = !git stash && git pull origin master && git stash apply
-# `up' used many times
-
-# cleanpull
-# update (like svn? if we add a git reset in front?)
-# sync
-
-    sp = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git stash pop
-    spp = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git push && git stash pop
-
-    find = "log --all -i --grep"
-
-    rg = "grep --break --heading"
-
-    gr = "grep -i -I"
-
-    lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%Creset  %s' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
-
-    graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
-
-    sha1-tag = '!f() { git name-rev --name-only "$@"; }; f'
+    sincemaster = diff master...
 
     rename = branch -m
 
     where = "branch -a --contains"
 
-    praise = blame -w
-    archeology = blame -w -C -n
-    whodoikill = blame -w -C -n
+    ss = stash save
+
+    sspatch = stash save --patch
+    ssscratch = stash save --keep-index
+
+    sa = stash apply
+
+    sapply = "!f() { git stash apply stash^{/$*}; }; f"
+
+    sl = stash list
+    stashes = stash list
+
+    sp = stash pop
+
+    ssh = stash show -p
+    stashdiff = stash show -p
+
+    sshow = "!f() { git stash show stash^{/$*} -p; }; f"
+
+    sshno = stash show --name-only
+
+    std = stash drop
+
+    snapshot = !git stash save "Snapshot: $(date +\"%F %a %R\")" && git stash apply "stash@{0}"
+
+    stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
+
+    # up = "!git stash && git pull && git stash pop"
+# `up' used many times
+
+    stashpull-tmpname = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git stash pop
+
+# cleanpull
+# update (like svn? if we add a git reset in front?)
+# sync
+
+    out = log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)' @{u}..
+
+    outgoing = log @{u}.. --stat
+
+    out-all = log --branches --not --remotes --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)'
+
+    pof = !git push origin -f $(git branch | grep \\* | cut -d ' ' -f2)
+
+    sha1-tag = '!f() { git name-rev --name-only "$@"; }; f'
+
+    export = archive -o latest.tar.gz -9 --prefix=latest/
+
+    lasttag = describe --tags --abbrev=0
+
+    # Show verbose output about tags.
+    tags = tag -l
+    tags = !git tag | sort -V
+
+    releases = log --decorate --oneline --simplify-by-decoration --all
+
+    debug  = "!set -x; GIT_TRACE=2 GIT_CURL_VERBOSE=2 GIT_TRACE_PERFORMANCE=2 GIT_TRACE_PACK_ACCESS=2 GIT_TRACE_PACKET=2 GIT_TRACE_PACKFILE=2 GIT_TRACE_SETUP=2 GIT_TRACE_SHALLOW=2 git"
+
+    ci = commit
+
+    cp = cherry-pick -x
+    pick = cherry-pick -s
+
+    h = help
+
+    root = rev-parse --show-toplevel
+
+    # Get the path cleaned up.
+    root = !pwd -P
+
+    rma = !git ls-files --deleted -z | xargs -0 git rm
+
+    sync = !git pull && git push
+
+    sync = !git update && git co master && git pull && git commit @{-1}
+
+    # git resync -> sync repository and rebase current branch.
+    resync = !sh -c 'BRANCH_NAME=master && git checkout master && git fetch && git reset --hard origin/master && git rebase master'
+
+    record = !sh -c '(git add -p -- $@ && git commit) || git reset' --
+
+    lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%C(reset)  %s' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
+
+    graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+
+    grep4d = !sh -c 'git log -p -S'$1' $2' -
+
+    # 2009-05-26  (merged-bed-bug) 6fe85ff regenerate rules Brad Bowman
+    logdate = log --format=format:'%ad %d %h %s %an%n' --date=short
+    brdate = !"sh -c 'for b in `git branch --no-merged` ; \
+               do git logdate -1 -r $b --; done'"
 
     conflicts = diff --name-only --diff-filter=U
     unmerged = diff --name-only --diff-filter=U
