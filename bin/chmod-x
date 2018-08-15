@@ -1,4 +1,3 @@
-
 # find /space/music -name "*.jpg" -exec chmod -x {} +
 
 echo "Remove exe perm"

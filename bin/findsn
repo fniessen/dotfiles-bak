@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # Find Duplicate File Names - By Dev (dk_mahadeva@yahoo.com)
 # If no command-line parameter (path to begin from) is specified, then the
 # default is to begin from the current (.) directory.
