@@ -256,9 +256,15 @@ svn-grep-all-rev() {
     )
 }
 
+# SVN repository path
+alias svn-remote-get-url="svn info | egrep '^URL: (.*)' | sed s/URL\:\ //"
+
 alias svn-log="svn log | perl -l40pe 's/^-+/\n/' | less"
 
-alias svn-show="svn diff -c"
+# svn-show release-number
+function svn-show {
+    svn diff -c $1 | less
+}
 
 # svn-showtool 123 path/to/file
 function svn-showtool {
@@ -273,10 +279,17 @@ function svn-logfile {
     svn log -q $1 | grep "^r"
 }
 
+# svn-unmodify path/to/file
+function svn-unmodify {
+    svn revert $1
+}
+
 # svn-logfile-p path/to/file
 function svn-logfile-p {
     svn log --diff $1 | less
 }
+
+alias svn-nevermind='read -p "Destroy all local changes? [y/N]" && [[ $REPLY =~ ^[yY] ]] && svn revert . -R && rm -rf $(awk -f <(echo "/^?/{print \$2}") <(svn status) ;)'
 
 alias hgrep="history | grep -i"
 
