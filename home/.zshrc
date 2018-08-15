@@ -56,11 +56,6 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     fi
 fi
 
-function parse_git_branch ()
-{
-   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
-}
-
 if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
 
     prompt_svn() {
