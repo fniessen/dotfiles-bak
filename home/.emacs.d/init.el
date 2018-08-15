@@ -125,7 +125,7 @@
 
 (if (file-exists-p "~/.dotfiles/plugins/emacs-leuven")
     (add-to-list 'load-path (expand-file-name "~/.dotfiles/plugins/emacs-leuven"))
-  (add-to-list 'load-path (expand-file-name "~/.dotfiles/plugins/emacs-leuven")))
+  (add-to-list 'load-path (expand-file-name "~/2-Output/emacs-leuven")))
 ;; (let ((file-name-handler-alist nil))    ; Easy little known step to speed up
 ;;                                         ; Emacs start up time.
 ;; FIXME: When activated, breaks windows-path interpretation of 'es' results...
