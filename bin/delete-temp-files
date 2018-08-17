@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+rm -rf -v ~/.dotfiles/home/.emacs.d/auctex-auto-generated-info/*
+rm -rf -v ~/.dotfiles/home/.emacs.d/auto-save-list/.*
+rm -rf -v ~/.dotfiles/home/.emacs.d/backups/*
+rm -rf -v ~/.dotfiles/home/.emacs.d/url/*
+rm -rf -v ~/.dotfiles/home/.gnus.d/cache/nnimap*
+rm -rf -v ~/.local/*
+
+rm -v ~/.histfile
+rm -v ~/.emacs.d/projectile.cache
