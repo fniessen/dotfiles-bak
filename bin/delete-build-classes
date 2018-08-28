@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# If you delete "build", you run the risk to delete folders such as
-# `schema/ab-products/common/mobile/src/build'.
-
 # Is the 'clean' target not good enough?
-find . -iname "classes" | xargs rm -rf -v
+
+# Don't delete folders such as `./schema/ab-products/common/mobile/src/build'.
+find . -iname "build" -not -path "./schema/*" | xargs rm -rf -v
