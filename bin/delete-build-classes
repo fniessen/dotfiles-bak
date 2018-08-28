@@ -4,4 +4,4 @@
 # `schema/ab-products/common/mobile/src/build'.
 
 # Is the 'clean' target not good enough?
-find . -iname "classes" | xargs rm -rf
+find . -iname "classes" | xargs rm -rf -v
