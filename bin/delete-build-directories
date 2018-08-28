@@ -4,3 +4,4 @@
 
 # Don't delete folders such as `./schema/ab-products/common/mobile/src/build'.
 find . -iname "build" -not -path "./schema/*" | xargs rm -rf -v
+                                        # '-prune' doesn't work for me.
