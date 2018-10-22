@@ -219,8 +219,6 @@
 
     lf = "log --follow"
     logfile = log --follow -C
-    filelog = log -u
-    fl = log -u
 
     related = !sh -c 'git log --follow --format=format:%H $1 | xargs -L1 git diff-tree --no-commit-id --name-only -r | sort | uniq -c | sort -b -n -r'
 
@@ -302,17 +300,24 @@
 
     pull = pull -v
 
-    update = !git pull --rebase --prune $@ && git submodule update --init --recursive
-    update = !git pull                     && git submodule update --init --recursive
+    # up = "!git stash && git pull && git stash pop"
+
+    pull-autostash = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash save "autostash" && git pull && git stash pop
 
     up = pull --rebase --autostash
-# `up' used many times
+    up = !git fetch && git rebase --autostash FETCH_HEAD
 
-    up = "!f() { git remote update -p; git merge --ff-only @{u} ; }; f"
-# `up' used many times
+    up-tmpname = "!f() { git remote update -p; git merge --ff-only @{u} ; }; f"
 
     # Rebasing non-linear changes (when the fast-forward merge is not possible).
     upr = "!f() { git remote update -p; git rebase -p @{u} ; }; f"
+
+# cleanpull
+# update (like svn? if we add a git reset in front?)
+# sync
+
+    update = !git pull --rebase --prune $@ && git submodule update --init --recursive
+    update = !git pull                     && git submodule update --init --recursive
 
     pull-all = !"old=$(git rev-parse --abbrev-ref HEAD) ; for b in $(git for-each-ref refs/heads --format='%(refname)') ; do git checkout ${b#refs/heads/} ; git pull --ff-only ; done; git checkout ${old}"
 
@@ -400,15 +405,6 @@
     snapshot = !git stash save "Snapshot: $(date +\"%F %a %R\")" && git stash apply "stash@{0}"
 
     stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
-
-    # up = "!git stash && git pull && git stash pop"
-# `up' used many times
-
-    stashpull-tmpname = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash && git pull && git stash pop
-
-# cleanpull
-# update (like svn? if we add a git reset in front?)
-# sync
 
     out = log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)' @{u}..
 
