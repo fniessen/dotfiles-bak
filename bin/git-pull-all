@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Only merges current branch, apparently.
+
 printf "Searching for Git directories, please wait (this can take a while)...\n"
 
 # See https://stackoverflow.com/questions/17099564/make-a-shell-script-to-update-3-git-repos
@@ -7,6 +9,6 @@ for repo in $(find . -name ".git" -type d)
 do
     (cd ${repo%/*};
      echo "Updating $(pwd)...";
-     git remote update -p;
+     git remote update --prune;
      git merge --ff-only @{u})
 done
