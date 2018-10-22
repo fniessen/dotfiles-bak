@@ -16,7 +16,7 @@ if ([ $(expr index "$-" i) -ne 0 ] && [ -f /etc/bashrc ]); then
 fi
 
 # History.
-HISTFILE=$HOME/.bash_history            # If paranoiac, `/dev/null'.
+# HISTFILE=$HOME/.bash_history            # If paranoiac, `/dev/null'.
 HISTSIZE=1000
 HISTFILESIZE=1000
 HISTIGNORE="&:[bf]g:exit"
