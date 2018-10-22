@@ -1,15 +1,15 @@
 # name: Create stored proced...
 # --
 -- Drop stored procedure if it already exists
-IF OBJECT_ID ('${1:[schema].[procedure_name]}', 'P') IS NOT NULL   
-    DROP PROCEDURE $1;  
-GO
+IF OBJECT_ID ('${1:[schema].[procedure_name]}', 'P') IS NOT NULL
+    DROP PROCEDURE $1;
+go
 
 -- =============================================
 SET ANSI_NULLS ON
-GO
+go
 SET QUOTED_IDENTIFIER ON
-GO
+go
 -- =============================================
 -- Author:      /* Author */
 -- Create date: /* Create Date */
@@ -29,11 +29,11 @@ BEGIN
     -- Insert statements for procedure here
     SELECT @$2$0
 END
-GO
+go
 
 --SET QUOTED_IDENTIFIER ON|OFF
 --SET ANSI_NULLS ON|OFF
---GO
+--go
 
 -- =============================================
 -- Example to execute the stored procedure
@@ -43,4 +43,4 @@ DECLARE @${7:variable_for_output_parameter} $6
 EXECUTE $1 /* value_for_parameter_1 */, $7 OUTPUT
 
 SELECT $7
-GO
+go

@@ -1,8 +1,8 @@
 # name: Create non-unique cl...
 # --
-IF EXISTS (SELECT name FROM sys.indexes WHERE name = N'${3:index_name}')  
+IF EXISTS (SELECT name FROM sys.indexes WHERE name = N'${3:index_name}')
     DROP INDEX $3 ON ${1:[schema].[owner_name]};
-GO
+go
 
 CREATE CLUSTERED INDEX $3
 ON $1 (${2:column})
@@ -13,5 +13,5 @@ ON $1 (${2:column})
 --    | STATISTICS_NORECOMPUTE
 --    | SORT_IN_TEMPDB, .. as required
 -- ON filegroup
-GO
+go
 $0

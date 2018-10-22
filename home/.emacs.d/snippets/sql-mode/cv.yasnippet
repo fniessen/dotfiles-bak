@@ -1,8 +1,8 @@
 # name: Create view
 # --
-IF OBJECT_ID ('${1:[schema].[view_name]}', 'V') IS NOT NULL  
-    DROP VIEW $1;  
-GO
+IF OBJECT_ID ('${1:[schema].[view_name]}', 'V') IS NOT NULL
+    DROP VIEW $1;
+go
 
 CREATE VIEW $1
 --WITH ENCRYPTION, SCHEMABINDING, VIEW_METADATA
@@ -11,4 +11,4 @@ AS
     FROM ${2:[schema].[sample_table]}
     $0
 -- WITH CHECK OPTION
-GO
+go

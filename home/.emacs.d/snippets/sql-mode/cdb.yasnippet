@@ -1,14 +1,14 @@
 # name: Create database
 # --
 USE master
-GO
+go
 
 -- Drop the database if it already exists
 IF EXISTS (SELECT name
         FROM sys.databases
         WHERE name = N'${1:database_name}')
     DROP DATABASE $1
-GO
+go
 
 CREATE DATABASE $1
 ON
@@ -32,4 +32,4 @@ LOG ON
 --  NEW_BROKER
 --  ERROR_BROKER_CONVERSATIONS
 --FOR ATTACH_REBUILD_LOG
-GO
+go

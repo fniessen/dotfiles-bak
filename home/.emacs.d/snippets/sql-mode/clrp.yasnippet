@@ -2,7 +2,7 @@
 # --
 --SET QUOTED_IDENTIFIER ON|OFF
 --SET ANSI_NULLS ON|OFF
---GO
+--go
 
 CREATE PROCEDURE ${1:[schema].[procedure_name]}
 (
@@ -10,8 +10,8 @@ CREATE PROCEDURE ${1:[schema].[procedure_name]}
 )
 -- WITH EXECUTE AS CALLER|SELF|OWNER| 'user_name'
 AS EXTERNAL NAME ${4:[assembly].[class].[method]};
-GO
+go
 
 --SET QUOTED_IDENTIFIER ON|OFF
 --SET ANSI_NULLS ON|OFF
---GO$0
+--go$0

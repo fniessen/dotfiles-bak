@@ -1,14 +1,14 @@
 # name: Create scalar function
 # --
 IF OBJECT_ID (N'${1:[schema].[scalar_function_name]}', N'FN') IS NOT NULL
-    DROP FUNCTION $1;  
-GO
+    DROP FUNCTION $1;
+go
 
 -- =============================================
 SET ANSI_NULLS ON
-GO
+go
 SET QUOTED_IDENTIFIER ON
-GO
+go
 -- =============================================
 -- Author:      /* Author */
 -- Create date: /* Create Date */
@@ -26,11 +26,11 @@ BEGIN
 --  SELECT @v_ret = /* scalar expression */
 --  RETURN @v_ret$0
 END;
-GO
+go
 
 -- =============================================
 -- Example to execute function
 -- =============================================
 SELECT $1 /* owner.scalar_function_name */
     (/* value_for_@parameter_name */)
-GO
+go

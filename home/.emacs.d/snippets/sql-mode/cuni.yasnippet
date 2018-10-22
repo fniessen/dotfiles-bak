@@ -1,8 +1,8 @@
 # name: Create unique nonclu...
 # --
-IF EXISTS (SELECT name FROM sys.indexes WHERE name = N'${3:index_name}')  
+IF EXISTS (SELECT name FROM sys.indexes WHERE name = N'${3:index_name}')
     DROP INDEX $3 ON ${1:[schema].[owner_name]};
-GO
+go
 
 CREATE UNIQUE NONCLUSTERED INDEX $3
 ON $1 (${2:column})
@@ -14,5 +14,5 @@ ON $1 (${2:column})
 --    STATISTICS_NORECOMPUTE,
 --    SORT_IN_TEMPDB = OFF, .. as required
 ON ${3:filegroup_name}
-GO
+go
 $0

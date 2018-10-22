@@ -2,7 +2,7 @@
 # --
 IF OBJECT_ID ('${1:[schema].[table_name]}', 'U') IS NOT NULL
     DROP TABLE $1;
-GO
+go
 
 CREATE TABLE $1
 (
@@ -10,4 +10,4 @@ CREATE TABLE $1
     ${5:column_2} ${6:data_type_2} ${5:column_nullability_2},$0
     CONSTRAINT /* contraint_name */ PRIMARY KEY (/* columns_in_primary_key */)
 );
-GO
+go

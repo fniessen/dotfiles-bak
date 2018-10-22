@@ -1,14 +1,14 @@
 # name: Create inline table-va...
 # --
 IF OBJECT_ID (N'${1:[schema].[inline_function_name]}', N'IF') IS NOT NULL
-    DROP FUNCTION $1;  
-GO
+    DROP FUNCTION $1;
+go
 
 -- ================================================
 SET ANSI_NULLS ON
-GO
+go
 SET QUOTED_IDENTIFIER ON
-GO
+go
 -- =============================================
 -- Author:      /* Author */
 -- Create date: /* Create Date */
@@ -24,7 +24,7 @@ RETURN
     SELECT @$2 AS c1
     $0
 );
-GO
+go
 
 -- =============================================
 -- Example to execute function
@@ -32,4 +32,4 @@ GO
 SELECT *
 FROM $1 /* owner.inline_function_name */
     (/* value_for_@parameter_name */)
-GO
+go

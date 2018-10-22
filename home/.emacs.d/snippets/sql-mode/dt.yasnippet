@@ -8,4 +8,4 @@ IF EXISTS (SELECT *
             WHERE sys.schemas.name = N'${1:schema}'
               AND sys.tables.name = N'${2:table}')
     DROP TABLE $1.$2
-GO
+go
