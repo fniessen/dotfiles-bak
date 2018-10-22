@@ -92,7 +92,7 @@ if [ -r "$HOME/.dotfiles/plugins/zsh-syntax-highlighting" ]; then
 fi
 
 # History.
-HISTFILE=$HOME/.histfile
+# HISTFILE=$HOME/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
 
