@@ -141,7 +141,7 @@
     # Pull in remote changes for the current repository and all its submodules
     p = !"git pull; git submodule foreach git pull origin master"
 
-    # Commit all changes
+    # Commit all changes (all local modifications/additions/deletions).
     ca = !git add -A && git commit -av
 
     # Credit an author on the LATEST commit
@@ -217,8 +217,8 @@
 
     diffn = diff --name-only
 
-    filelog = log --follow -C
-    fl = log --follow -C
+    filelog = log --date=short --follow -C
+    fl = log --date=short --follow -C
 
     related = !sh -c 'git log --follow --format=format:%H $1 | xargs -L1 git diff-tree --no-commit-id --name-only -r | sort | uniq -c | sort -b -n -r'
 
@@ -283,12 +283,13 @@
     uncommit = reset --soft HEAD~1
 # OK (or undolast)
 
+    # Reset every file in your working directory to its committed state.
     wipe = reset --hard HEAD~1
 # rollback?
 
     nevermind = !git reset --hard HEAD && git clean -d -f
 
-    r = "remote -v"
+    r = remote -v
     remotes = remote -v
 
     in = !(echo "Please fetch origin before." && git log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)' ..@{u})
@@ -341,13 +342,13 @@
     # Avoid a fast-forward commit.
     mm = merge --no-ff
 
-    mergetest = "!f() { git merge --no-commit --no-ff $1; git merge --abort; echo 'Merge aborted'; }; f"
+    merge-test = "!f() { git merge --no-commit --no-ff $1; git merge --abort; echo 'Merge aborted'; }; f"
 
     # Check how the merge of `dev' into master will go: git mergedryrun dev.
-    mergedryrun = "!f() { grep -q 'changed in both' <<< $(git merge-tree $(git merge-base FETCH_HEAD $1) FETCH_HEAD $1) && echo 'Merge conflict detected' || echo 'Merged cleanly'; }; f"
+    merge-dry-run = "!f() { grep -q 'changed in both' <<< $(git merge-tree $(git merge-base FETCH_HEAD $1) FETCH_HEAD $1) && echo 'Merge conflict detected' || echo 'Merged cleanly'; }; f"
 
     # Extract the "changed in both" lines as well as the conflicting parts.
-    mergedryrunconflicts = "!f() { git merge-tree $(git merge-base $1 $2) $1 $2 | sed -n '/+<<<<<<< .our/,/+>>>>>>> .their/p;/^changed in both/{n;N;N;s/^/#/mg;p}' | cdiff; }; f"
+    merge-dry-run-conflicts = "!f() { git merge-tree $(git merge-base $1 $2) $1 $2 | sed -n '/+<<<<<<< .our/,/+>>>>>>> .their/p;/^changed in both/{n;N;N;s/^/#/mg;p}' | cdiff; }; f"
 
     ours = "!f() { git checkout --ours $@ && git add $@; }; f"
     theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
