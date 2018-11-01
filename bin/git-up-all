@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# This does well fetch new branches!
-
+#!/usr/bin/env bash
 REMOTES="$@";
 if [ -z "$REMOTES" ]; then
     REMOTES=$(git remote);
