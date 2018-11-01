@@ -217,8 +217,8 @@
 
     diffn = diff --name-only
 
-    lf = "log --follow"
-    logfile = log --follow -C
+    filelog = log --follow -C
+    fl = log --follow -C
 
     related = !sh -c 'git log --follow --format=format:%H $1 | xargs -L1 git diff-tree --no-commit-id --name-only -r | sort | uniq -c | sort -b -n -r'
 
@@ -418,6 +418,7 @@
 
     export = archive -o latest.tar.gz -9 --prefix=latest/
 
+    version = describe --tags
     lasttag = describe --tags --abbrev=0
 
     # Show verbose output about tags.
