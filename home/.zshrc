@@ -12,10 +12,20 @@ PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
 
 if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     ZSH=$HOME/.dotfiles/plugins/oh-my-zsh
+    ZSH_CUSTOM=$ZSH/custom
+    HIST_STAMPS="yyyy-mm-dd"
+
     # ZSH_THEME="random"
     ZSH_THEME="agnoster"
-    HIST_STAMPS="yyyy-mm-dd"
-    plugins=(git svn osx xcode zshmarks history history-substring-search)
+
+    plugins=(
+        git
+        svn
+        xcode
+        zshmarks
+        history
+        history-substring-search
+    )
     . $ZSH/oh-my-zsh.sh
 
     # source ~/.dotfiles/plugins/solarized/mintty-solarized-dark.sh
@@ -56,7 +66,7 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     fi
 fi
 
-if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+if [ -r "$ZSH" ]; then
 
     prompt_svn() {
         local rev branch
@@ -84,11 +94,15 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
         prompt_end
     }
 
-    # source ~/.dotfiles/plugins/oh-my-zsh/plugins/svn/svn.plugin.zsh
+    # source $ZSH/plugins/svn/svn.plugin.zsh
 fi
 
-if [ -r "$HOME/.dotfiles/plugins/zsh-syntax-highlighting" ]; then
-    source ~/.dotfiles/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+    source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+    source $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
 # History.
