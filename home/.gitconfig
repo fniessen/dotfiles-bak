@@ -96,7 +96,9 @@
 [color "diff"]
     plain = normal
     meta = yellow bold
+    func = "#cc99cc"
     frag = magenta bold
+    context = "#999999"
     old = red bold
     new = green bold
     commit = yellow
@@ -104,12 +106,11 @@
 
 [color "status"]
     header = normal
-    added = green
-    updated = yellow
-    changed = magenta
-    untracked = red
+    added = green bold
+    changed = yellow bold
+    untracked = cyan
     branch = cyan bold
-    nobranch = red reverse
+    nobranch = bold ul blink 12
 
 [color "grep"]
     filename = yellow bold
@@ -144,23 +145,8 @@
     # Commit all changes (all local modifications/additions/deletions).
     ca = !git add -A && git commit -av
 
-    # Credit an author on the LATEST commit
-    credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
-
     # Interactive rebase with the given number of latest commits
     ireb = "!r() { git rebase -i HEAD~$1; }; r"
-
-    # Find branches containing commit
-    fb = "!f() { git branch -a --contains $1; }; f"
-
-    # Find tags containing commit
-    ft = "!f() { git describe --always --contains $1; }; f"
-
-    # Find commits by source code
-    fc = "!f() { git log --pretty=format:'%C(yellow)%h  %C(blue)%ad  %C(reset)%s%C(green)  <%cn> %C(red)%d' --decorate --date=short -S$1; }; f"
-
-    # Find commits by commit message
-    fm = "!f() { git log --pretty=format:'%C(yellow)%h  %C(blue)%ad  %C(reset)%s%C(green)  <%cn> %C(red)%d' --decorate --date=short --grep=$1; }; f"
 
     # Remove branches that have already been merged with master
     dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
@@ -191,7 +177,7 @@
     ls = log --decorate --date=short
     ld = log --decorate --date=relative
 
-    ll = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%C(auto)%d\\ %C(reset)%s%C(blue)\\ <%cn>" --decorate --date=short --numstat
+    ll = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%C(auto)%d\\ %C(reset)%s%C(blue)\\ <%cn>" --date=short --stat
 
     lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[33m%s\\033[0m %-80s \\033[34m%14s\\033[0m \\033[32m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
 
@@ -209,10 +195,6 @@
 
     last = log -1 --stat
 
-    what = log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ad)%C(reset)' --date=short --stat
-
-    whatwhen = log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ad)%C(reset)' --date=iso -p -S
-
     changed = show --pretty="format:" --name-only
 
     diffn = diff --name-only
@@ -229,12 +211,23 @@
     archeology = blame -w -C -n
     whodoikill = blame -w -C -n
 
-    find = "log --all -i --grep"
+    find = "log --decorate --all -i --grep"
+
+    # Find commits by commit message.
+    findm = "!f() { git log --decorate --date=short --grep=$1; }; f"
+
+    whatwhen = log --decorate --date=short -p -S
+
+    # Find commits by source code.
+    findc = "!f() { git log --decorate --date=short -S $1; }; f"
 
     rg = "grep --break --heading"
 
     g = "grep -I"
     gno = "grep -I --name-only"
+
+    # List all tracked files.
+    ls-tracked = ls-files -t
 
     tracked1 = "!f() { tracked=$(git ls-files ${1}); if [[ -z ${tracked} ]]; then echo 'File NOT tracked (or No such file)'; else echo 'File tracked'; fi; }; f"
 
@@ -244,7 +237,7 @@
     # List all untracked files.
     ls-untracked = ls-files --others
 
-    ignored = ls-files --others --ignored --exclude-standard
+    ls-ignored = ls-files --others --ignored --exclude-standard
 
     ignore = "!f() { echo $1 >> \"${GIT_PREFIX}.gitignore\"; }; f"
 
@@ -257,22 +250,15 @@
 
     assumeall = "!git status -s | awk {'print $2'} | xargs git assume"
 
-    amend = "!git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend"
+    # Append additional (staged) changes to the PREVIOUS commit.
+    fixup = commit -v --amend --reuse-message HEAD
+    # fixlastcommit?
 
-    amend = commit -a -v --amend
-    amend = commit --amend
-# fixlastcommit?
+    # Commit changes to current HEAD (modified and deleted files) as amended commit.
+    plus = commit -a -v --amend --reuse-message HEAD
 
-
-    ca = commit --amend
-    cm = commit -a --amend -C HEAD
-
-
-# Commit changes to current head as amended commit.
-    plus = commit --amend -a -C HEAD
-
-# Append additional changes to the previous commit.
-    fixup = commit --amend --reuse-message HEAD
+    # Credit an author on the LATEST commit.
+    credit = "!f() { git commit --amend --author \"$1 <$2>\" --reuse-message HEAD; }; f"
 
     unmodify = checkout --
     undelete = checkout --
@@ -342,9 +328,9 @@
     # Avoid a fast-forward commit.
     mm = merge --no-ff
 
-    merge-test = "!f() { git merge --no-commit --no-ff $1; git merge --abort; echo 'Merge aborted'; }; f"
+    merge-check = "!f() { git merge --no-commit --no-ff $1; git merge --abort; echo 'Merge aborted'; }; f"
 
-    # Check how the merge of `dev' into master will go: git mergedryrun dev.
+    # Check how the merge of `dev' into master will go: git merge-dry-run dev.
     merge-dry-run = "!f() { grep -q 'changed in both' <<< $(git merge-tree $(git merge-base FETCH_HEAD $1) FETCH_HEAD $1) && echo 'Merge conflict detected' || echo 'Merged cleanly'; }; f"
 
     # Extract the "changed in both" lines as well as the conflicting parts.
@@ -380,6 +366,12 @@
 
     where = "branch -a --contains"
 
+    # Find branches containing commit.
+    findb = "!f() { git branch -a --contains $1; }; f"
+
+    # Find tags containing commit.
+    findt = "!f() { git describe --always --contains $1; }; f"
+
     ss = stash save
 
     sspatch = stash save --patch
@@ -413,7 +405,13 @@
 
     out-all = log --branches --not --remotes --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)'
 
-    pof = !git push origin -f $(git branch | grep \\* | cut -d ' ' -f2)
+    # Get the current branch name (not so useful in itself, but used in other
+    # aliases).
+    branch-name = !git rev-parse --abbrev-ref HEAD
+
+    # Push the current branch to the remote "origin", and set it to track the
+    # upstream branch.
+    publish = !git push -u origin $(git branch-name)
 
     sha1-tag = '!f() { git name-rev --name-only "$@"; }; f'
 
