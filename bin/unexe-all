@@ -5,6 +5,10 @@ find . -type f \
     -o -name "*.Txt" \
     -o -name "*.asa" \
     -o -name "*.asp" \
+    -o -name "*.axvw" \
+    -o -name "*.bak" \
+    -o -name "*.c" \
+    -o -name "*.class" \
     -o -name "*.css" \
     -o -name "*.csv" \
     -o -name "*.dtd" \
@@ -14,22 +18,36 @@ find . -type f \
     -o -name "*.html" \
     -o -name "*.idx" \
     -o -name "*.ini" \
+    -o -name "*.jar" \
+    -o -name "*.java" \
     -o -name "*.jpg" \
+    -o -name "*.js" \
     -o -name "*.json" \
+    -o -name "*.jsp" \
     -o -name "*.log" \
     -o -name "*.m" \
     -o -name "*.md5" \
+    -o -name "*.model" \
     -o -name "*.org" \
+    -o -name "*.orig" \
     -o -name "*.pack" \
     -o -name "*.pdf" \
     -o -name "*.pid" \
     -o -name "*.png" \
+    -o -name "*.properties" \
     -o -name "*.sample" \
     -o -name "*.sql" \
     -o -name "*.stackdump" \
     -o -name "*.tex" \
+    -o -name "*.tld" \
     -o -name "*.txt" \
+    -o -name "*.war" \
+    -o -name "*.xls" \
     -o -name "*.xls" \
     -o -name "*.xml" \
+    -o -name "*.xsl" \
+    -o -name "*.xslt" \
+    -o -name "ChangeLog" \
+    -o -name "README" \
     \) \
     -exec chmod -x {} +
