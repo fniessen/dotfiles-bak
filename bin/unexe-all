@@ -5,9 +5,11 @@ find . -type f \
     -o -name "*.Txt" \
     -o -name "*.asa" \
     -o -name "*.asp" \
+    -o -name "*.awk" \
     -o -name "*.axvw" \
     -o -name "*.bak" \
     -o -name "*.c" \
+    -o -name "*.ced" \
     -o -name "*.class" \
     -o -name "*.css" \
     -o -name "*.csv" \
@@ -24,18 +26,23 @@ find . -type f \
     -o -name "*.js" \
     -o -name "*.json" \
     -o -name "*.jsp" \
+    -o -name "*.lex" \
     -o -name "*.log" \
     -o -name "*.m" \
+    -o -name "*.m4" \
     -o -name "*.md5" \
     -o -name "*.model" \
     -o -name "*.org" \
     -o -name "*.orig" \
     -o -name "*.pack" \
     -o -name "*.pdf" \
+    -o -name "*.php" \
     -o -name "*.pid" \
     -o -name "*.png" \
     -o -name "*.properties" \
+    -o -name "*.py" \
     -o -name "*.sample" \
+    -o -name "*.sed" \
     -o -name "*.sql" \
     -o -name "*.stackdump" \
     -o -name "*.tex" \
@@ -48,6 +55,7 @@ find . -type f \
     -o -name "*.xsl" \
     -o -name "*.xslt" \
     -o -name "ChangeLog" \
+    -o -name "Makefile" \
     -o -name "README" \
     \) \
     -exec chmod -x {} +
