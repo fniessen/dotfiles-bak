@@ -11,7 +11,7 @@ CursorType=underscore
 # Text
 Font=Powerline Consolas
 FontHeight=8
-BoldAsFont=no
+BoldAsFont=yes
 BoldAsColour=yes
 Locale=C
 Charset=UTF-8
