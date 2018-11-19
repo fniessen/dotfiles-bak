@@ -10,64 +10,31 @@
 # Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
 PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
 
+. "$HOME/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh"
+
+# XXX Check for MinTTY
+if [ -d /cygdrive/c/ ]; then
+    echo -ne '\e]4;8;#404040\a'     # bold blk
+    echo -ne '\e]4;9;#FF4040\a'     # bold red
+    echo -ne '\e]4;10;#40FF40\a'    # bold grn
+    echo -ne '\e]4;11;#FFFF40\a'    # bold yel
+    echo -ne '\e]4;12;#6060FF\a'    # bold blu
+    echo -ne '\e]4;13;#FF40FF\a'    # bold mag
+    echo -ne '\e]4;14;#40FFFF\a'    # bold cyn
+    echo -ne '\e]4;15;#FFFFFF\a'    # bold wht
+fi
+
 if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
-    ZSH=$HOME/.dotfiles/plugins/oh-my-zsh
-    ZSH_CUSTOM=$ZSH/custom
-    HIST_STAMPS="yyyy-mm-dd"
+    ZSH="$HOME/.dotfiles/plugins/oh-my-zsh"
+    # ${ZSH_CUSTOM:-~/.dotfiles/plugins/oh-my-zsh/custom}
+    ZSH_CUSTOM="$ZSH/custom"
 
-    # ZSH_THEME="random"
-    ZSH_THEME="agnoster"
+    HIST_STAMPS="yyyy-mm-dd"            # See command `history'.
 
-    plugins=(
-        git
-        svn
-        xcode
-        zshmarks
-        history
-        history-substring-search
-    )
-    . $ZSH/oh-my-zsh.sh
-
-    # source ~/.dotfiles/plugins/solarized/mintty-solarized-dark.sh
-    source ~/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh
-
-# XXX Test for MinTTY
-    if [ -d /cygdrive/c/ ]; then
-        echo -ne '\e]4;8;#404040\a'   # bold blk
-        echo -ne '\e]4;9;#FF4040\a'   # bold red
-        echo -ne '\e]4;10;#40FF40\a'  # bold grn
-        echo -ne '\e]4;11;#FFFF40\a'  # bold yel
-        echo -ne '\e]4;12;#6060FF\a'  # bold blu
-        echo -ne '\e]4;13;#FF40FF\a'  # bold mag
-        echo -ne '\e]4;14;#40FFFF\a'  # bold cyn
-        echo -ne '\e]4;15;#FFFFFF\a'  # bold wht
-
-        # From: https://github.com/altercation/ethanschoonover.com/tree/master/projects/solarized/osx-terminal.app-colors-solarized
-# Col Hex
-        # echo -ne '\e]4;8;#002B36\a'   # bold blk
-        # echo -ne '\e]4;9;#CB4B16\a'   # bold red
-        # echo -ne '\e]4;10;#586E75\a'  # bold grn
-        # echo -ne '\e]4;11;#657B83\a'  # bold yel
-        # echo -ne '\e]4;12;#839496\a'  # bold blu
-        # echo -ne '\e]4;13;#6C71C4\a'  # bold mag
-        # echo -ne '\e]4;14;#93A1A1\a'  # bold cyn
-        # echo -ne '\e]4;15;#FDF6E3\a'  # bold wht
-
-        # From: https://github.com/altercation/ethanschoonover.com/tree/master/projects/solarized/osx-terminal.app-colors-solarized
-# Col Xterm/Hex
-        # echo -ne '\e]4;8;#1C1C1C\a'   # bold blk
-        # echo -ne '\e]4;9;#D75F00\a'   # bold red
-        # echo -ne '\e]4;10;#585858\a'  # bold grn
-        # echo -ne '\e]4;11;#626262\a'  # bold yel
-        # echo -ne '\e]4;12;#808080\a'  # bold blu
-        # echo -ne '\e]4;13;#5F5FAF\a'  # bold mag
-        # echo -ne '\e]4;14;#8A8A8A\a'  # bold cyn
-        # echo -ne '\e]4;15;#FFFFD7\a'  # bold wht
-    fi
+    COMPLETION_WAITING_DOTS="true"
 fi
 
 if [ -r "$ZSH" ]; then
-
     prompt_svn() {
         local rev branch
         if in_svn; then
@@ -83,32 +50,66 @@ if [ -r "$ZSH" ]; then
             fi
         fi
     }
+fi
 
-    build_prompt() {
-        RETVAL=$?
-        prompt_status
-        prompt_context
-        prompt_dir
-        prompt_git
-        prompt_svn
-        prompt_end
-    }
+if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+    ZSH_THEME="powerlevel9k/powerlevel9k"
 
-    # source $ZSH/plugins/svn/svn.plugin.zsh
+    # Single-line prompt.
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=false
+    POWERLEVEL9K_RPROMPT_ON_NEWLINE=false
+
+    POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=''
+    POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=''
+
+    # Customise the Powerlevel9k prompts.
+    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(ssh dir vcs)
+    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time time background_jobs)
+
+    POWERLEVEL9K_STATUS_VERBOSE=false
+    POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE=true
+    POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=10
+    POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
+fi
+
+if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+
+    plugins=(
+        colored-man-pages
+        extract
+        git
+        history
+        history-substring-search
+        svn
+        zshmarks
+    )
+fi
+
+if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+    # Fix Colorize man pages (with `less` pager) not working in Cygwin MinTTY
+    export MANROFFOPT="-c"
+    # in your shell rc file. This has the same effect as
+    # export GROFF_NO_SGR=1
+    # but only affects man. I'm not sure if groff is used for anything else
+    # besides man pages, but this seems safer to prevent unintended side
+    # effects.
 fi
 
 if [ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
-    source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    plugins+=(zsh-syntax-highlighting)
 fi
 
 if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
-    source $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+    plugins+=(zsh-autosuggestions)
+fi
+
+if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+    . $ZSH/oh-my-zsh.sh
 fi
 
 # History.
-# HISTFILE=$HOME/.zsh_history
 HISTSIZE=1000
-SAVEHIST=1000
+SAVEHIST=2000
 
 # Append new history lines instead of overwriting (important for multiple
 # parallel Zsh sessions!).
@@ -191,8 +192,7 @@ alias -g L="| less" #######
 alias -g M="| less"
 alias -g CA="| cat -A"
 alias -g 21="2>&1"
-alias -g DN1='1> /dev/null' #
-alias -g DN2='2> /dev/null' #
+alias -g NUL='> /dev/null 2>&1'
 
 alias -g W='| wc -l' ####
 alias -g C='| wc -l'
@@ -240,9 +240,8 @@ alias -g T9="| awk -F $'\t' '{print \$9}'"
 alias -g ND='$(ls -d *(/om[1]))'        # Newest directory.
 alias -g NF='$(ls *(.om[1]))'           # Newest file.
 
-alias -- cdwd='cd `pwd`'
+alias -- cdwd='cd $(pwd)'
 alias -- cwd='echo $cwd'
-# alias h='history 1 | less +G'
 
 alias -g GLWEEK=' --since=1.week.ago'
 alias -g GLMONTH=' --since=1.month.ago'
@@ -335,7 +334,7 @@ exec 2> >( color_err )
 
 # Enable overriding.
 if [ -f ${HOME}/.zshrc_local ]; then
-    source ${HOME}/.zshrc_local
+    . ${HOME}/.zshrc_local
 fi
 
 #* Local Variables
