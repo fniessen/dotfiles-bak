@@ -7,6 +7,13 @@
 
 #* Code:
 
+# If running in terminal...
+if test -t 1; then
+    # ... start Zsh directly (when I open "Bash on Ubuntu on Windows" for example)
+    echo "Execute Zsh..."
+    which zsh && exec zsh
+fi
+
 # If not running interactively, don't do anything.
 [[ "$-" != *i* ]] && return
 
@@ -16,9 +23,9 @@ if ([ $(expr index "$-" i) -ne 0 ] && [ -f /etc/bashrc ]); then
 fi
 
 # History.
-# HISTFILE=$HOME/.bash_history            # If paranoiac, `/dev/null'.
+# HISTFILE="$HOME/.bash_history"        # If paranoiac, `/dev/null'.
 HISTSIZE=1000
-HISTFILESIZE=1000
+HISTFILESIZE=2000
 HISTIGNORE="&:[bf]g:exit"
 HISTCONTROL=ignoredups
 
@@ -134,12 +141,12 @@ complete -A hostname ssh telnet nmap ftp ping host traceroute nslookup
 # ext=${file##*.}
 #
 # # Basename.
-# basename=`basename "$file"`
+# basename=$(basename "$file")
 # # Everything after last '/'.
 # basename=${file##*/}
 #
 # # Dirname.
-# dirname=`dirname "$file"`
+# dirname=$(dirname "$file")
 # # Everything before last '/'.
 # basename=${file%/*}
 
