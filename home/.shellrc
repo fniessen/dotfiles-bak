@@ -44,8 +44,8 @@ export CDPATH=".:~:/cygdrive/d/Dev/Tools/Tomcat"
 
 # set MANPATH so it includes user's private man if it exists
 # do the same with MANPATH
-#if [ -d $HOME/man ]; then
-#    MANPATH=$HOME/man:"${MANPATH}"
+#if [ -d "$HOME/man" ]; then
+#    MANPATH="$HOME/man":"${MANPATH}"
 #    export MANPATH
 #fi
 
@@ -69,19 +69,6 @@ alias more="less"
 # Tailor `less'.
 LESS="-F -i -M -R -X"
 # export LESS="-P ?c<- .?f%f:Standard input.  ?n:?eEND:?p%pj\%.. .?c%ccol . ?mFile %i of %m  .?xNext\ %x.%t   Press h for help"
-
-# Colored man pages: http://linuxtidbits.wordpress.com/2009/03/23/less-colors-for-man-pages/
-# Less Colors for Man Pages
-export LESS_TERMCAP_mb=$'\E[01;31m'     # enter_blink_mode.
-export LESS_TERMCAP_md=$'\E[01;38;5;74m' # enter_bold_mode.
-export LESS_TERMCAP_so=$'\E[38;5;016m\E[48;5;220m' # enter_standout_mode (mode
-                                                   # line at the bottom).
-export LESS_TERMCAP_us=$'\E[04;38;5;146m' # enter_underline_mode.
-export LESS_TERMCAP_me=$'\E[0m'         # exit_attribute_mode (end modes like
-                                        # `mb' and `md').
-export LESS_TERMCAP_se=$'\E[0m'         # exit_standout_mode.
-export LESS_TERMCAP_ue=$'\E[0m'         # exit_underline_mode.
-# See `terminfo'.
 
 # Start x11 server (if a process instance is not already running).
 ps -ae | grep XWin || startxwin >/dev/null 2>&1 &
@@ -150,12 +137,13 @@ export TIME_STYLE=long-iso
 # Enable color support of `ls'.
 if [ "$TERM" != "dumb" ]; then
 
-    # # Add my coloration scheme to directory listings.
-    # if [ -f $HOME/.dircolors ]; then
-    #     eval "$(dircolors -b $HOME/.dircolors)"
-    # else
-    #     eval "$(dircolors -b)"
-    # fi
+    # Add my coloration scheme to directory listings.
+    if [ -f "$HOME/.dircolors" ]; then
+        eval "$(dircolors -b $HOME/.dircolors)"
+        # See https://github.com/seebi/dircolors-solarized.
+    else
+        eval "$(dircolors -b)"
+    fi
 
     alias ls='ls --color=auto -F'
     alias ll='ls --color=auto -a --group-directories-first -G -h -l'
@@ -209,16 +197,14 @@ alias own='sudo chown -R $USER'
 alias up='cd ..'
 alias -- ..='cd ..'
 
-alias ..2='cd ../..'
-alias ..3='cd ../../..'
-
 alias ...='cd ../..'
 alias ....='cd ../../..'
+alias .....='cd ../../../..'
 
 # Aliases '-' to 'cd -'.
 alias -- -='cd -'
 
-# Directory history.
+# list last used directories (directory history).
 alias d='dirs -v'
 
 alias t='tail -f'
@@ -231,7 +217,7 @@ alias l='ls'
 
 alias g='git'
 
-# alias gitroot="cd $(git rev-parse --show-toplevel)" # Conflict with Oh-My-ZShell?
+# alias gitroot="cd $(git rev-parse --show-toplevel)" # Conflict with Oh My Zsh?
 
 # Good alias that will not blow up cd if you aren't in a Git directory.
 alias cdroot='git rev-parse && cd "$(git rev-parse --show-toplevel)"'
@@ -293,37 +279,13 @@ alias svn-nevermind='read -p "Destroy all local changes? [y/N]" && [[ $REPLY =~ 
 
 alias hgrep="history | grep -i"
 
-update_org () {
-    (                                   # Directory changes made in a subshell
-                                        # do not carry over to the parent shell.
-        cd $HOME/Public/Repositories/org-mode;
-        git fetch --all --verbose \
-            && git rebase origin \
-            && make autoloads \
-            && echo DON\'T make clean \
-            && echo DON\'T make \
-            && echo DON\'T sudo make install \
-            && echo DON\'T make doc \
-            && make info \
-            && sudo make install-info \
-            && printf "Running org_test, please wait (this can take a while)...\n" \
-            && org_test 2>&1 >/dev/null | tail -n 3
-    )
-}
-
 org_test () {
     (
-        cd $HOME/Public/Repositories/org-mode;
+        cd "$HOME/Public/Repositories/org-mode";
         mkdir /tmp/tmp-orgtest 2> /dev/null # TMPDIR must exist!
         TMPDIR=/tmp/tmp-orgtest emacs -Q --batch -L lisp/ -L testing/ -l org-test.el --eval '(setq org-confirm-babel-evaluate nil)' -f org-test-run-batch-tests
     )
 }
-
-if [ -d "$HOME/Public/Repositories/org-bash-utils" ]; then
-    PATH="$HOME/Public/Repositories/org-bash-utils:$PATH"
-    source $HOME/Public/Repositories/org-bash-utils/org-alias
-    source $HOME/Public/Repositories/org-bash-utils/awk-alias
-fi
 
 # Display the matched pattern in color.
 alias grep='grep --color=auto'
@@ -367,22 +329,10 @@ alias oneday='find . -mtime -1 -print'
 # List all files modified today only (since start of day only, i.e. 00:00).
 today ()
 {
-    touch -t `date +%m%d0000` /tmp/$$
+    touch -t $(date +%m%d0000) /tmp/$$
     find . -type f -newer /tmp/$$
     rm -f /tmp/$$
 }
-
-case $(uname -s) in
-    Linux*)
-        alias vpnup='sudo test; exec sudo openvpn --config $HOME/.hide/OpenVPN-config/mcbe.ovpn --writepid /tmp/openvpn.pid &'  # --daemon'
-        alias vpndown='sudo kill -INT `cat /tmp/openvpn.pid`'
-        ;;
-
-    CYGWIN*)
-        alias vpnup='cd $HOME/.hide/OpenVPN-config; openvpn --config mcbe.ovpn --writepid c:/cygwin/tmp/openvpn.pid &'  # --daemon'
-        alias vpndown='killall openvpn'
-        ;;
-esac
 
 export GS_OPTIONS="-sPAPERSIZE=a4"
 alias pdfmerge="gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=./pdf-joined.pdf" # pdfjoin
@@ -436,18 +386,9 @@ saneperms ()
 
 safetmp ()
 {
-    test -d $HOME || exit 1
-    test -d $HOME/tmp || mkdir $HOME/tmp
-    echo $HOME/tmp/safetmp.$(hostname).$(date +%s).$$
-}
-
-timesync ()
-{
-    if [[ $EUID -eq 0 ]]; then
-        ntpdate -u swisstime.ethz.ch
-    else
-        echo "Must be root"
-    fi
+    test -d "$HOME" || exit 1
+    test -d "$HOME/tmp" || mkdir "$HOME/tmp"
+    echo "$HOME/tmp/safetmp.$(hostname).$(date +%s).$$"
 }
 
 # Immediately opens the first match.
