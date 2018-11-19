@@ -94,11 +94,11 @@
     plain = yellow reverse
 
 [color "diff"]
+    context = "#888888"
     plain = normal
     meta = yellow bold
     func = "#cc99cc"
     frag = magenta bold
-    context = "#999999"
     old = red bold
     new = green bold
     commit = yellow
@@ -111,15 +111,18 @@
     untracked = cyan
     branch = cyan bold
     nobranch = bold ul blink 12
+    unmerged = red reverse bold
 
 [color "grep"]
+    context = "#888888"
     filename = yellow bold
+    function = red
     linenumber = magenta bold
     match = green reverse bold
+    matchContext = yellow reverse bold
+    matchSelected = blue reverse bold
     separator = red bold
     selected = white bold
-    context = black
-    function = red
 
 [format]
     pretty = format:%C(yellow)%h%C(reset) %C(green)%ad%C(auto)%d%C(reset) %s %C(blue)<%an>%C(reset)
@@ -136,7 +139,7 @@
     # Show the diff between the latest commit and the current state
     d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
 
-    # `git di $number` shows the diff between the state `$number` revisions ago and the current state
+    # `git di $number' shows the diff between the state `$number' revisions ago and the current state
     di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
     # Pull in remote changes for the current repository and all its submodules
@@ -166,7 +169,7 @@
 
     precommit = diff --cached --diff-algorithm=minimal -w
 
-    today = !git log --since=midnight --author=\"`git config user.name`\" --no-merges --all
+    today = !git log --since=midnight --author=\"$(git config user.name)\" --no-merges --all
 
     today-all = !git log --since=midnight --no-merges --all
 
@@ -177,7 +180,7 @@
     ls = log --decorate --date=short
     ld = log --decorate --date=relative
 
-    ll = log --pretty=format:"%C(yellow)%h\\ %C(green)%ad%C(auto)%d\\ %C(reset)%s%C(blue)\\ <%cn>" --date=short --stat
+    ll = log --decorate --date=short --stat
 
     lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[33m%s\\033[0m %-80s \\033[34m%14s\\033[0m \\033[32m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
 
@@ -193,7 +196,7 @@
     ls-updated   = "!git status --porcelain -uno | awk 'match($1, /U/) {print $2}'"
     ls-staged    = "!git status --porcelain -uno | grep -P '^[MA]' | awk '{ print $2 }'"
 
-    last = log -1 --stat
+    last = log --decorate --date=short -1 --stat
 
     changed = show --pretty="format:" --name-only
 
@@ -278,8 +281,8 @@
     r = remote -v
     remotes = remote -v
 
-    in = !(echo "Please fetch origin before." && git log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)' ..@{u})
-    inf = !(git remote update -p              && git log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)' ..@{u})
+    in = !(echo "Please fetch origin before." && git log --decorate ..@{u})
+    inf = !(git remote update -p              && git log --decorate ..@{u})
 
     incoming = log ..@{u} --stat
 
@@ -399,11 +402,11 @@
 
     stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
 
-    out = log --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)' @{u}..
+    out = log --decorate @{u}..
 
     outgoing = log @{u}.. --stat
 
-    out-all = log --branches --not --remotes --pretty=format:'%C(yellow)%h%C(auto)%d%C(reset) %s %C(green)<%an>%C(reset) %C(bold blue)(%ar)%C(reset)'
+    out-all = log --branches --not --remotes --decorate
 
     # Get the current branch name (not so useful in itself, but used in other
     # aliases).
@@ -459,7 +462,7 @@
 
     # 2009-05-26  (merged-bed-bug) 6fe85ff regenerate rules Brad Bowman
     logdate = log --format=format:'%ad %d %h %s %an%n' --date=short
-    brdate = !"sh -c 'for b in `git branch --no-merged` ; \
+    br-date = !"sh -c 'for b in $(git branch --no-merged) ; \
                do git logdate -1 -r $b --; done'"
 
     conflicts = diff --name-only --diff-filter=U
