@@ -49,6 +49,7 @@ find . -type f \
     -o -name "*.tld" \
     -o -name "*.txt" \
     -o -name "*.war" \
+    -o -name "*.xhtml" \
     -o -name "*.xls" \
     -o -name "*.xls" \
     -o -name "*.xml" \
