@@ -10,7 +10,7 @@
 # Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
 PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
 
-. "$HOME/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh"
+FILE="$HOME/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh" && test -f $FILE && . $FILE
 
 # XXX Check for MinTTY
 if [ -d /cygdrive/c/ ]; then
@@ -77,7 +77,7 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     plugins=(
         colored-man-pages
         extract
-        git
+        # git                           # Provide many aliases and a few useful functions.
         history
         history-substring-search
         svn

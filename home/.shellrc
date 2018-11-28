@@ -66,12 +66,21 @@ PAGER="less"
 
 alias more="less"
 
+export LESS_TERMCAP_mb=$'\e[1;31m'
+export LESS_TERMCAP_md=$'\e[1;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[1;44;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;32m'
+
 # Tailor `less'.
 LESS="-F -i -M -R -X"
 # export LESS="-P ?c<- .?f%f:Standard input.  ?n:?eEND:?p%pj\%.. .?c%ccol . ?mFile %i of %m  .?xNext\ %x.%t   Press h for help"
+export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
 
 # Start x11 server (if a process instance is not already running).
-ps -ae | grep XWin || startxwin >/dev/null 2>&1 &
+# ps -ae | grep XWin || startxwin >/dev/null 2>&1 &   # XXX For Cygwin only!
 # To check that have the package xinit installed, try 'startxwin' without redirecting anything.
 
 # Set DISPLAY environment variable.
