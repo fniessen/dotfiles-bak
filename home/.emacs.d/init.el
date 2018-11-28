@@ -129,7 +129,8 @@
 ;; (let ((file-name-handler-alist nil))    ; Easy little known step to speed up
 ;;                                         ; Emacs start up time.
 ;; FIXME: When activated, breaks windows-path interpretation of 'es' results...
-(require 'emacs-leuven)
+(when (locate-library "emacs-leuven")
+  (require 'emacs-leuven))
 ;; )
 
 (let ((init-local "~/.emacs.d/init_local.el"))
