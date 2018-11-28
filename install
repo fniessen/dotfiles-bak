@@ -4,6 +4,11 @@ DOTFILES="${HOME}/.dotfiles"            # Base it on `pwd'!
 DOTHOME="${DOTFILES}/home"
 DOTBACKUP="${DOTFILES}/backup"
 
+# Make a backup directory for overwritten dotfiles.
+if [[ ! -e "${DOTBACKUP}" ]]; then
+    mkdir "${DOTBACKUP}"
+fi
+
 function symlinkifne {
     echo -n "$1..."
     if [[ -e $1 ]]; then
