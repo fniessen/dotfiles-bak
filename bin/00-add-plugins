@@ -13,10 +13,26 @@ cd "${PLUGINS}"
 for repo in \
     https://github.com/fniessen/emacs-leuven.git \
     https://github.com/fniessen/git-config.git \
-    https://github.com/fniessen/shellrc-leuven.git \
     https://github.com/karlin/mintty-colors-solarized.git \
     https://github.com/robbyrussell/oh-my-zsh.git \
+    https://github.com/fniessen/shellrc-leuven.git;
+do
+    git clone $repo
+done
+
+cd "oh-my-zsh/custom/plugins/"
+
+for repo in \
+    https://github.com/zsh-users/zsh-autosuggestions.git \
     https://github.com/zsh-users/zsh-syntax-highlighting.git;
+do
+    git clone $repo
+done
+
+cd "../themes/"
+
+for repo in \
+    https://github.com/bhilburn/powerlevel9k.git;
 do
     git clone $repo
 done
