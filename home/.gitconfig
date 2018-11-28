@@ -23,7 +23,8 @@
 
 [diff]
     renames = copies
-    renameLimit = 12000
+    renameLimit = 30000
+
     algorithm = patience
 
     mnemonicprefix = true
@@ -162,16 +163,22 @@
     st = status -s -b
 
     df = diff
-    diff = diff --word-diff
+
+    wdiff = diff --word-diff
     dw = diff --word-diff
 
     dc = diff --cached
 
     precommit = diff --cached --diff-algorithm=minimal -w
 
-    today = !git log --since=midnight --author=\"$(git config user.name)\" --no-merges --all
+    today = !git log --since=midnight --author=\"$(git config user.name)\" --no-merges --all --pretty='%ad - %s' --date=format:'%Y-%m-%d %a %H:%M'
+    yesterday = !git log --since='1 day ago midnight' --until=midnight --author=\"$(git config user.name)\" --no-merges --all --pretty='%ad - %s' --date=format:'%Y-%m-%d %a %H:%M'
+    this-week = !git log --since=1.weeks --author=\"$(git config user.name)\" --no-merges --all --pretty='%ad - %s' --date=format:'%Y-%m-%d %a %H:%M'
 
     today-all = !git log --since=midnight --no-merges --all
+
+    # when was this file last updated, on each local branch
+    wwflu = "!f() { for b in $(git rev-parse --symbolic --branches); do echo -e `git log --format=%at:%ar -1 $b -- \"$1\"`\\\\t$b; done | sort -r |cut -f2 -d: ; }; f"
 
     forkdiff = !bash -c 'git diff $(git merge-base "$1" "$2") "$2" "${@: 3}" ' -
 
@@ -182,9 +189,7 @@
 
     ll = log --decorate --date=short --stat
 
-    lg80 = "!git log --graph --abbrev-commit --date=relative --pretty=format:'%x00%h%x00%s%x00%cd%x00%an%x00%d' | gawk -F '\\0' '{ printf \"%s\\033[33m%s\\033[0m %-80s \\033[34m%14s\\033[0m \\033[32m%s\\033[0m\\033[33m%s\\n\", $1, $2, gensub(/(.{79}).{2,}/, \"\\\\1...\",\"g\",$3), $4, $5, $6 }' | less -R"
-
-    lg = log --decorate --graph --date=short
+    tree = log --decorate --all --date=short --graph
 
     graph = log --graph -10 --branches --remotes --tags --format=format:'%C(yellow)%h %C(reset) %<(75,trunc)%s <%cn> (%cr) %C(red)%d' --date-order
 
@@ -196,7 +201,19 @@
     ls-updated   = "!git status --porcelain -uno | awk 'match($1, /U/) {print $2}'"
     ls-staged    = "!git status --porcelain -uno | grep -P '^[MA]' | awk '{ print $2 }'"
 
+    ls-del  = ls-files -d
+    ls-mod  = ls-files -m   # this will include deleted files also
+    ls-new  = ls-files --exclude-standard -o
+    # this one is a MUST have
+    ls-ign  = ls-files --exclude-standard -o -i
+    lsfiles = ls-files --exclude-per-directory=.gitignore \
+                     --exclude-from=.git/info/exclude \
+                     -v -d -o -m -s -u
+
     last = log --decorate --date=short -1 --stat
+
+    # Show last x commits
+    last = !git log -$1 ${*:2} && :
 
     changed = show --pretty="format:" --name-only
 
@@ -214,10 +231,10 @@
     archeology = blame -w -C -n
     whodoikill = blame -w -C -n
 
-    find = "log --decorate --all -i --grep"
+    find = "log --decorate -i --all --date=short --grep"
 
     # Find commits by commit message.
-    findm = "!f() { git log --decorate --date=short --grep=$1; }; f"
+    findm = "!f() { git log --decorate --grep=$1 -i --all --date=short; }; f"
 
     whatwhen = log --decorate --date=short -p -S
 
@@ -225,6 +242,9 @@
     findc = "!f() { git log --decorate --date=short -S $1; }; f"
 
     rg = "grep --break --heading"
+
+grep-group =  grep --break --heading --line-number
+grep-all = !"git rev-list --all | xargs git grep '$1'"
 
     g = "grep -I"
     gno = "grep -I --name-only"
@@ -260,6 +280,9 @@
     # Commit changes to current HEAD (modified and deleted files) as amended commit.
     plus = commit -a -v --amend --reuse-message HEAD
 
+    # Change previous commit's message to what you type in.
+    medit = commit --amend -m
+
     # Credit an author on the LATEST commit.
     credit = "!f() { git commit --amend --author \"$1 <$2>\" --reuse-message HEAD; }; f"
 
@@ -284,7 +307,7 @@
     in = !(echo "Please fetch origin before." && git log --decorate ..@{u})
     inf = !(git remote update -p              && git log --decorate ..@{u})
 
-    incoming = log ..@{u} --stat
+    in-stat = log --stat ..@{u}
 
     in-what = diff --stat ...@{u}
 
@@ -339,7 +362,7 @@
     # Extract the "changed in both" lines as well as the conflicting parts.
     merge-dry-run-conflicts = "!f() { git merge-tree $(git merge-base $1 $2) $1 $2 | sed -n '/+<<<<<<< .our/,/+>>>>>>> .their/p;/^changed in both/{n;N;N;s/^/#/mg;p}' | cdiff; }; f"
 
-    ours = "!f() { git checkout --ours $@ && git add $@; }; f"
+    ours   = "!f() { git checkout --ours   $@ && git add $@; }; f"
     theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
 
     conflicts = "!git ls-files -u | cut -f 2 | sort -u"
@@ -375,7 +398,19 @@
     # Find tags containing commit.
     findt = "!f() { git describe --always --contains $1; }; f"
 
+    # Save with name.
     ss = stash save
+    ssave = stash save
+
+ sshow = "!f() { git stash show stash^{/$@} -p; }; f" # Like sapply but shows it only
+
+  sapply = "!f() { git stash apply stash^{/$@}; }; f" # Find stash with name like text
+
+  spop = "!f() { git stash pop stash@{$(git stashid $@)}; }; f" # Like sapply but pops it off
+
+  stashid = "!f() { git stash list | grep $@ | head -n 1 | sed -n 's/stash@{\\(.*\\)}.*/\\1/p'; }; f" # only accepts single word, no quotations
+
+  hide = stash save --include-untracked # hides all files, including untracked files (faster than using --all)
 
     sspatch = stash save --patch
     ssscratch = stash save --keep-index
@@ -398,27 +433,48 @@
 
     std = stash drop
 
-    snapshot = !git stash save "Snapshot: $(date +\"%F %a %R\")" && git stash apply "stash@{0}"
+    snapshot = !git stash save "Snapshot [$(date +\"%F %a %R\")]" && git stash apply "stash@{0}"
+
+    # checkpoint and checkpoint recover
+    cp      = !git stash save $(date +%F--%T) && git stash pop --index
+    cpr     = "!f() { git fsck | grep commit | cut -d' ' -f3 | while read hash; do git rev-parse --verify --no-revs --quiet $hash^2 2>/dev/null && echo $hash | xargs git rev-list --since=${1:-1day} -1; done | xargs -L 1 git log --format=%at:%h -1 | sort|cut -f2 -d: | xargs -L 1 git log --graph --oneline --format='%Cblue%h %Cgreen(%ar) %Creset%s' -3 ; }; f"
 
     stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
 
-    out = log --decorate @{u}..
+    # "show-branch -g=N" can't be aliased for N easily, so we stop here:
+    sb  = show-branch
+    # pg sbt master pu -- if the last line is 'master' and not 'master^'
+    # or 'master~N' then pu is a descendent of master
+    sbt = show-branch --topics
+    sbs = show-branch --sha1-name
 
-    outgoing = log @{u}.. --stat
+    out = log --date=short @{u}..
+    out-stat = log --stat --date=short @{u}..
 
-    out-all = log --branches --not --remotes --decorate
+    outgoing = log --branches --not --remotes --decorate
 
     # Get the current branch name (not so useful in itself, but used in other
     # aliases).
     branch-name = !git rev-parse --abbrev-ref HEAD
 
+upstream-name = !git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD)
+
     # Push the current branch to the remote "origin", and set it to track the
     # upstream branch.
     publish = !git push -u origin $(git branch-name)
 
+    unpublish = !git push origin :$(git branch-name)
+
+    export-branch = !git format-patch --stdout $1 > ~/$(git branch-name).diff
+
     sha1-tag = '!f() { git name-rev --name-only "$@"; }; f'
 
     export = archive -o latest.tar.gz -9 --prefix=latest/
+
+  # # Deploy
+  # staging = !git push heroku-staging $(git name):master -f && git track 'Deployed to staging ' # push current branch to staging, can add more comments after
+  # dev = !git push heroku-dev $(git name):master -f && git track 'Deployed to dev ' # push current branch to dev
+  # deploy = !git push heroku $(git name):master -f && git track 'Deployed to produciton ' # push current branch to production
 
     version = describe --tags
     lasttag = describe --tags --abbrev=0
