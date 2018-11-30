@@ -101,6 +101,8 @@ fi
 
 if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
     plugins+=(zsh-autosuggestions)
+
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 fi
 
 if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
