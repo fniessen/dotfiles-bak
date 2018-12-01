@@ -1,8 +1,9 @@
+# Hey Emacs, this is a -*- conf -*- file
 ## .sqshrc - My sqsh initialization file
 
-# Copyright (C) 2010-2017 Fabrice Niessen
+# Copyright (C) 2010-2018 Fabrice Niessen
 
-# Author: Fabrice Niessen <(concat "fni" at-symbol "mygooglest.com")>
+# Author: Fabrice Niessen <(concat "fni" at-symbol "pirilampo.org")>
 # Keywords: sqsh, dotfile, config
 
 #* Connections
@@ -13,8 +14,8 @@
 
 \set username="afm"
 \set password="afm"
-\set hostname="192.168.56.1"
-\set database=[ARCHIBUS_23_1_HQ]
+\set hostname="localhost"
+\set database=[ARCHIBUS_23_2_HQ]
 
 #* Aliasing
 
@@ -27,6 +28,7 @@
 
 # # defaults SELECT statement data returned to be in bcp format.
 # \set style="bcp"
+# \set style=vert
 
 \alias gof='\go -m html | (cat > /tmp/sqsh-output.html; /usr/bin/firefox file:///tmp/sqsh-output.html)'
 
@@ -47,8 +49,8 @@
 \alias ton='\loop -e "DBCC TRACEON(3604)"'
 \alias toff='\loop -e "DBCC TRACEOFF(3604)"'
 
-\alias tmp='\loop -e "USE tempdb"'
-\alias mas='\loop -e "USE master"'
+\alias tempdb='\loop -e "USE tempdb"'
+\alias master='\loop -e "USE master"'
 
 #** Other aliases
 
