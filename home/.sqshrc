@@ -35,7 +35,7 @@
 
 \alias gov='\go -m vert | less'
 
-# *very* useful for doing quick bcp commands from command line, and using
+# *Very* useful for doing quick bcp commands from command line, and using
 # re-direction directly to a file!
 \alias gob='\go -m bcp'
 
@@ -62,14 +62,14 @@
 
 #** Other aliases
 
-# alias to clear screen within sqsh session (same functionality as clear in isql)
+# Clear screen within sqsh session.
 \alias clear="\shell clear"
 
-# provides isql functionality to read a file into sqsh session
+# Read a file into sqsh session.
 \alias :r='\buf-load -a !*'
 \alias r="\buf-load "
 
-# drops you into a shell out of sqsh
+# Drop you into a shell out of sqsh.
 \alias sh="\shell "
 
 \alias h="\history"
@@ -78,23 +78,25 @@
 
 #* Miscellaneous
 
-# turns off the sqsh banner; cosmetic only
+# Turn off the sqsh banner; cosmetic only
 \set banner=no
 
 \set width=65535
 
-# have semicolons executing commands (sort of inline "go")...
+# Have semicolons executing commands (sort of inline "go")...
 \set semicolon_hack=on
 
-# turns on ability to have !-recall commands
+# Turn on ability to have !-recall commands.
 \set history_shorthand=on
 
 # This variable causes sqsh to exit with an exit status of the total number of
-# batches that failed during the current session. This is useful for use
-# within shell scripts and the such.
+# batches that failed during the current session.  This is useful for use within
+# shell scripts and the such.
 \set exit_failcount=on
 
-\set prompt='${username}@${DSQUERY}:${database}> '
+\set prompt_color='{0;34;47}'
+\set text_color='{0;33}'
+\set prompt='$prompt_color{{$username@$DSQUERY:$database}}>$text_color '
 
 # This is for the sake of Emacs.
 # Local Variables:
