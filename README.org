@@ -41,8 +41,10 @@ I revision-control my configuration files using Git. I have a Bash script
 (called ~install~, also under the repository) which either copies or symlinks the
 files to their appropriate location on a machine.
 
-So if I need to set up on a new machine, I just do a ~git clone~ of the repository
-and run my ~install~ to set up my config files in the appropriate locations.
+So, if I need to set up on a new machine, I just:
+
+1. do a ~git clone~ of the repository, and
+2. run my ~install~ to set up my config files in the appropriate locations.
 
 * Installation
 
@@ -54,21 +56,12 @@ git clone https://github.com/fniessen/dotfiles.git ~/.dotfiles
 ~/.dotfiles/install
 
 # Add plugins.
-cd ~/.dotfiles/ && ./bin/00-add-plugins
+cd ~/.dotfiles/ && ./bin/00-setup-plugins
 #+end_src
 
-# #+begin_src shell
-# git clone https://github.com/fniessen/dotfiles.git ~/.dotfiles
-# cd ~/.dotfiles
-# git submodule update --init --recursive
-# ./install
-# #+end_src
-
-# or ~git clone --recursive https://github.com/fniessen/dotfiles.git ~/.dotfiles~?
-
 #+begin_note
-If you try this on a brand new PC, you need Cygwin installed with the ~git~
-package.
+If you try this on a brand new Windows PC, you need Cygwin installed with the
+~git~ package.
 #+end_note
 
 * Structure
