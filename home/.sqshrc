@@ -96,7 +96,7 @@
 
 \set prompt_color='{0;34;47}'
 \set text_color='{0;33}'
-\set prompt='$prompt_color{${username}@{$DSQUERY}:${database}}>$text_color '
+\set prompt='$prompt_color{{$username@$DSQUERY:$database}}>$text_color '
 
 # This is for the sake of Emacs.
 # Local Variables:
