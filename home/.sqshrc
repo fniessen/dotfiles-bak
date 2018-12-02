@@ -1,3 +1,4 @@
+# Hey Emacs, this is a -*- conf -*- file
 ## .sqshrc - My sqsh initialization file
 
 # Copyright (C) 2010-2018 Fabrice Niessen
@@ -93,7 +94,7 @@
 # within shell scripts and the such.
 \set exit_failcount=on
 
-\set prompt='${username}@${DSQUERY}.${database}> '
+\set prompt='${username}@${DSQUERY}:${database}> '
 
 # This is for the sake of Emacs.
 # Local Variables:
