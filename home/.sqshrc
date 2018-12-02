@@ -1,4 +1,3 @@
-# Hey Emacs, this is a -*- conf -*- file
 ## .sqshrc - My sqsh initialization file
 
 # Copyright (C) 2010-2018 Fabrice Niessen
@@ -8,8 +7,8 @@
 
 #* Connections
 
-# Setting your password within your `.sqshrc' is probably the most secure
-# method of using sqsh. However, make sure that you `chmod go-rwx ~/.sqshrc',
+# Setting your password within your `.sqshrc' is probably the most secure method
+# of using sqsh.  However, make sure that you `chmod go-rwx ~/.sqshrc',
 # otherwise you leave yourself wide open to attacks.
 
 \set username="afm"
@@ -21,22 +20,30 @@
 
 #** Display styles
 
+# Currently supported styles are:
+# - horiz (or hor or horizontal) (*) = default
+# - vert (or vertical) (*),
+# - bcp,
+# - csv,
+# - html,
+# - meta,
+# - pretty (*), and
+# - none.
+
 \alias goh='\go -m horiz | less'
 
-# *very* useful for doing quick bcp commands from command line, and using re-direction directly to a file!
+\alias gov='\go -m vert | less'
+
+# *very* useful for doing quick bcp commands from command line, and using
+# re-direction directly to a file!
 \alias gob='\go -m bcp'
 
-# # defaults SELECT statement data returned to be in bcp format.
-# \set style="bcp"
-# \set style=vert
-
-\alias gof='\go -m html | (cat > /tmp/sqsh-output.html; /usr/bin/firefox file:///tmp/sqsh-output.html)'
+# Firefox.
+\alias gof='\go -m html | (cat > /tmp/sqsh-output.html; /mnt/c/Windows/explorer.exe file:///tmp/sqsh-output.html)'
 
 \alias gom='\go -m meta | less'
 
 \alias gop='\go -m pretty -w80 | less'
-
-\alias gov='\go -m vert | less'
 
 #** Aliases for T-SQL commands
 
@@ -86,7 +93,7 @@
 # within shell scripts and the such.
 \set exit_failcount=on
 
-\set prompt='[${histnum}] ${username}@${DSQUERY}.${database}.${lineno}> '
+\set prompt='${username}@${DSQUERY}.${database}> '
 
 # This is for the sake of Emacs.
 # Local Variables:
