@@ -1,7 +1,7 @@
 # Hey Emacs, this is a -*- sh -*- file
 ## .shellrc --- Common features between Bash and Z Shell
 
-# Copyright (C) 2009-2018 Fabrice Niessen
+# Copyright (C) 2009-2019 Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: bash, zsh, dotfile, config
@@ -89,6 +89,9 @@ export DISPLAY=:0.0
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 export LANG=C.UTF-8
+
+# For scripts in R language.
+export LC_CTYPE=
 
 # tput init                             # This resets the Solarized color theme!!!
 
