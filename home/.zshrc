@@ -1,6 +1,6 @@
 ## .zshrc --- Z Shell configuration file (for interactive shells)
 
-# Copyright (C) 2009-2018 Fabrice Niessen
+# Copyright (C) 2009-2019 Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: zsh, dotfile, config
@@ -9,6 +9,10 @@
 
 # Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
 PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
+
+# # For Bash on Ubuntu on Windows.
+# export BROWSER='/mnt/c/Windows/explorer.exe' # does not work.
+export BROWSER='/mnt/c/Program Files (x86)/Mozilla Firefox/firefox.exe'
 
 FILE="$HOME/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh" && test -f $FILE && . $FILE
 
@@ -101,12 +105,14 @@ fi
 
 if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
     plugins+=(zsh-autosuggestions)
-
-    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 fi
 
 if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     . $ZSH/oh-my-zsh.sh
+fi
+
+if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 fi
 
 # History.
