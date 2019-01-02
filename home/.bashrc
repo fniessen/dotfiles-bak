@@ -1,6 +1,6 @@
 ## bash_profile --- Bourne Again Shell configuration file (for interactive shells)
 
-# Copyright (C) 2003-2018 Fabrice Niessen
+# Copyright (C) 2003-2019 Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: bash, dotfile, config
