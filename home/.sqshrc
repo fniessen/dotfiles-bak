@@ -1,7 +1,7 @@
 # Hey Emacs, this is a -*- conf -*- file
 ## .sqshrc - My sqsh initialization file
 
-# Copyright (C) 2010-2018 Fabrice Niessen
+# Copyright (C) 2010-<<current-year()>> Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fni" at-symbol "pirilampo.org")>
 # Keywords: sqsh, dotfile, config
@@ -12,14 +12,16 @@
 # of using sqsh.  However, make sure that you `chmod go-rwx ~/.sqshrc',
 # otherwise you leave yourself wide open to attacks.
 
-\set username="afm"
-\set password="afm"
+\set username="sa"
+\set password="mysecret"
 \set hostname="localhost"
 \set database=[ARCHIBUS_23_2_HQ]
 
 #* Aliasing
 
 #** Display styles
+
+# \set colsep='| '
 
 # Currently supported styles are:
 # - horiz (or hor or horizontal) (*) = default
@@ -31,26 +33,24 @@
 # - pretty (*), and
 # - none.
 
-\alias goh='\go -m horiz | less'
+\alias goh='\go -m horiz | ${PAGER}'
 
-\alias gov='\go -m vert | less'
+\alias gov='\go -m vert | ${PAGER}'
 
 # *Very* useful for doing quick bcp commands from command line, and using
 # re-direction directly to a file!
-\alias gob='\go -m bcp'
+\alias gob='\go -m bcp | ${PAGER}'
 
 # Firefox.
 \alias gof='\go -m html | (cat > /tmp/sqsh-output.html; /mnt/c/Windows/explorer.exe file:///tmp/sqsh-output.html)'
 
-\alias gom='\go -m meta | less'
+\alias gom='\go -m meta | ${PAGER}'
 
-\alias gop='\go -m pretty -w80 | less'
+\alias gop='\go -m pretty -w80 | ${PAGER}'
 
 #** Aliases for T-SQL commands
-
-\alias statson='\loop -e "SET STATISTICS IO ON; SET STATISTICS TIME ON"'
-\alias statsoff='\loop -e "SET STATISTICS IO OFF; SET STATISTICS TIME OFF"'
-
+\alias statson='\loop -e "SET STATISTICS IO ON; SET STATISTICS TIME ON;"'
+\alias statsoff='\loop -e "SET STATISTICS IO OFF; SET STATISTICS TIME OFF;"'
 \alias planon='\loop -e "SET SHOWPLAN ON"'
 \alias planoff='\loop -e "SET SHOWPLAN OFF"'
 
@@ -60,7 +60,11 @@
 \alias tempdb='\loop -e "USE tempdb"'
 \alias master='\loop -e "USE master"'
 
-#** Other aliases
+#** Aliases for sqsh commands
+
+\alias DEV='\reconnect -SDEV -Usa -Pmysecret'
+\alias STG='\reconnect -SSTG -Usa -Pmysecret'
+\alias PRD='\reconnect -c -SPRD -Usa -Pmysecret'
 
 # Clear screen within sqsh session.
 \alias clear="\shell clear"
@@ -73,6 +77,8 @@
 \alias sh="\shell "
 
 \alias h="\history"
+
+\alias xx='\reset'
 
 \alias q="\exit"
 
