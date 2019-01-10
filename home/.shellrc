@@ -336,13 +336,13 @@ gmresize ()
 # find . -name "*png" | xargs -l -i basename -s ".png" "{}" | xargs -l -i  gm convert -quality 85% "{}.png" "{}.jpg"
 
 # List all files modified TODAY only (since start of day only, i.e. 00:00).
-alias today='find . -daystart -mtime 0 -type f -printf "  %CY-%Cm-%Cd %Ca %CH:%CM - %p\n"'
+alias today='find . -daystart -mtime 0 -type f -printf "  %CY-%Cm-%Cd %Ca %CH:%CM - %p\n" | sed "s|\./||"'
 
 # List all files modified YESTERDAY.
-alias yesterday='find . -daystart -mtime 1 -type f -printf "  %CY-%Cm-%Cd %Ca %CH:%CM - %p\n"'
+alias yesterday='find . -daystart -mtime 1 -type f -printf "  %CY-%Cm-%Cd %Ca %CH:%CM - %p\n" | sed "s|\./||"'
 
 # List all files modified THIS WEEK.
-alias thisweek='find . -mtime -7 -type f -printf "  %CY-%Cm-%Cd %Ca %CH:%CM - %p\n"'
+alias thisweek='find . -mtime -7 -type f -printf "  %CY-%Cm-%Cd %Ca %CH:%CM - %p\n" | sed "s|\./||"'
 
 export GS_OPTIONS="-sPAPERSIZE=a4"
 alias pdfmerge="gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=./pdf-joined.pdf" # pdfjoin
