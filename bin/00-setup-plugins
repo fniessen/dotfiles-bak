@@ -15,6 +15,7 @@ for repo in \
     https://github.com/fniessen/git-config.git \
     https://github.com/karlin/mintty-colors-solarized.git \
     https://github.com/robbyrussell/oh-my-zsh.git \
+    https://github.com/fniessen/refcard-SQL.git \
     https://github.com/fniessen/shellrc-leuven.git;
 do
     git clone $repo
@@ -29,7 +30,7 @@ do
     git clone $repo
 done
 
-cd "../themes/"
+cd "oh-my-zsh/custom/themes/"
 
 for repo in \
     https://github.com/bhilburn/powerlevel9k.git;
