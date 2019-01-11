@@ -5,6 +5,7 @@ rm -rf -v ~/.dotfiles/home/.emacs.d/auto-save-list/.*
 rm -rf -v ~/.dotfiles/home/.emacs.d/backups/*
 rm -rf -v ~/.dotfiles/home/.emacs.d/url/*
 rm -rf -v ~/.dotfiles/home/.gnus.d/cache/nnimap*
+rm -rf -v ~/.dotfiles/lib/received-emails
 rm -rf -v ~/.dotfiles/plugins/oh-my-zsh/cache/*
 rm -rf -v ~/.local/*
 
