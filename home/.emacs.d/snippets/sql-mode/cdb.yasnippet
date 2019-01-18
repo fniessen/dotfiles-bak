@@ -3,7 +3,7 @@
 USE master
 go
 
--- Drop the database if it already exists
+-- Drop the database if it already exists.
 IF EXISTS (SELECT name
         FROM sys.databases
         WHERE name = N'${1:database_name}')
