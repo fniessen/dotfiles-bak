@@ -1,14 +1,14 @@
 # name: Create unique cluster...
 # --
-IF EXISTS (SELECT name FROM sys.indexes WHERE name = N'${3:index_name}')
-    DROP INDEX $3 ON ${1:[schema].[owner_name]};
+IF EXISTS (SELECT name FROM sys.indexes WHERE name = N'unq_${3:index_name}')
+    DROP INDEX unq_$3 ON ${1:[schema].[owner_name]};
 go
 
-CREATE UNIQUE CLUSTERED INDEX $3
+CREATE UNIQUE CLUSTERED INDEX unq_$3
 ON $1 (${2:column})
 WITH
 PAD_INDEX,
-FILLFACTOR = ${3:fillfactor_value},
+FILLFACTOR = ${5:fillfactor_value},
 IGNORE_DUP_KEY,
 DROP_EXISTING,
 STATISTICS_NORECOMPUTE

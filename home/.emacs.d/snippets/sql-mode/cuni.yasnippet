@@ -1,10 +1,10 @@
 # name: Create unique nonclu...
 # --
-IF EXISTS (SELECT name FROM sys.indexes WHERE name = N'${3:index_name}')
-    DROP INDEX $3 ON ${1:[schema].[owner_name]};
+IF EXISTS (SELECT name FROM sys.indexes WHERE name = N'unq_${3:index_name}')
+    DROP INDEX unq_$3 ON ${1:[schema].[owner_name]};
 go
 
-CREATE UNIQUE NONCLUSTERED INDEX $3
+CREATE UNIQUE NONCLUSTERED INDEX unq_$3
 ON $1 (${2:column})
 --WITH
 --    PAD_INDEX,
@@ -13,6 +13,6 @@ ON $1 (${2:column})
 --    DROP_EXISTING = OFF,
 --    STATISTICS_NORECOMPUTE,
 --    SORT_IN_TEMPDB = OFF, .. as required
-ON ${3:filegroup_name}
+ON ${4:filegroup_name}
 go
 $0
