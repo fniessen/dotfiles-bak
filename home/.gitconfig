@@ -177,7 +177,7 @@
 
     today-all = !git log --since=midnight --no-merges --all
 
-    # when was this file last updated, on each local branch
+    # When was this file last updated, on each local branch.
     wwflu = "!f() { for b in $(git rev-parse --symbolic --branches); do echo -e `git log --format=%at:%ar -1 $b -- \"$1\"`\\\\t$b; done | sort -r | cut -f2 -d: ; }; f"
 
     forkdiff = !bash -c 'git diff $(git merge-base "$1" "$2") "$2" "${@: 3}" ' -
@@ -202,7 +202,7 @@
     ls-staged    = "!git status --porcelain -uno | grep -P '^[MA]' | awk '{ print $2 }'"
 
     ls-del  = ls-files -d
-    ls-mod  = ls-files -m   # this will include deleted files also
+    ls-mod  = ls-files -m   # This will include deleted files also.
     ls-new  = ls-files --exclude-standard -o
     # this one is a MUST have
     ls-ign  = ls-files --exclude-standard -o -i
@@ -358,9 +358,11 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     mm = merge --no-ff
 
     merge-check = "!f() { git merge --no-commit --no-ff $1; git merge --abort; echo 'Merge aborted'; }; f"
+# works for git fetch & git merge
 
     # Check how the merge of `dev' into master will go: git merge-dry-run dev.
     merge-dry-run = "!f() { grep -q 'changed in both' <<< $(git merge-tree $(git merge-base FETCH_HEAD $1) FETCH_HEAD $1) && echo 'Merge conflicts!' || echo 'No merge conflicts'; }; f"
+# DOESN'T work for git fetch & git merge
 
     # Extract the "changed in both" lines as well as the conflicting parts.
     merge-dry-run-conflicts = "!f() { git merge-tree $(git merge-base $1 $2) $1 $2 | sed -n '/+<<<<<<< .our/,/+>>>>>>> .their/p;/^changed in both/{n;N;N;s/^/#/mg;p}' | cdiff; }; f"
@@ -405,15 +407,15 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     ss = stash save
     ssave = stash save
 
- sshow = "!f() { git stash show stash^{/$@} -p; }; f" # Like sapply but shows it only
+    sshow = "!f() { git stash show stash^{/$@} -p; }; f" # Like sapply but shows it only
 
-  sapply = "!f() { git stash apply stash^{/$@}; }; f" # Find stash with name like text
+    sapply = "!f() { git stash apply stash^{/$@}; }; f" # Find stash with name like text
 
-  spop = "!f() { git stash pop stash@{$(git stashid $@)}; }; f" # Like sapply but pops it off
+    spop = "!f() { git stash pop stash@{$(git stashid $@)}; }; f" # Like sapply but pops it off
 
-  stashid = "!f() { git stash list | grep $@ | head -n 1 | sed -n 's/stash@{\\(.*\\)}.*/\\1/p'; }; f" # only accepts single word, no quotations
+    stashid = "!f() { git stash list | grep $@ | head -n 1 | sed -n 's/stash@{\\(.*\\)}.*/\\1/p'; }; f" # only accepts single word, no quotations
 
-  hide = stash save --include-untracked # hides all files, including untracked files (faster than using --all)
+    hide = stash save --include-untracked # hides all files, including untracked files (faster than using --all)
 
     sspatch = stash save --patch
     ssscratch = stash save --keep-index
