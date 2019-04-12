@@ -3,7 +3,7 @@
 # Looks
 ForegroundColour=108,131,134
 BackgroundColour=0,24,40
-CursorColour=255,255,128
+CursorColour=0,255,0
 Transparency=off
 OpaqueWhenFocused=yes
 CursorType=underscore
@@ -13,6 +13,7 @@ Font=Powerline Consolas
 FontHeight=8
 BoldAsFont=yes
 BoldAsColour=yes
+AllowBlinking=yes
 Locale=C
 Charset=UTF-8
 
