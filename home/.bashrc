@@ -45,8 +45,7 @@ reset_color="\[$(tput sgr0)\]"
 #*** PROMPT_COMMAND + PS1 --- Default interaction prompt
 
 # To be called just before the prompt is printed.
-leuven-before-prompt ()
-{
+leuven-before-prompt() {
     RET=$?
 
     # Set a color prompt (unless in Emacs).

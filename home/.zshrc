@@ -158,8 +158,7 @@ bindkey ';5C' forward-word
 bindkey ';5D' backward-word
 
 # Make Zsh beep like Bash when backspacing on an empty command line.
-backward-delete-char-beep ()
-{
+backward-delete-char-beep() {
     if (( CURSOR == 0 )); then
         zle beep
     fi
@@ -181,7 +180,7 @@ BEL=$(tput bel)
 PROMPT+='%(?::$BEL)'
 # Does not work on Bash on Ubuntu on Windows.
 
-function echo_blank() {
+echo_blank() {
     echo
 }
 
@@ -282,8 +281,7 @@ alias lastmonth='LG reg TLM'
 
 # Ledger -f FILE [OPTIONS] [COMMAND [PATTERNS]]
 # Ledger using `ledger', `hledger' or `beancount' (see `$LEDGER')
-Ledger ()
-{
+Ledger() {
     if [ $# -lt 1 ]; then
         cat << EOF > /dev/stderr
 Usage: $(basename $0) -f FILE [OPTIONS] [COMMAND [PATTERNS]]
@@ -294,7 +292,6 @@ EOF
     case ${LEDGER} in
         "beancount" )
             ;;
-
         * )   # default option
             shift;  # for the useless (but expected) `-f'
             ;;
@@ -304,14 +301,13 @@ EOF
     local LEDGER_FILE=sample-ledger.dat;
     case ${LEDGER} in
         "beancount" )
-            m4 -D LEDGER=beancount ${LEDGER_M4_FILE} |\
-            sed -e 's/\(.*\)(\(.*\)) \(.*\)/\1\3 | \2/g' > ${LEDGER_FILE}
+            m4 -D LEDGER=beancount ${LEDGER_M4_FILE} \
+                | sed -e 's/\(.*\)(\(.*\)) \(.*\)/\1\3 | \2/g' > ${LEDGER_FILE}
             bean-web ${LEDGER_FILE} $@   # beancount Web interface
             ;;
-
         * )   # default option
-            m4 ${LEDGER_M4_FILE} |\
-            sed -e 's/^@/;@/' > ${LEDGER_FILE}
+            m4 ${LEDGER_M4_FILE} \
+               | sed -e 's/^@/;@/' > ${LEDGER_FILE}
             ${LEDGER} -f ${LEDGER_FILE} $@
             ;;
     esac
@@ -326,11 +322,10 @@ compdef '_files -g "*"' start
 # Coloring stderr.
 STDERRRED=$'\e[1;31m'
 zmodload zsh/system
-color_err () {
+color_err() {
     # Sysread & syswrite are part of `zsh/system'.
     emulate -LR zsh
-    while sysread
-    do
+    while sysread; do
         syswrite -o 2 "${STDERRRED}${REPLY}$terminfo[sgr0]"
     done
 }
