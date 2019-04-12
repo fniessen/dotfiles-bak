@@ -14,7 +14,7 @@ PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
 # export BROWSER='/mnt/c/Windows/explorer.exe' # does not work.
 export BROWSER='/mnt/c/Program Files (x86)/Mozilla Firefox/firefox.exe'
 
-FILE="$HOME/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh" && test -f $FILE && . $FILE
+FILE="$HOME/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh" && test -f "$FILE" && . "$FILE"
 
 # XXX Check for MinTTY
 if [ -d /cygdrive/c/ ]; then
@@ -108,7 +108,7 @@ if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
 fi
 
 if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
-    . $ZSH/oh-my-zsh.sh
+    . "$ZSH"/oh-my-zsh.sh
 fi
 
 if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
@@ -284,12 +284,12 @@ alias lastmonth='LG reg TLM'
 Ledger() {
     if [ $# -lt 1 ]; then
         cat << EOF > /dev/stderr
-Usage: $(basename $0) -f FILE [OPTIONS] [COMMAND [PATTERNS]]
-    or $(basename $0) FILE   (if LEDGER=beancount)
+Usage: $(basename "$0") -f FILE [OPTIONS] [COMMAND [PATTERNS]]
+    or $(basename "$0") FILE   (if LEDGER=beancount)
 EOF
     fi
 
-    case ${LEDGER} in
+    case "$LEDGER" in
         "beancount" )
             ;;
         * )   # default option
@@ -299,19 +299,19 @@ EOF
     local LEDGER_M4_FILE=$1; shift;
 
     local LEDGER_FILE=sample-ledger.dat;
-    case ${LEDGER} in
+    case "$LEDGER" in
         "beancount" )
-            m4 -D LEDGER=beancount ${LEDGER_M4_FILE} \
-                | sed -e 's/\(.*\)(\(.*\)) \(.*\)/\1\3 | \2/g' > ${LEDGER_FILE}
-            bean-web ${LEDGER_FILE} $@   # beancount Web interface
+            m4 -D LEDGER=beancount "$LEDGER_M4_FILE" \
+                | sed -e 's/\(.*\)(\(.*\)) \(.*\)/\1\3 | \2/g' > "$LEDGER_FILE"
+            bean-web "$LEDGER_FILE" $@   # beancount Web interface
             ;;
         * )   # default option
-            m4 ${LEDGER_M4_FILE} \
-               | sed -e 's/^@/;@/' > ${LEDGER_FILE}
-            ${LEDGER} -f ${LEDGER_FILE} $@
+            m4 "$LEDGER_M4_FILE" \
+               | sed -e 's/^@/;@/' > "$LEDGER_FILE"
+            "$LEDGER" -f "$LEDGER_FILE" $@
             ;;
     esac
-    rm ${LEDGER_FILE}
+    rm "$LEDGER_FILE"
 }
 
 # Case-insensitive completion.
@@ -326,18 +326,18 @@ color_err() {
     # Sysread & syswrite are part of `zsh/system'.
     emulate -LR zsh
     while sysread; do
-        syswrite -o 2 "${STDERRRED}${REPLY}$terminfo[sgr0]"
+        syswrite -o 2 "$STDERRRED$REPLY$terminfo[sgr0]"
     done
 }
 
 exec 2> >( color_err )
 
 # Source common settings.
-. ${HOME}/.shellrc                      # Error displayed if not found.
+. "$HOME"/.shellrc                      # Error displayed if not found.
 
 # Enable overriding.
-if [ -f ${HOME}/.zshrc_local ]; then
-    . ${HOME}/.zshrc_local
+if [ -f "$HOME"/.zshrc_local ]; then
+    . "$HOME"/.zshrc_local
 fi
 
 #* Local Variables

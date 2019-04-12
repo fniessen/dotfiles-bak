@@ -9,9 +9,8 @@
 #* PATH
 
 # Extend the PATH var (where to look for executable files).
-for MAYBE_PATH in "${HOME}/.dotfiles/bin" \
-                  "${HOME}/.dotfiles/expect";
-do
+for MAYBE_PATH in "$HOME"/.dotfiles/bin \
+                  "$HOME"/.dotfiles/expect; do
     # `-e' or `-x'?
     if [ -d "$MAYBE_PATH" ]; then
         PATH="$MAYBE_PATH:$PATH"
@@ -21,7 +20,7 @@ done
 # Extend the PATH var (where to look for executable files).  For Cygwin only.
 case $(uname -s) in
     CYGWIN*)
-        for MAYBE_CYG_PATH in "${HOME}/.dotfiles/winbin"; do
+        for MAYBE_CYG_PATH in "$HOME"/.dotfiles/winbin; do
             # `-e' or `-x'?
             if [ -d "$MAYBE_CYG_PATH" ]; then
                 PATH="$MAYBE_CYG_PATH:$PATH"
@@ -44,7 +43,7 @@ export CDPATH=".:~:/cygdrive/d/Dev/Tools/Tomcat"
 # set MANPATH so it includes user's private man if it exists
 # do the same with MANPATH
 #if [ -d "$HOME/man" ]; then
-#    MANPATH="$HOME/man":"${MANPATH}"
+#    MANPATH="$HOME/man":"$MANPATH"
 #    export MANPATH
 #fi
 
@@ -243,13 +242,13 @@ alias svn-find="find . -not \( -name .svn -prune \)"
 # Grep a string in every SVN revision of a file.
 # Usage: svn-grep-all-rev PATTERN FILE
 svn-grep-all-rev() {
-    svn log $2 \
+    svn log "$2" \
         | perl -n -e 'print "$1\n" if m/^r(\d*)\s+/' \
         | (
               while read revision; do
                   printf "\e[0;33m%s\e[0m\n" "Revision $revision:"
-                  svn cat -r $revision $2 | grep $1
-                  printf "\n"
+                  svn cat -r "$revision" "$2" | grep "$1"
+                  printf '\n'
               done
           )
 }
@@ -261,12 +260,12 @@ alias svn-log="svn log | perl -l40pe 's/^-+/\n/' | less"
 
 # svn-show release-number
 svn-show() {
-    svn diff -c $1 | less
+    svn diff -c "$1" | less
 }
 
 # svn-showtool 123 path/to/file
 svn-showtool() {
-    svn diff --diff-cmd='meld' -c $1 $2
+    svn diff --diff-cmd='meld' -c "$1" "$2"
 }
 
 # svn-whatchanged [path/to/file]
@@ -274,17 +273,17 @@ alias svn-whatchanged="svn log -v"
 
 # svn-logfile path/to/file
 svn-logfile() {
-    svn log -q $1 | grep "^r"
+    svn log -q "$1" | grep "^r"
 }
 
 # svn-unmodify path/to/file
 svn-unmodify() {
-    svn revert $1
+    svn revert "$1"
 }
 
 # svn-logfile-p path/to/file
 svn-logfile-p() {
-    svn log --diff $1 | less
+    svn log --diff "$1" | less
 }
 
 alias svn-nevermind='read -p "Destroy all local changes? [y/N]" && [[ $REPLY =~ ^[yY] ]] && svn revert . -R && rm -rf $(awk -f <(echo "/^?/{print \$2}") <(svn status) ;)'
@@ -367,9 +366,9 @@ swap() {
         return 1
     fi
     tmpfile=/tmp/.swapper.$$.$RANDOM
-    mv -f $1 $tmpfile
-    mv -f $2 $1
-    mv -f $tmpfile $2
+    mv -f "$1" $tmpfile
+    mv -f "$2" "$1"
+    mv -f $tmpfile "$2"
     return 0
 }
 

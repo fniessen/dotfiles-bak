@@ -18,7 +18,7 @@ fi
 [[ "$-" != *i* ]] && return
 
 # Source global definitions only if the session is interactive.
-if ([ $(expr index "$-" i) -ne 0 ] && [ -f /etc/bashrc ]); then
+if [ $(expr index "$-" i) -ne 0 ] && [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
@@ -63,9 +63,9 @@ leuven-before-prompt() {
 
     # Colorful prompt, based on whether the previous command succeeded or not.
     if [ $RET -eq 0 ]; then
-        HILIT_RET=${GREEN}
+        HILIT_RET=$GREEN
     else
-        HILIT_RET=${RED}
+        HILIT_RET=$RED
     fi
 
     # Replace the `$HOME' prefix by `~' in the current directory.
@@ -79,7 +79,7 @@ leuven-before-prompt() {
     local pwd_max_length=15
 
     if [ ${#myPWD} -gt $pwd_max_length ]; then
-        local pwd_offset=$(( ${#myPWD} - $pwd_max_length ))
+        local pwd_offset=$(( ${#myPWD} - pwd_max_length ))
         myPWD="...${myPWD:$pwd_offset:$pwd_max_length}"
     fi
 
@@ -150,7 +150,7 @@ complete -A hostname ssh telnet nmap ftp ping host traceroute nslookup
 # basename=${file%/*}
 
 # Source common settings.
-. ${HOME}/.shellrc                      # Error displayed if not found.
+. "$HOME"/.shellrc                      # Error displayed if not found.
 
 #* Local Variables
 
