@@ -32,13 +32,13 @@ HISTCONTROL=ignoredups
 #** Controlling the Prompt
 
 # Regular colors.
-green="\[$(tput setaf 2)\]"
-yellow="\[$(tput setaf 3)\]"
+grn="\[$(tput setaf 2)\]"
+yel="\[$(tput setaf 3)\]"
 
 # Bold colors.
-BLACK="\[$(tput setaf 0; tput bold)\]"
+BLK="\[$(tput setaf 0; tput bold)\]"
 RED="\[$(tput setaf 1; tput bold)\]"
-GREEN="\[$(tput setaf 2; tput bold)\]"
+GRN="\[$(tput setaf 2; tput bold)\]"
 
 reset_color="\[$(tput sgr0)\]"
 
@@ -63,7 +63,7 @@ leuven-before-prompt() {
 
     # Colorful prompt, based on whether the previous command succeeded or not.
     if [ $RET -eq 0 ]; then
-        HILIT_RET=$GREEN
+        HILIT_RET=$GRN
     else
         HILIT_RET=$RED
     fi
@@ -91,9 +91,9 @@ leuven-before-prompt() {
     fi
 
     if [ "$color_prompt" = "yes" ]; then
-        PS1="${green}\u@\h${BLACK}:${reset_color}${yellow}${myPWD}${HILIT_RET} ${RET}${reset_color}${PROMPTCHAR} "
+        PS1="$grn\u@\h$BLK:${reset_color}$yel$myPWD${HILIT_RET} $RET${reset_color}$PROMPTCHAR "
     else
-        PS1="\u@\h:${myPWD} ${RET}${PROMPTCHAR} "
+        PS1="\u@\h:$myPWD $RET$PROMPTCHAR "
     fi
 }
 
@@ -117,7 +117,7 @@ esac
 #*** PS4 --- Used by "set -x" to prefix tracing output
 
 # Get line numbers when you run with `-x'.
-PS4='+'${green}'[$0:${LINENO}]+ '${reset_color}
+PS4='+'$grn'[$0:$LINENO]+ '${reset_color}
 
 # Permissions on newly created files.
 umask 022                               # Prevent new dirs and files from being

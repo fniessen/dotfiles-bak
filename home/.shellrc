@@ -35,8 +35,8 @@ if [[ $EUID -ne 0 ]]; then
     PATH="$PATH:."
 fi
 
-# Search current directory, home directory, and Tomcat folder
-export CDPATH=".:~:/cygdrive/d/Dev/Tools/Tomcat"
+# Search current directory and home directory.
+export CDPATH=".:~"
 
 #* MANPATH
 
@@ -112,7 +112,7 @@ for editor in emacsclientw emacsclient emacs; do
                 ;;
         esac
 
-        alias e="$EDITOR"
+        alias e='$EDITOR'
         break
     fi
 done
@@ -217,7 +217,7 @@ alias -- -='cd -'
 alias d='dirs -v'
 
 alias t='tail -f'
-alias p="$PAGER"
+alias p='$PAGER'
 alias m='man'
 alias s='sudo'
 
@@ -292,7 +292,7 @@ alias hgrep="history | grep -i"
 
 org_test() {
     (
-        cd "$HOME/Public/Repositories/org-mode";
+        cd "$HOME"/Public/Repositories/org-mode
         mkdir /tmp/tmp-orgtest 2> /dev/null # TMPDIR must exist!
         TMPDIR=/tmp/tmp-orgtest \
             emacs -Q --batch -L lisp/ -L testing/ -l org-test.el --eval '(setq org-confirm-babel-evaluate nil)' -f org-test-run-batch-tests
@@ -350,9 +350,10 @@ alias booklet="psbook | psnup -2 | pstops '2:0,1U(21cm,29.7cm)'"
 # clean [-r] - Remove useless files (recursively).
 clean() {
     if [ "$1" = "-r" ]; then
-        find . \( -name "#*" -o -name "*~" -o -name ".*~" -o \
-            -name "*.~[0-9]*~"\ -o -name ".*.~[0-9]*~" -o \
-            -name "*.~BASE~" -o -name ".*.~BASE~" \) -ok rm "{}" ";"
+        find . \( -name "#*" -o -name "*~" -o -name ".*~" \
+             -o -name "*.~[0-9]*~"\ -o -name ".*.~[0-9]*~" \
+             -o -name "*.~BASE~" -o -name ".*.~BASE~" \) \
+             -ok rm "{}" ";"
     else
         rm -i \#* *~ .*~ *.~[0-9]*~ .*.~[0-9]*~ *.~BASE~ .*.~BASE~
     fi
@@ -363,7 +364,7 @@ clean() {
 # keep the old version.
 swap() {
     if [ $# != 2 ]; then
-        return 1
+        return 2
     fi
     tmpfile=/tmp/.swapper.$$.$RANDOM
     mv -f "$1" $tmpfile
@@ -374,7 +375,7 @@ swap() {
 
 saneperms() {
     find . -type d -print0 | xargs -0 chmod 755
-    find . -type f -print0 | xargs -0 chmod ${1:=644}
+    find . -type f -print0 | xargs -0 chmod "${1:=644}"
 }
 
 # # Search for various types or README file in dir and display them in $PAGER.
@@ -396,11 +397,11 @@ safetmp() {
 
 # Immediately opens the first match.
 texman() {
-    locate $* | grep pdf | grep texlive | head -1 | xargs open;
+    locate "$*" | grep pdf | grep texlive | head -1 | xargs open
 }
 
 texlist() {
-    locate $* | grep "\(pdf\|dvi\)" | grep "\ (texlive\|gwTeX\)";
+    locate "$*" | grep "\(pdf\|dvi\)" | grep "\ (texlive\|gwTeX\)"
 }
 
 alias sp=sendpatch

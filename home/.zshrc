@@ -8,7 +8,7 @@
 #* Code:
 
 # Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
-PS1=$'%{\e]0;%d\a%}\n%F{green}%n@%m %F{yellow}%d%f\n%# '
+PS1=$'%{\e]0;%d\a%}\n%F{grn}%n@%m %F{yel}%d%f\n%# '
 
 # # For Bash on Ubuntu on Windows.
 # export BROWSER='/mnt/c/Windows/explorer.exe' # does not work.
@@ -45,11 +45,11 @@ if [ -r "$ZSH" ]; then
             rev=$(svn_get_rev_nr)
             branch=$(svn_get_branch_name)
             if [[ $(svn_dirty_choose_pwd 1 0) -eq 1 ]]; then
-                prompt_segment yellow black
+                prompt_segment yel blk
                 echo -n "$rev@$branch"
                 echo -n " ±"
             else
-                prompt_segment green black
+                prompt_segment grn blk
                 echo -n "$rev@$branch"
             fi
         fi
@@ -255,7 +255,9 @@ alias -g GLMONTH=' --since=1.month.ago'
 alias -g GLYEAR=' --since=1.year.ago'
 
 # When entering a directory, list the contents.
-cd() { builtin cd "$@" && ls; }
+cd() {
+    builtin cd "$@" && ls
+}
 
 export LEDGER=ledger
 export LEDGER_FILE=/Users/fni/Personal/Business/Accounting/LEDGER.dat
@@ -292,13 +294,13 @@ EOF
     case "$LEDGER" in
         "beancount" )
             ;;
-        * )   # default option
-            shift;  # for the useless (but expected) `-f'
+        * )                            # Default option.
+            shift                       # For the useless (but expected) `-f'.
             ;;
     esac
-    local LEDGER_M4_FILE=$1; shift;
+    local LEDGER_M4_FILE=$1; shift
 
-    local LEDGER_FILE=sample-ledger.dat;
+    local LEDGER_FILE=sample-ledger.dat
     case "$LEDGER" in
         "beancount" )
             m4 -D LEDGER=beancount "$LEDGER_M4_FILE" \
