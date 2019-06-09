@@ -3,12 +3,15 @@
 SERVER=192.168.0.176
 USERNAME=nimda
 
+SRC="/cygdrive/d/Users/fni/"
+DEST="/volume1/Backup/XIPHIAS/D/Users/fni/"
+
 rsync --verbose --recursive --update --times --delete --compress --human-readable --progress \
       --links \
       --filter="- @eaDir" --filter="- *@SynoEAStream" \
-      --rsh="ssh -p 22 -i rsync-keys-xiphias" \
+      --rsh="ssh -p 22 -i ~/.ssh/rsync-keys-xiphias" \
       --rsync-path=/usr/bin/rsync \
-      "/cygdrive/d/Users/fni/" $USERNAME@$SERVER:/volume1/Backup/XIPHIAS/D/Users/fni
+      $SRC $USERNAME@$SERVER:$DEST
 
 # Options
 # -v, --verbose               increase verbosity

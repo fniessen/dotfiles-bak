@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+SERVER=192.168.0.176
+USERNAME=nimda
+
+SRC="/cygdrive/d/Users/fni/"
+DEST="/volume1/Backup/XIPHIAS/D/Users/fni/"
+
+SRCLIST=$(find $SRC -type f -exec md5sum {} + | sort -k 2 | sed "s%*$SRC%%" > srclist.txt)
+DESTLIST=$(ssh $USERNAME@$SERVER "find $DEST -type f -exec md5sum {} + | sort -k 2 | sed \"s% $DEST%%\"" > destlist.txt)
+
+# cat srclist.txt
+# cat destlist.txt
+
+diff srclist.txt destlist.txt && echo "Directories $SRC and $DEST are identical"
+
+rm srclist.txt
+rm destlist.txt
