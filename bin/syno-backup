@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 rsync --verbose --recursive --update --times --delete --compress --human-readable --progress \
-      --links --itemize-changes \
+      --links \
       --filter="- @eaDir" --filter="- *@SynoEAStream" \
       --rsh="ssh -p 22 -i rsync-keys-xiphias" \
       --rsync-path=/usr/bin/rsync \
