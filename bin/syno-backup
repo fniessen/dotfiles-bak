@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
+SERVER=192.168.0.176
+USERNAME=nimda
+
 rsync --verbose --recursive --update --times --delete --compress --human-readable --progress \
       --links \
       --filter="- @eaDir" --filter="- *@SynoEAStream" \
       --rsh="ssh -p 22 -i rsync-keys-xiphias" \
       --rsync-path=/usr/bin/rsync \
-      "/cygdrive/d/Users/fni/" nimda@192.168.0.176:/volume1/Backup/XIPHIAS/D/Users/fni
+      "/cygdrive/d/Users/fni/" $USERNAME@$SERVER:/volume1/Backup/XIPHIAS/D/Users/fni
 
 # Options
 # -v, --verbose               increase verbosity
