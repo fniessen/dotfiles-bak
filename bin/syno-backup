@@ -5,7 +5,7 @@ rsync --verbose --recursive --update --times --delete --compress --human-readabl
       --filter="- @eaDir" --filter="- *@SynoEAStream" \
       --rsh="ssh -p 22 -i rsync-keys-xiphias" \
       --rsync-path=/usr/bin/rsync \
-      "/cygdrive/d/Users/fni/" nimda@192.168.0.176:/volume1/Backup/XIPHIAS/
+      "/cygdrive/d/Users/fni/" nimda@192.168.0.176:/volume1/Backup/XIPHIAS/D/Users/fni
 
 # Options
 # -v, --verbose               increase verbosity
