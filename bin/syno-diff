@@ -6,6 +6,6 @@ USERNAME=nimda
 SRC="/cygdrive/d/Users/fni/"
 DEST="/volume1/Backup/XIPHIAS/D/Users/fni/"
 
-diff <(find $SRC -type f -exec md5sum {} + | sort -k 2 | sed "s%*$SRC%%") \
-     <(ssh $USERNAME@$SERVER "find $DEST -type f -exec md5sum {} + | sort -k 2 | sed \"s% $DEST%%\"") \
+diff <(find $SRC -type f -exec md5sum {} + | sort -k 2 | sed "s/*$SRC//") \
+     <(ssh $USERNAME@$SERVER "find $DEST -type f -exec md5sum {} + | sort -k 2 | sed \"s/ $DEST//\"") \
     && echo "Directories $SRC and $DEST are identical"
