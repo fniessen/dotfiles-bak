@@ -4,4 +4,5 @@ fdupes -r . \
     | grep -v "/.git/" \
     | grep -v "/.gitkeep" \
     | grep -v "/.emacs.d/backups" \
-    | uniq
+    | uniq \
+    | awk 'BEGIN {RS="\n\n"; ORS="\n\n"; FS="\n"} {if (NF>1) print}'
