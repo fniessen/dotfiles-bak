@@ -55,17 +55,22 @@ repo, and do:
 
 #+begin_src shell
 sudo apt install git
-git clone https://github.com/fniessen/dotfiles.git ~/.dotfiles
-chmod +x ~/.dotfiles/install && ~/.dotfiles/install
-
-# Add plugins.
-cd ~/.dotfiles/ && ./bin/00-setup-plugins
 #+end_src
 
 #+begin_note
 If you try this on a brand new Windows PC, you need Cygwin installed with the
 ~git~ package.
 #+end_note
+
+#+begin_src shell
+git clone https://github.com/fniessen/dotfiles.git ~/.dotfiles
+chmod +x ~/.dotfiles/install && ~/.dotfiles/install
+
+# Add plugins.
+cd ~/.dotfiles/ && ./bin/00-setup-plugins
+
+sudo apt install zsh
+#+end_src
 
 * Structure
 
@@ -147,11 +152,11 @@ export PATH=~/.dotfiles/bin:$PATH
 
 * Oh-My-Zshell
 
-Download *Powerline-compliant fonts*:
-- https://github.com/Lokaltog/powerline-fonts
-- https://github.com/runsisi/consolas-font-for-powerline
+Download *Powerline-compliant fonts*: https://github.com/powerline/fonts
+# - https://github.com/Lokaltog/powerline-fonts
+# - https://github.com/runsisi/consolas-font-for-powerline
 
-Install one of the following nice fonts:
+Install one of the following nice fonts' ~.ttf~ files into Windows:
 - Powerline Consolas
 - Sauce Code Powerline (Source Code Pro for Powerline)
 - DejaVu Sans Mono for Powerline
