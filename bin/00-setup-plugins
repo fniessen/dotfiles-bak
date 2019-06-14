@@ -30,8 +30,7 @@ do
     git clone $repo
 done
 
-mkdir "oh-my-zsh/custom/themes/"
-cd "oh-my-zsh/custom/themes/"
+cd "../themes/"
 
 for repo in \
     https://github.com/bhilburn/powerlevel9k.git;
