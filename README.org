@@ -54,8 +54,9 @@ To install the dotfiles on a new machine, we can do so easily by cloning the
 repo, and do:
 
 #+begin_src shell
+sudo apt install git
 git clone https://github.com/fniessen/dotfiles.git ~/.dotfiles
-~/.dotfiles/install
+chmod +x ~/.dotfiles/install && ~/.dotfiles/install
 
 # Add plugins.
 cd ~/.dotfiles/ && ./bin/00-setup-plugins
