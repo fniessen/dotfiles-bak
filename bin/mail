@@ -13,7 +13,7 @@ EOF
 Help ()
 {
     cat << EOF
-This is $CMD, version: 20161107.1719.
+This is $CMD, version: 20190529.1830.
 
 Usage: $CMD [-s SUBJECT] [-a ATTACHMENT]... [-c CC-ADDR] [-b BCC-ADDR] [-f FROM-ADDR] TO-ADDR
 Send simple mail.
@@ -33,7 +33,7 @@ EOF
 }
 
 # command name
-CMD=$(basename $0)
+CMD=$(basename "$0")
 
 . shellutils || exit 2
 
@@ -49,9 +49,8 @@ SUBJECT="none"
 ATTFILES=""                             # files to be attached
 CC=""
 BCC=""
-FROM="<$(whoami)@$(echo $(hostname).com | tr '[:upper:]' '[:lower:]')>"
-: ${SMTP:="smtp"}                       # set var if not already set
-BODY="--"                               # stdin.txt
+FROM="<$(whoami)@$(echo "$(hostname)".com | tr '[:upper:]' '[:lower:]')>"
+: "${SMTP:=smtp}"                     # set var if not already set
 
 while getopts "s:c:b:f:a:h" opt
 do
@@ -65,7 +64,7 @@ do
         *) Usage;;
     esac
 done
-shift $(($OPTIND - 1))
+shift $((OPTIND - 1))
 
 MAILTO="$1"
 if [ "$MAILTO" = "" ]; then
@@ -81,16 +80,16 @@ files_executables_p "blat"
 ATT_SWITCH=""
 for attach in $ATTFILES
 do
-    if [ ! -r $attach ]
+    if [ ! -r "$attach" ]
     then
         die "File $attach does not exist or is not readable."
     else
         # binary vs text file
-        if [ "$(file --brief --mime $attach 2> /dev/null | cut -d/ -f 1)" = "text" ]
+        if [ "$(file --brief --mime "$attach" 2> /dev/null | cut -d/ -f 1)" = "text" ]
         then
-            ATT_SWITCH="$ATT_SWITCH -attacht $(cygpath -w $attach)"
+            ATT_SWITCH="$ATT_SWITCH -attacht $(cygpath -w "$attach")"
         else
-            ATT_SWITCH="$ATT_SWITCH -attach $(cygpath -w $attach)"
+            ATT_SWITCH="$ATT_SWITCH -attach $(cygpath -w "$attach")"
         fi
     fi
 done
@@ -102,11 +101,11 @@ BCC_SWITCH=""
 [ "$BCC" = "" ] || BCC_SWITCH="-bcc ${BCC}"
 
 blat -to "$MAILTO" \
-     $CC_SWITCH \
-     $BCC_SWITCH \
+     "$CC_SWITCH" \
+     "$BCC_SWITCH" \
      -subject "$SUBJECT" \
      -f "$FROM" \
      -server "$SMTP" \
-     $ATT_SWITCH
+     "$ATT_SWITCH"
 
 # mail ends here
