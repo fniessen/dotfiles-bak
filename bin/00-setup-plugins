@@ -30,6 +30,7 @@ do
     git clone $repo
 done
 
+mkdir "oh-my-zsh/custom/themes/"
 cd "oh-my-zsh/custom/themes/"
 
 for repo in \
