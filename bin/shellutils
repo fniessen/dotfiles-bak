@@ -5,15 +5,13 @@ die () {
 }
 
 files_executables_p () {
-    for x in $@
-    do
+    for x in $@; do
         command -v $x > /dev/null || die "$x not found."
     done
 }
 
 files_cygwin_executables_p () {
-    for x in $@
-    do
+    for x in $@; do
         [ "$(command -v $x)" = "/usr/bin/$x" ] \
             || die "$x is not a Cygwin executable."
     done
@@ -23,7 +21,26 @@ pname () {
     ps -o command= -p $PPID | tail -n 1 | awk '{print $1}' | awk -F/ '{print $NF}'
 }
 
-fr () {
-    find ./ -iname "*"$@"*" -printf "%T@ %Td-%Tb-%TY %Tk:%TM %p\n" | sort -n |
-    cut -d " " -f 2- | grep -i "$@";
+# Date Created.
+dc () {
+    find ./ -iname "*"$@"*" -printf "%A@ %Ad-%Ab-%AY %Ak:%AM %p\n" \
+        | sort -n \
+        | cut -d " " -f 2- \
+        | grep -i "$@";
+}
+
+# Date Modified.
+dm () {
+    find ./ -iname "*"$@"*" -printf "%T@ %Td-%Tb-%TY %Tk:%TM %p\n" \
+        | sort -n \
+        | cut -d " " -f 2- \
+        | grep -i "$@";
+}
+
+# Recent Change.
+rc () {
+    find ./ -iname "*"$@"*" -printf "%C@ %Cd-%Cb-%CY %Ck:%CM %p\n" \
+        | sort -n \
+        | cut -d " " -f 2- \
+        | grep -i "$@";
 }
