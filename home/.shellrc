@@ -135,9 +135,6 @@ ec() {
     emacsclient --no-wait "$1"
 }
 
-# Grep through the aliases.
-alias agrep='alias | grep -i'
-
 LS_OPTIONS="$LS_OPTIONS --show-control-chars"
 
 # Make `ls' produce ISO 8601 format.
@@ -212,6 +209,9 @@ alias .....='cd ../../../..'
 
 # Aliases '-' to 'cd -'.
 alias -- -='cd -'
+
+alias c:='cd /mnt/c'
+alias d:='cd /mnt/d'
 
 # list last used directories (directory history).
 alias d='dirs -v'
@@ -403,8 +403,6 @@ texman() {
 texlist() {
     locate "$*" | grep "\(pdf\|dvi\)" | grep "\ (texlive\|gwTeX\)"
 }
-
-alias sp=sendpatch
 
 # This is for the sake of Emacs.
 # Local Variables:
