@@ -23,7 +23,7 @@ pname () {
 
 # Date Created.
 dc () {
-    find ./ -iname "*"$@"*" -printf "%A@ %Ad-%Ab-%AY %Ak:%AM %p\n" \
+    find ./ -iname "*"$@"*" -printf "%A@ %AY-%Am-%Ad %Aa %AH:%AM - %p\n" \
         | sort -n \
         | cut -d " " -f 2- \
         | grep -i "$@";
@@ -31,7 +31,7 @@ dc () {
 
 # Date Modified.
 dm () {
-    find ./ -iname "*"$@"*" -printf "%T@ %Td-%Tb-%TY %Tk:%TM %p\n" \
+    find ./ -iname "*"$@"*" -printf "%T@ %TY-%Tm-%Td %Ta %TH:%TM - %p\n" \
         | sort -n \
         | cut -d " " -f 2- \
         | grep -i "$@";
@@ -39,7 +39,7 @@ dm () {
 
 # Recent Change.
 rc () {
-    find ./ -iname "*"$@"*" -printf "%C@ %Cd-%Cb-%CY %Ck:%CM %p\n" \
+    find ./ -iname "*"$@"*" -printf "%C@ %CY-%Cm-%Cd %Ca %CH:%CM - %p\n" \
         | sort -n \
         | cut -d " " -f 2- \
         | grep -i "$@";
