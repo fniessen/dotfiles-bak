@@ -483,6 +483,8 @@ upstream-name = !git for-each-ref --format='%(upstream:short)' $(git symbolic-re
 
     sha1-tag = '!f() { git name-rev --name-only "$@"; }; f'
 
+    chlogm =  !sh -c 'git log $1...$2  --pretty=format:\"%s [[http://github.com/$3/$4/commit/%H][view commit]]\"' -
+
     export = archive -o latest.tar.gz -9 --prefix=latest/
 
   # # Deploy
