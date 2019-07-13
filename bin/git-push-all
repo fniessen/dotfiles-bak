@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for repo in $(find . -name ".git" -type d | rev | cut -c 6- | rev); do
+    echo "$repo:"
+    # git -C "$repo" status
+    git -C "$repo" out && git -C "$repo" push
+    echo
+done
