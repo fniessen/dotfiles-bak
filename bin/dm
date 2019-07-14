@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Date Modified.
+find ./ -iname "*"$@"*" -printf "%T@ %TY-%Tm-%Td %Ta %TH:%TM - %p\n" \
+    | sort -n \
+    | cut -d " " -f 2- \
+    | grep -i "$@";
