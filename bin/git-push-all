@@ -11,7 +11,7 @@ for repo in $(find . -name ".git" -type d | rev | cut -c 6- | rev); do
             echo "No changes to push"
         fi
     else
-        echo "No remote"
+        echo "No (accessible) remote"
     fi
     echo
 done
