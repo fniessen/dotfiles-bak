@@ -20,27 +20,3 @@ files_cygwin_executables_p () {
 pname () {
     ps -o command= -p $PPID | tail -n 1 | awk '{print $1}' | awk -F/ '{print $NF}'
 }
-
-# Date Created.
-dc () {
-    find ./ -iname "*"$@"*" -printf "%A@ %AY-%Am-%Ad %Aa %AH:%AM - %p\n" \
-        | sort -n \
-        | cut -d " " -f 2- \
-        | grep -i "$@";
-}
-
-# Date Modified.
-dm () {
-    find ./ -iname "*"$@"*" -printf "%T@ %TY-%Tm-%Td %Ta %TH:%TM - %p\n" \
-        | sort -n \
-        | cut -d " " -f 2- \
-        | grep -i "$@";
-}
-
-# Recent Change.
-rc () {
-    find ./ -iname "*"$@"*" -printf "%C@ %CY-%Cm-%Cd %Ca %CH:%CM - %p\n" \
-        | sort -n \
-        | cut -d " " -f 2- \
-        | grep -i "$@";
-}
