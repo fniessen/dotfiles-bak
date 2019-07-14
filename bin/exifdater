@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 echo "Instead, use:"
 echo "exiftool -d %Y%m%d_%H%M%S%%_c.%%e \"-TestName<CreateDate\" DIR (dry-run)"
