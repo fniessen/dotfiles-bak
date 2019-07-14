@@ -23,6 +23,7 @@ find . -type f \
     -o -name "*.ini" \
     -o -name "*.jar" \
     -o -name "*.java" \
+    -o -name "*.jpeg" \
     -o -name "*.jpg" \
     -o -name "*.js" \
     -o -name "*.json" \
@@ -33,6 +34,7 @@ find . -type f \
     -o -name "*.m4" \
     -o -name "*.md5" \
     -o -name "*.model" \
+    -o -name "*.mp4" \
     -o -name "*.org" \
     -o -name "*.orig" \
     -o -name "*.pack" \
@@ -57,6 +59,7 @@ find . -type f \
     -o -name "*.xsl" \
     -o -name "*.xslt" \
     -o -name "*.xslx" \
+    -o -name "*.zip" \
     -o -name "ChangeLog" \
     -o -name "Makefile" \
     -o -name "README" \
