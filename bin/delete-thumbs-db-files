@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+find . -iname "Thumbs.db" | xargs rm -rf -v
+                                        # '-prune' doesn't work for me.
