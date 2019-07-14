@@ -13,6 +13,7 @@ find . -type f \
     -o -name "*.class" \
     -o -name "*.css" \
     -o -name "*.csv" \
+    -o -name "*.docx" \
     -o -name "*.dtd" \
     -o -name "*.gif" \
     -o -name "*.gitignore" \
@@ -55,6 +56,7 @@ find . -type f \
     -o -name "*.xml" \
     -o -name "*.xsl" \
     -o -name "*.xslt" \
+    -o -name "*.xslx" \
     -o -name "ChangeLog" \
     -o -name "Makefile" \
     -o -name "README" \
