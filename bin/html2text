@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 # An advanced HTML-to-text converter
 # Usage: html2text input-file
 
