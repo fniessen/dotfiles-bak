@@ -3,7 +3,7 @@ REMOTES="$@";
 if [ -z "$REMOTES" ]; then
     REMOTES=$(git remote);
 fi
-REMOTES=$(echo "$REMOTES" | xargs -n1 echo)
+REMOTES=$(echo "$REMOTES" | xargs -n 1 echo)
 
 CLB=$(git branch -l | awk '/^\*/{print $2}');
 
