@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-for repo in $(find . -name ".git" -type d | rev | cut -c 6- | rev); do
+for repo in $(find . -name ".git" -type d | rev | cut -c 6- | rev | sed "s#^\./##"); do
     echo "Current repository: $repo"
     git -C "$repo" ls-remote >/dev/null 2>&1
     if [ $? -eq 0 ]; then
