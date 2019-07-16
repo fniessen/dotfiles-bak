@@ -224,8 +224,7 @@
 
     related = !sh -c 'git log --follow --format=format:%H $1 | xargs -L1 git diff-tree --no-commit-id --name-only -r | sort | uniq -c | sort -b -n -r'
 
-    who = shortlog -n -s --
-    # who = shortlog -n -s -e --
+    who = shortlog -n -s -e --no-merges --
 
     praise = blame -w
     archeology = blame -w -C -n
