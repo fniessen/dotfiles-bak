@@ -170,9 +170,6 @@ alias dus='du -ms * | sort -rn'         # Ordered by size.
 
 alias sizes="du --max-depth=1 -k | sort -nr | cut -f2 | xargs -d '\n' du -sh"
 
-alias fd='find . -type d -name'
-alias ff='find . -type f -name'
-
 # Play safe!  Prevent some accidental mistakes.
 alias rm='rm -i'                        # Confirm removing file.
 alias cp='cp -i'                        # Confirm copy over an existing file.
