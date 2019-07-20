@@ -1,6 +1,6 @@
 ;;; init.el --- Emacs configuration file
 
-;; Copyright (C) 2012-2018 Fabrice Niessen
+;; Copyright (C) 2012-2019 Fabrice Niessen
 
 ;;; Commentary:
 
@@ -53,7 +53,7 @@
    ((font-info "Hack")
     (set-frame-font "Hack-8" nil t))
    ((font-info "DejaVu Sans Mono")
-    (set-frame-font "DejaVu Sans Mono-8" nil t))
+    (set-frame-font "DejaVu Sans Mono-10" nil t))
    ;; ((font-info "Lucida Sans Typewriter")
    ;;  (set-frame-font "Lucida Sans Typewriter-9" nil t))
    ;; ((font-info "Lucida Console")
