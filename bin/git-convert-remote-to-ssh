@@ -3,7 +3,7 @@
 #-- Based on original code from: https://gist.github.com/m14t/3056747
 
 SITE=github.com
-SITE=bitbucket.org
+#SITE=bitbucket.org
 
 #origin or upstream
 REMOTE=${1-origin}
@@ -15,14 +15,14 @@ if [ -z "$REPO_URL" ]; then
   exit
 fi
 
-USER=`echo $REPO_URL | sed -Ene's#https://(.*)@$SITE/([^/]*)/(.*).git#\2#p'`
+USER=`echo $REPO_URL | sed -Ene"s#https://$SITE/([^/]*)/(.*).git#\1#p"`
 if [ -z "$USER" ]; then
   echo "-- ERROR:  Could not identify User."
   exit
 fi
 echo "USER: ${USER}"
 
-REPO=`echo $REPO_URL | sed -Ene's#https://(.*)@$SITE/([^/]*)/(.*).git#\3#p'`
+REPO=`echo $REPO_URL | sed -Ene"s#https://$SITE/([^/]*)/(.*).git#\2#p"`
 if [ -z "$REPO" ]; then
   echo "-- ERROR:  Could not identify Repo."
   exit
