@@ -14,6 +14,7 @@ if [ -z "$REPO_URL" ]; then
   echo "   It is possible this repo is already using SSH instead of HTTPS."
   exit
 fi
+echo "REPO_URL: ${REPO_URL}"
 
 USER=`echo $REPO_URL | sed -Ene"s#https://$SITE/([^/]*)/(.*).git#\1#p"`
 if [ -z "$USER" ]; then
