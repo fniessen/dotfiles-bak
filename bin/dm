@@ -4,4 +4,5 @@
 find . -iname "*"$@"*" -printf "%T@ %TY-%Tm-%Td %Ta %TH:%TM - %p\n" \
     | sort -n \
     | cut -d " " -f 2- \
+    | sed "s#\./##" \
     | grep -i "$@";
