@@ -303,7 +303,13 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     wipe = reset --hard HEAD~1
 # rollback?
 
-    nevermind = !git reset --hard HEAD && git clean -d -f
+    # THIS COMMAND MAY DELETE FILES THAT CANNOT BE RECOVERED.
+    # Files and directories in .gitignore will be preserved.
+    clear-soft = !git clean -d -f && git reset --hard
+
+    # THIS COMMAND MAY DELETE FILES THAT CANNOT BE RECOVERED,
+    # including those in .gitignore.
+    clear = git clean -d -f -x && git reset --hard
 
     r = remote -v
     remotes = remote -v
@@ -376,14 +382,14 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     co = checkout
 
     # Switch to a branch, creating it if necessary.
-    cob = checkout -b
+    create-branch = checkout -b
 
     master = checkout master
     develop = checkout develop
 
     br = branch -a -vv
 
-    bd = branch -d
+    delete-local-branch = branch -d
 
     bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
 
