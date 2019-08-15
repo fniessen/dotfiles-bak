@@ -14,7 +14,7 @@ for repo in $(find . -name ".git" -type d | rev | cut -c 6- | rev | sed "s#^\./#
             echo "No changes to push"
         fi
     else
-        echo "No (accessible) remote"
+        echo "No (accessible) remote -- or bad authentication?"
     fi
     echo
 done
