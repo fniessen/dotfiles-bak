@@ -12,6 +12,7 @@ for repo in $(find . -name ".git" -type d | rev | cut -c 6- | rev | sed "s#^\./#
     # git -C "$repo" pull                 # Does not do anything if unstaged changes!
     git -C "$repo" remote update --prune  # Delete old branches. Good!
     git -C "$repo" merge --ff-only "@{u}"
+    # XXX Already up to date (or bad authentication in the previous command!?)
     echo
 done
 
