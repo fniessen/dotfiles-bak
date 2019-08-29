@@ -14,8 +14,8 @@ find . -type f \
     -o -name "*.css" \
     -o -name "*.csv" \
     -o -name "*.docx" \
-    -o -name "*.el" \
     -o -name "*.dtd" \
+    -o -name "*.el" \
     -o -name "*.gif" \
     -o -name "*.gitignore" \
     -o -name "*.htm" \
@@ -51,6 +51,7 @@ find . -type f \
     -o -name "*.stackdump" \
     -o -name "*.tex" \
     -o -name "*.tld" \
+    -o -name "*.tsv" \
     -o -name "*.txt" \
     -o -name "*.war" \
     -o -name "*.xhtml" \
