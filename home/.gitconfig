@@ -128,6 +128,14 @@
 [format]
     pretty = format:%C(yellow)%h%C(reset) %C(green)%ad%C(auto)%d%C(reset) %s %C(blue)<%an>%C(reset)
 
+
+
+# https://dev.to/megamattmiller/the-git-aliases-that-get-me-to-friday-1cmj
+[custom.formats]
+    ls   = "[%C(auto,yellow)%<|(10)%h%C(reset)] [%C(auto,bold blue)%<(15trunc)%cn%C(reset)]  %C(auto)%d% C(reset)%s"
+    find = "[%C(yellow)%<|(20)%h%C(reset)] [%C(bold blue)%<(10)%cn%C(reset)]  %C(auto)%d %C(reset)  %s"
+    graph="%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)%n %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)"
+
 [alias]
 
     alias = "!git config -l | grep alias | cut -c 7- | sort"
@@ -194,7 +202,7 @@
 
     ll = log --decorate --date=short --stat
 
-    tree = log --decorate --all --date=short --graph
+    show-tree = log --decorate --all --simplify-by-decoration --oneline --date=short --graph
 
     graph = log --graph -10 --branches --remotes --tags --format=format:'%C(yellow)%h %C(reset) %<(75,trunc)%s <%cn> (%cr) %C(red)%d' --date-order
 
@@ -218,7 +226,7 @@
     last = log --decorate --date=short -1 --stat
 
     # Show the last N commits on the current branch.
-    last = !git log -$1 ${*:2} && :
+    last = !git log --name-status -$1 ${*:2} && :
 
     changed = show --pretty="format:" --name-only
 
@@ -226,6 +234,7 @@
     diffn = diff --name-only
     dname = diff --name-only
 
+    # History of a file.
     filelog = log --date=short --follow -C
     fl = log --date=short --follow -C
 
@@ -402,6 +411,9 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # Show local and remote branches.
     br = branch -a -vv
 
+    # I want to change branches; which are my recent ones again?
+    coto = branch --sort=-committerdate
+
     local-branch-dates  = !git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
 
     # Politely ask Git to delete a local branch.
@@ -417,8 +429,10 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # Current branch.
     cb = "name-rev --name-only HEAD"
 
-    diffsincemaster = diff master...
-    logsincemaster = log master...
+    # log since master.
+    missing-master = log master...
+    # diff since master.
+    missing-master-diff = diff master...
 
     oldest-ancestor = !zsh -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
     branchdiff = !sh -c 'git diff $(git oldest-ancestor)..'
