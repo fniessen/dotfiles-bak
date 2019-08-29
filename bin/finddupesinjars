@@ -6,7 +6,7 @@
 
 if [ -z "$1" ]
 then
-    echo "Usage: $(basename $0)" > /dev/stderr
+    echo "Usage: $(basename "$0")" > /dev/stderr
     echo "Find duplicate 'com/^(microsoft|sun)' classes in JAR files (in the current directory and subdirectories recursively)." > /dev/stdout
     # exit 1
 fi
