@@ -3,6 +3,11 @@
 BLU=$(tput bold)$(tput setaf 4)
 reset=$(tput sgr0)
 
+if [ $(stat -c %A ~/.ssh/config) != "-rw-------" ]; then
+    echo "Bad permissions on ~/.ssh/config.  Fixing it..."
+    chmod 600 ~/.ssh/config
+fi
+
 # Only merges current branch, apparently.
 
 # See https://stackoverflow.com/questions/17099564/make-a-shell-script-to-update-3-git-repos
