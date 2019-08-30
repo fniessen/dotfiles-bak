@@ -84,6 +84,11 @@ export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --
 # Set DISPLAY environment variable.
 export DISPLAY=:0.0
 
+function alert {
+    $@
+    echo -e "\a"
+}
+
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history | tail -n1 | sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 export LANG=C.UTF-8
@@ -168,6 +173,8 @@ alias du='du -h'
 alias du1='du -h --max-depth=1'
 alias dus='du -ms * | sort -rn'         # Ordered by size.
 
+alias mount='mount | column -t'
+
 alias sizes="du --max-depth=1 -k | sort -nr | cut -f2 | xargs -d '\n' du -sh"
 
 # Play safe!  Prevent some accidental mistakes.
@@ -181,6 +188,7 @@ alias tbz2="tar -jxvf"
 
 # Print a more readable PATH (each directory on a new line).
 alias path='echo $PATH | sed -e "s/:/\n/g"'
+alias path='echo $PATH | tr ":" $"\n"'
 alias path='echo -e ${PATH//:/\\n}'
 
 # Path.
@@ -188,8 +196,8 @@ alias where='type -a'
 
 alias mkall="./configure && make && sudo make install"
 
-# sudo'ers
-alias root="su - root"
+# Become root.
+alias root="sudo -i"
 
 # Make executable.
 alias exe='chmod +x'
@@ -220,6 +228,9 @@ alias s='sudo'
 
 alias j='jobs -l'
 alias l='ls'
+
+# Install colordiff package...
+alias diff='colordiff'
 
 alias g='git'
 
@@ -305,6 +316,7 @@ export GREP_COLOR="0;30;43"
 
 # Grep through the running processes.
 alias pgrep='pgrep -fl'
+alias 'ps?'='ps ax | grep '
 
 alias rg="rg --colors 'match:bg:yellow' --colors 'match:fg:black' --colors 'match:style:bold'"
 alias srg="rg --colors 'match:bg:yellow' --colors 'match:fg:black' --colors 'match:style:bold' --sort-files"
