@@ -440,7 +440,7 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     diverges = !sh -c 'git rev-list --boundary "${1:-HEAD}"..."${2:-master}" | grep "^-" | cut -c2-'
 
-    rename = branch -m
+    rename-branch = branch -m
 
     where = "branch -a --contains"
 
