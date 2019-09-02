@@ -469,11 +469,17 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     hide = stash push --include-untracked # Hide all files, including untracked files (faster than using --all).
 
+    snapshot = !git stash push -m "Snapshot [$(date +\"%F %a %R\")]" && git stash apply "stash@{0}"
+
+    # checkpoint and checkpoint recover
+    cp = !git stash push -m "$(date +%F--%T)" && git stash pop --index
+    cpr = "!f() { git fsck | grep commit | cut -d' ' -f3 | while read hash; do git rev-parse --verify --no-revs --quiet $hash^2 2>/dev/null && echo $hash | xargs git rev-list --since=${1:-1day} -1; done | xargs -L 1 git log --format=%at:%h -1 | sort|cut -f2 -d: | xargs -L 1 git log --graph --oneline --format='%Cblue%h %Cgreen(%ar) %Creset%s' -3 ; }; f"
+
     sl = stash list
-    stashes = stash list
+    stashes = stash list --date=local
 
     ssh = stash show -p
-    stashdiff = stash show -p
+    stash-diff = stash show -p
 
     sshow = "!f() { git stash show stash^{/$*} -p; }; f"
 
@@ -483,17 +489,11 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     sapply = "!f() { git stash apply stash^{/$*}; }; f"
 
+    stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
+
     sp = stash pop
 
     std = stash drop
-
-    snapshot = !git stash push "Snapshot [$(date +\"%F %a %R\")]" && git stash apply "stash@{0}"
-
-    # checkpoint and checkpoint recover
-    cp      = !git stash push $(date +%F--%T) && git stash pop --index
-    cpr     = "!f() { git fsck | grep commit | cut -d' ' -f3 | while read hash; do git rev-parse --verify --no-revs --quiet $hash^2 2>/dev/null && echo $hash | xargs git rev-list --since=${1:-1day} -1; done | xargs -L 1 git log --format=%at:%h -1 | sort|cut -f2 -d: | xargs -L 1 git log --graph --oneline --format='%Cblue%h %Cgreen(%ar) %Creset%s' -3 ; }; f"
-
-    stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
 
     out = log --date=short @{u}..
     out-stat = log --stat --date=short @{u}..
