@@ -3,8 +3,8 @@
 BLU=$(tput bold)$(tput setaf 4)
 reset=$(tput sgr0)
 
-echo "Searching at most 7 levels of directories..."
-for repo in $(find . -maxdepth 7 -name ".git" -type d | rev | cut -c 6- | rev | sed "s#^\./##"); do
+echo "Searching at most 5 levels of directories..."
+for repo in $(find . -maxdepth 5 -name ".git" -type d | rev | cut -c 6- | rev | sed "s#^\./##"); do
     echo "Current repository: ${BLU}$repo${reset}"
     git -C "$repo" ls-remote >/dev/null 2>&1
     if [ $? -eq 0 ]; then
