@@ -551,10 +551,11 @@ upstream-name = !git for-each-ref --format='%(upstream:short)' $(git symbolic-re
 
     h = help
 
-    root = rev-parse --show-toplevel
-
     # Get the path cleaned up.
     root = !pwd -P
+
+    root = rev-parse --show-toplevel
+    root-relative = rev-parse --show-prefix
 
     rma = !git ls-files --deleted -z | xargs -0 git rm
 
