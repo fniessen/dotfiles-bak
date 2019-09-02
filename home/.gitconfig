@@ -164,9 +164,6 @@
     # Interactive rebase with the given number of latest commits
     ireb = "!r() { git rebase -i HEAD~$1; }; r"
 
-    # Remove branches that have already been merged with master
-    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
-
     this = !git init && ( [[ -n $(ls) ]] || touch .gitignore ) && git add . && git commit -m \"Initial commit\"
 
     # Clone a repository including all submodules.
@@ -342,7 +339,7 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     # up = "!git stash && git pull && git stash pop"
 
-    pull-autostash = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash save "autostash" && git pull && git stash pop
+    pull-autostash = ![[ -z $(git status --porcelain -uno) ]] && git pull || git stash push -m "autostash" && git pull && git stash pop
 
     up = pull --rebase --autostash
     up = !git fetch && git rebase --autostash FETCH_HEAD
@@ -411,6 +408,9 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # Show local and remote branches.
     br = branch -a -vv
 
+    # Current branch.
+    cb = "name-rev --name-only HEAD"
+
     # I want to change branches; which are my recent ones again?
     coto = branch --sort=-committerdate
 
@@ -426,8 +426,8 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
 
-    # Current branch.
-    cb = "name-rev --name-only HEAD"
+    # Remove branches that have already been merged with master
+    delete-merged-branches = "!git branch --no-color --merged | grep -v '\\*' | grep -v master | xargs -n 1 git branch -d"
 
     # log since master.
     missing-master = log master...
@@ -450,9 +450,14 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # Find tags containing commit.
     findt = "!f() { git describe --always --contains $1; }; f"
 
-    # Save with name.
-    ss = stash save
-    ssave = stash save
+    # "show-branch -g=N" can't be aliased for N easily, so we stop here:
+    sb  = show-branch
+    # pg sbt master pu -- if the last line is 'master' and not 'master^'
+    # or 'master~N' then pu is a descendent of master
+    sbt = show-branch --topics
+    sbs = show-branch --sha1-name
+
+    spush = stash push
 
     sshow = "!f() { git stash show stash^{/$@} -p; }; f" # Like sapply but shows it only
 
@@ -462,19 +467,10 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     stashid = "!f() { git stash list | grep $@ | head -n 1 | sed -n 's/stash@{\\(.*\\)}.*/\\1/p'; }; f" # only accepts single word, no quotations
 
-    hide = stash save --include-untracked # hides all files, including untracked files (faster than using --all)
-
-    sspatch = stash save --patch
-    ssscratch = stash save --keep-index
-
-    sa = stash apply
-
-    sapply = "!f() { git stash apply stash^{/$*}; }; f"
+    hide = stash push --include-untracked # Hide all files, including untracked files (faster than using --all).
 
     sl = stash list
     stashes = stash list
-
-    sp = stash pop
 
     ssh = stash show -p
     stashdiff = stash show -p
@@ -483,22 +479,21 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     sshno = stash show --name-only
 
+    sa = stash apply
+
+    sapply = "!f() { git stash apply stash^{/$*}; }; f"
+
+    sp = stash pop
+
     std = stash drop
 
-    snapshot = !git stash save "Snapshot [$(date +\"%F %a %R\")]" && git stash apply "stash@{0}"
+    snapshot = !git stash push "Snapshot [$(date +\"%F %a %R\")]" && git stash apply "stash@{0}"
 
     # checkpoint and checkpoint recover
-    cp      = !git stash save $(date +%F--%T) && git stash pop --index
+    cp      = !git stash push $(date +%F--%T) && git stash pop --index
     cpr     = "!f() { git fsck | grep commit | cut -d' ' -f3 | while read hash; do git rev-parse --verify --no-revs --quiet $hash^2 2>/dev/null && echo $hash | xargs git rev-list --since=${1:-1day} -1; done | xargs -L 1 git log --format=%at:%h -1 | sort|cut -f2 -d: | xargs -L 1 git log --graph --oneline --format='%Cblue%h %Cgreen(%ar) %Creset%s' -3 ; }; f"
 
     stash-unapply = !git stash show -p --no-textconv --binary | git apply -R
-
-    # "show-branch -g=N" can't be aliased for N easily, so we stop here:
-    sb  = show-branch
-    # pg sbt master pu -- if the last line is 'master' and not 'master^'
-    # or 'master~N' then pu is a descendent of master
-    sbt = show-branch --topics
-    sbs = show-branch --sha1-name
 
     out = log --date=short @{u}..
     out-stat = log --stat --date=short @{u}..
@@ -550,9 +545,6 @@ upstream-name = !git for-each-ref --format='%(upstream:short)' $(git symbolic-re
     pick = cherry-pick -s
 
     h = help
-
-    # Get the path cleaned up.
-    root = !pwd -P
 
     root = rev-parse --show-toplevel
     root-relative = rev-parse --show-prefix
