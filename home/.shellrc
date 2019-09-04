@@ -1,3 +1,5 @@
+alias which-shell='ps -p $$'
+
 # Hey Emacs, this is a -*- sh -*- file
 ## .shellrc --- Common features between Bash and Z Shell
 
