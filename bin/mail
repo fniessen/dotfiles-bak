@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # mail -- Send simple mail
 
-Usage ()
+Usage()
 {
     cat << EOF 1>&2
 Usage: $CMD [-s SUBJECT] [-a ATTACHMENT]... [-c CC-ADDR] [-b BCC-ADDR] [-f FROM-ADDR] TO-ADDR
@@ -10,10 +10,10 @@ EOF
     exit 2
 }
 
-Help ()
+Help()
 {
     cat << EOF
-This is $CMD, version: 20190529.1830.
+This is $CMD, version: 20190904.1942.
 
 Usage: $CMD [-s SUBJECT] [-a ATTACHMENT]... [-c CC-ADDR] [-b BCC-ADDR] [-f FROM-ADDR] TO-ADDR
 Send simple mail.
