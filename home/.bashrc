@@ -15,6 +15,7 @@ if test -t 1; then
 fi
 
 # If not running interactively, don't do anything.
+# isInteractive=$(echo $- | grep i)
 [[ "$-" != *i* ]] && return
 
 # Source global definitions only if the session is interactive.
