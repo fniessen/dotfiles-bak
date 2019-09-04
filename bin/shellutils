@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
-die () {
+die() {
     printf "$(basename $0): $@\n" > /dev/stderr
     exit 2                              # An error occurred.
 }
 
-files_executables_p () {
+files_executables_p() {
     for x in $@; do
         command -v $x > /dev/null || die "$x not found."
     done
 }
 
-files_cygwin_executables_p () {
+files_cygwin_executables_p() {
     for x in $@; do
         [ "$(command -v $x)" = "/usr/bin/$x" ] \
             || die "$x is not a Cygwin executable."
     done
 }
 
-pname () {
+pname() {
     ps -o command= -p $PPID | tail -n 1 | awk '{print $1}' | awk -F/ '{print $NF}'
 }
 
