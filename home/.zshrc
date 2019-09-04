@@ -38,43 +38,105 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     COMPLETION_WAITING_DOTS="true"
 fi
 
-if [ -r "$ZSH" ]; then
-    prompt_svn() {
-        local rev branch
-        if in_svn; then
-            rev=$(svn_get_rev_nr)
-            branch=$(svn_get_branch_name)
-            if [[ $(svn_dirty_choose_pwd 1 0) -eq 1 ]]; then
-                prompt_segment yel blk
-                echo -n "$rev@$branch"
-                echo -n " ±"
-            else
-                prompt_segment grn blk
-                echo -n "$rev@$branch"
-            fi
-        fi
-    }
-fi
+# if [ -r "$ZSH" ]; then
+#     prompt_svn() {
+#         local rev branch
+#         if in_svn; then
+#             rev=$(svn_get_rev_nr)
+#             branch=$(svn_get_branch_name)
+#             if [[ $(svn_dirty_choose_pwd 1 0) -eq 1 ]]; then
+#                 prompt_segment yel blk
+#                 echo -n "$rev@$branch"
+#                 echo -n " ±"
+#             else
+#                 prompt_segment grn blk
+#                 echo -n "$rev@$branch"
+#             fi
+#         fi
+#     }
+# fi
 
-if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
-    ZSH_THEME="powerlevel9k/powerlevel9k"
+# if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+#     ZSH_THEME="powerlevel9k/powerlevel9k"
+#
+#     # Single-line prompt.
+#     POWERLEVEL9K_PROMPT_ON_NEWLINE=false
+#     POWERLEVEL9K_RPROMPT_ON_NEWLINE=false
+#
+#     POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=''
+#     POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=''
+#
+#     # Customise the Powerlevel9k prompts.
+#     POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(ssh dir vcs)
+#     POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time time background_jobs)
+#
+#     POWERLEVEL9K_STATUS_VERBOSE=false
+#     POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE=true
+#     POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=10
+#     POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
+# fi
 
-    # Single-line prompt.
-    POWERLEVEL9K_PROMPT_ON_NEWLINE=false
-    POWERLEVEL9K_RPROMPT_ON_NEWLINE=false
+ZSH_THEME=""
+source "$ZSH_CUSTOM"/themes/zinc/zinc.zsh
 
-    POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=''
-    POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=''
+zinc_default_user="f.niessen"
+zinc_default_host="XIPHIAS"
 
-    # Customise the Powerlevel9k prompts.
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(ssh dir vcs)
-    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time time background_jobs)
+prompt_zinc_setup rprompt-previous-line
 
-    POWERLEVEL9K_STATUS_VERBOSE=false
-    POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE=true
-    POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=10
-    POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
-fi
+# Input your own strftime format: http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+zincs_time() {
+    REPLY="%D{%H:%M}"
+}
+
+prompt_zinc_setup fniessen-p9k-port
+
+# prompt_zinc_setup fniessen-p9k-port
+
+# # either user and host separate with CONNECT_PREV
+# # or zincs_userhost
+# zinc_left=(
+#   # zincs_user
+#   # zincs_host
+#   zincs_userhost
+#   zincs_cwd
+#   zincs_vcs
+# )
+#
+# zinc_right=(
+#   zincs_retval
+#   zincs_execution_time
+#   my_custom_time
+#   zincs_jobs
+# )
+#
+# zinc_opts=(
+#   zincs_user "white;black;CONDITIONAL;normal"
+#   zincs_host "white;black;CONNECT_PREV+CONDITIONAL;normal"
+#   zincs_userhost "white;black;CONDITIONAL;normal"
+# )
+#
+# # autohide the user when it's default
+# function zincs_user_display_hidden () {
+#   [[ "$USER" == "$zinc_default_user" ]] && true || false
+# }
+# function zincs_host_display_hidden () {
+#   [[ "$HOST" == "$zinc_default_host" ]] && true || false
+# }
+#
+# # or show both when either changes:
+# function zincs_userhost_display_hidden () {
+#   [[ "$HOST" == "$zinc_default_host" ]] && [[ "$USER" == "$zinc_default_user" ]] && true
+# }
+#
+# # set the time format option:
+# # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+# function my_custom_time () {
+#   REPLY="%T"
+# }
+#
+# # set the zincs_execution_time min time:
+# zincs_execution_time[threshold]=10
 
 if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
 
@@ -84,8 +146,7 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
         # git                           # Provide many aliases and a few useful functions.
         history
         history-substring-search
-        svn
-        zshmarks
+        # svn
     )
 fi
 
@@ -115,36 +176,32 @@ if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 fi
 
+setopt AUTO_CD                  # Change directory given just path.
+
+setopt EXTENDED_GLOB            # Use additional pattern matching features.
+setopt NOMATCH                  # Unmatched patterns cause an error.
+
 # History.
-HISTSIZE=1000
-SAVEHIST=2000
+HISTSIZE=10000
+SAVEHIST=10000
 
-# Append new history lines instead of overwriting (important for multiple
-# parallel Zsh sessions!).
-setopt appendhistory
+setopt APPEND_HISTORY           # Append rather than overwrite history file.
+setopt EXTENDED_HISTORY         # Save timestamp and runtime information.
+setopt HIST_EXPIRE_DUPS_FIRST   # Allow dups, but expire old ones when I hit HISTSIZE.
+setopt HIST_FIND_NO_DUPS        # Don't find duplicates in history.
+setopt HIST_IGNORE_ALL_DUPS     #! Ignore duplicate commands regardless of commands in between.
+setopt HIST_IGNORE_DUPS         # Ignore duplicate commands.
+setopt HIST_REDUCE_BLANKS       # Leave blanks out.
+setopt HIST_SAVE_NO_DUPS        # Don't save duplicates.
+setopt INC_APPEND_HISTORY       # Write after each command.
+setopt SHARE_HISTORY            # Share history between sessions.
 
-# Don't save command more than once when occuring more often.
-setopt HIST_IGNORE_DUPS
-
-# Use the same history file for all sessions.
-setopt SHARE_HISTORY
-
-# Change directory given just path.
-setopt autocd
+setopt NOTIFY                   # Immediately report changes in background job status.
 
 # Beep when there's an error with the command text you're typing in (e.g. if you
 # hit tab and there are no matching files) -- not as a result of normal commands
 # returning errors.
-setopt beep
-
-# Use additional pattern matching features.
-setopt extendedglob
-
-# Unmatched patterns cause an error.
-setopt nomatch
-
-# Immediately report changes in background job status.
-setopt notify
+setopt BEEP
 
 # Behave like Emacs when editing.
 bindkey -e
@@ -179,13 +236,6 @@ setopt autolist
 BEL=$(tput bel)
 PROMPT+='%(?::$BEL)'
 # Does not work on Bash on Ubuntu on Windows.
-
-echo_blank() {
-    echo
-}
-
-# preexec_functions+=echo_blank
-precmd_functions+=echo_blank
 
 [ "$TERM" = "dumb" ] && PROMPT="> "
 
