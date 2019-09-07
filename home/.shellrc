@@ -15,7 +15,7 @@ for MAYBE_PATH in "$HOME"/.dotfiles/bin \
                   "$HOME"/.dotfiles/expect; do
     # `-e' or `-x'?
     if [ -d "$MAYBE_PATH" ]; then
-        PATH="$MAYBE_PATH:$PATH"
+        PATH="$MAYBE_PATH":"$PATH"
     fi
 done
 
@@ -25,7 +25,7 @@ case $(uname -s) in
         for MAYBE_CYG_PATH in "$HOME"/.dotfiles/winbin; do
             # `-e' or `-x'?
             if [ -d "$MAYBE_CYG_PATH" ]; then
-                PATH="$MAYBE_CYG_PATH:$PATH"
+                PATH="$MAYBE_CYG_PATH":"$PATH"
             fi
         done
         ;;
@@ -34,18 +34,18 @@ esac
 # Add the current directory as last component in the search path (not to include
 # for `root', for security reasons).
 if [[ $EUID -ne 0 ]]; then
-    PATH="$PATH:."
+    PATH="$PATH":.
 fi
 
 # Search current directory and home directory.
-export CDPATH=".:~"
+export CDPATH=.:"$HOME"
 
 #* MANPATH
 
 # set MANPATH so it includes user's private man if it exists
 # do the same with MANPATH
-#if [ -d "$HOME/man" ]; then
-#    MANPATH="$HOME/man":"$MANPATH"
+#if [ -d "$HOME"/man ]; then
+#    MANPATH="$HOME"/man:"$MANPATH"
 #    export MANPATH
 #fi
 
@@ -57,12 +57,12 @@ export CDPATH=".:~"
 #* INFOPATH
 
 # Info readers (standalone + Emacs Info mode)
-INFOPATH="/usr/share/info:$INFOPATH"
+INFOPATH=/usr/share/info:"$INFOPATH"
 # include a trailing colon on `INFOPATH' to concatenate the Emacs
 # `Info-default-directory-list' when searching for info files
-# INFOPATH="$HOME/texlive/2014/texmf/doc/info:$INFOPATH"
+# INFOPATH="$HOME"/texlive/2014/texmf/doc/info:"$INFOPATH"
 
-PAGER="less"
+export PAGER="less"
 
 alias more='less'
 
@@ -151,7 +151,7 @@ export TIME_STYLE=long-iso
 if [ "$TERM" != "dumb" ]; then
 
     # Add my coloration scheme to directory listings.
-    if [ -f "$HOME/.dircolors" ]; then
+    if [ -f "$HOME"/.dircolors ]; then
         eval "$(dircolors -b $HOME/.dircolors)"
         # See https://github.com/seebi/dircolors-solarized.
     else
@@ -164,6 +164,9 @@ if [ "$TERM" != "dumb" ]; then
 else
     alias ls='ls -CF'
 fi
+
+# This alias reloads this file.
+alias reload='unalias -a && . "$HOME"/.shellrc'
 
 alias dirf='find . -type d | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/|-\1/"'
 
@@ -200,6 +203,9 @@ alias where='type -a'                   # Good?
 
 alias mkall='./configure && make && sudo make install'
 
+# Using sudo with an alias.
+alias sudo='sudo '
+
 # Become root.
 alias root='sudo -i'
 
@@ -225,13 +231,15 @@ alias d:='cd /mnt/d'
 # list last used directories (directory history).
 alias d='dirs -v'
 
-alias t='tail -f'
-# alias p='$PAGER'
-alias m='man'
-alias s='sudo'
-
+alias c='clear'
 alias j='jobs -l'
-alias l='ls'
+alias l='ls'                            # xx
+alias m='man'
+# alias p='$PAGER'
+alias q='exit'
+alias s='sudo'
+alias t='tail -f'
+# alias x='exit' # Conflict with extract (from Oh-my-Zsh?)
 
 # Make `diff' automatically call `colordiff' (Install `colordiff' package...).
 alias diff='colordiff'
@@ -318,7 +326,7 @@ alias grep='grep --color=auto'
 alias egrep='grep -E --color=auto'
 alias fgrep='grep -F --color=auto'
 
-export GREP_COLOR='0;30;43'
+export GREP_COLORS='0;30;43'
 
 # Grep through the running processes.
 alias pgrep='pgrep -fl'
@@ -397,7 +405,7 @@ saneperms() {
 
 safetmp() {
     test -d "$HOME" || exit 1
-    test -d "$HOME/tmp" || mkdir "$HOME/tmp"
+    test -d "$HOME"/tmp || mkdir "$HOME"/tmp
     echo "$HOME/tmp/safetmp.$(hostname).$(date +%s).$$"
 }
 

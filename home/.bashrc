@@ -23,12 +23,17 @@ if [ $(expr index "$-" i) -ne 0 ] && [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
-# History.
-# HISTFILE="$HOME/.bash_history"        # If paranoiac, `/dev/null'.
-HISTSIZE=1000
-HISTFILESIZE=2000
-HISTIGNORE="&:[bf]g:exit"
-HISTCONTROL=ignoredups
+# Store 10000 commands in history buffer.
+export HISTSIZE=10000
+
+# Store 10000 commands in history FILE.
+export HISTFILESIZE=10000
+
+# Avoid recording common commands (like ls, top and clear).
+export HISTIGNORE=”ls*:top:clear”
+
+# Ignore duplicate commands and commands starting with space.
+export HISTCONTROL=ignoreboth           # Prefix a command with a space to keep it out of the history.
 
 #** Controlling the Prompt
 
@@ -127,8 +132,22 @@ if [[ $EUID -eq 0 ]]; then
     umask 077                           # Stricter.
 fi
 
-# Correct minor misspellings of cd pathnames.
+# Automatically cd into a  directory without the `cd' in front of it.
+shopt -s autocd
+
+# Correct dir spellings.
 shopt -s cdspell
+
+# Make sure display get updated when terminal window get resized.
+shopt -q -s checkwinsize
+
+# Append rather than overwrite history.
+shopt -s histappend
+
+# Make multi-line commandsline in history.
+shopt -q -s cmdhist
+
+bind '"\eh": "\C-a\eb\ed\C-y\e#man \C-y\C-m\C-p\C-p\C-a\C-d\C-e"'
 
 #** 8.6 Programmable Completion
 

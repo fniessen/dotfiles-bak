@@ -14,7 +14,7 @@ PS1=$'%{\e]0;%d\a%}\n%F{grn}%n@%m %F{yel}%d%f\n%# '
 # export BROWSER='/mnt/c/Windows/explorer.exe' # does not work.
 export BROWSER='/mnt/c/Program Files (x86)/Mozilla Firefox/firefox.exe'
 
-FILE="$HOME/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh" && test -f "$FILE" && . "$FILE"
+FILE="$HOME"/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh && test -f "$FILE" && . "$FILE"
 
 # XXX Check for MinTTY
 if [ -d /cygdrive/c/ ]; then
@@ -28,8 +28,8 @@ if [ -d /cygdrive/c/ ]; then
     echo -ne '\e]4;15;#FFFFFF\a'    # bold wht
 fi
 
-if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
-    ZSH="$HOME/.dotfiles/plugins/oh-my-zsh"
+if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
+    ZSH="$HOME"/.dotfiles/plugins/oh-my-zsh
     # ${ZSH_CUSTOM:-~/.dotfiles/plugins/oh-my-zsh/custom}
     ZSH_CUSTOM="$ZSH/custom"
 
@@ -56,7 +56,7 @@ fi
 #     }
 # fi
 
-# if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+# if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
 #     ZSH_THEME="powerlevel9k/powerlevel9k"
 #
 #     # Single-line prompt.
@@ -138,7 +138,7 @@ prompt_zinc_setup fniessen-p9k-port
 # # set the zincs_execution_time min time:
 # zincs_execution_time[threshold]=10
 
-if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
 
     plugins=(
         colored-man-pages
@@ -150,7 +150,7 @@ if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
     )
 fi
 
-if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
     # Fix Colorize man pages (with `less` pager) not working in Cygwin MinTTY
     export MANROFFOPT="-c"
     # in your shell rc file. This has the same effect as
@@ -168,7 +168,7 @@ if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
     plugins+=(zsh-autosuggestions)
 fi
 
-if [ -r "$HOME/.dotfiles/plugins/oh-my-zsh" ]; then
+if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
     . "$ZSH"/oh-my-zsh.sh
 fi
 
