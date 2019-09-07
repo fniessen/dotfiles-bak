@@ -3,7 +3,7 @@
 BLU=$(tput bold)$(tput setaf 4)
 reset=$(tput sgr0)
 
-if [ $(stat -c %A ~/.ssh/config) != "-rw-------" ]; then
+if [[ $(stat -c %A ~/.ssh/config) != "-rw-------" ]]; then
     echo "Bad permissions on ~/.ssh/config.  Fixing it..."
     chmod 600 ~/.ssh/config
 fi

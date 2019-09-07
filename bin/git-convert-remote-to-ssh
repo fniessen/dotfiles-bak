@@ -9,7 +9,7 @@ SITE=github.com
 REMOTE=${1-origin}
 
 REPO_URL=$(git remote -v | grep -m1 "^$REMOTE" | sed -Ene's#.*(https://[^[:space:]]*).*#\1#p')
-if [ -z "$REPO_URL" ]; then
+if [[ -z "$REPO_URL" ]]; then
   echo "-- ERROR:  Could not identify Repo url."
   echo "   It is possible this repo is already using SSH instead of HTTPS."
   exit
@@ -17,14 +17,14 @@ fi
 echo "REPO_URL: ${REPO_URL}"
 
 USER=$(echo "$REPO_URL" | sed -Ene"s#https://$SITE/([^/]*)/(.*).git#\1#p")
-if [ -z "$USER" ]; then
+if [[ -z "$USER" ]]; then
   echo "-- ERROR:  Could not identify User."
   exit
 fi
 echo "USER: ${USER}"
 
 REPO=$(echo "$REPO_URL" | sed -Ene"s#https://$SITE/([^/]*)/(.*).git#\2#p")
-if [ -z "$REPO" ]; then
+if [[ -z "$REPO" ]]; then
   echo "-- ERROR:  Could not identify Repo."
   exit
 fi
