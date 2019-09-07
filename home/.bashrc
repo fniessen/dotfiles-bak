@@ -19,7 +19,7 @@ fi
 [[ "$-" != *i* ]] && return
 
 # Source global definitions only if the session is interactive.
-if [ $(expr index "$-" i) -ne 0 ] && [ -f /etc/bashrc ]; then
+if [[ $(expr index "$-" i) -ne 0 ]] && [[ -f /etc/bashrc ]]; then
     . /etc/bashrc
 fi
 
@@ -68,14 +68,14 @@ leuven-before-prompt() {
     esac
 
     # Colorful prompt, based on whether the previous command succeeded or not.
-    if [ $RET -eq 0 ]; then
+    if [[ $RET -eq 0 ]]; then
         HILIT_RET=$GRN
     else
         HILIT_RET=$RED
     fi
 
     # Replace the `$HOME' prefix by `~' in the current directory.
-    if [ "$HOME" = "${PWD:0:${#HOME}}" ]; then
+    if [[ "$HOME" = "${PWD:0:${#HOME}}" ]]; then
         myPWD="~${PWD:${#HOME}}"
     else
         myPWD=$PWD
@@ -84,7 +84,7 @@ leuven-before-prompt() {
     # How many characters of the path should be kept.
     local pwd_max_length=15
 
-    if [ ${#myPWD} -gt $pwd_max_length ]; then
+    if [[ ${#myPWD} -gt $pwd_max_length ]]; then
         local pwd_offset=$(( ${#myPWD} - pwd_max_length ))
         myPWD="...${myPWD:$pwd_offset:$pwd_max_length}"
     fi
@@ -96,7 +96,7 @@ leuven-before-prompt() {
         local PROMPTCHAR="$"
     fi
 
-    if [ "$color_prompt" = "yes" ]; then
+    if [[ "$color_prompt" = "yes" ]]; then
         PS1="$grn\u@\h$BLK:${reset_color}$yel$myPWD${HILIT_RET} $RET${reset_color}$PROMPTCHAR "
     else
         PS1="\u@\h:$myPWD $RET$PROMPTCHAR "

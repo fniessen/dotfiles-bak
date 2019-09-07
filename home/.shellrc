@@ -14,7 +14,7 @@ alias which-shell='ps -p $$'
 for MAYBE_PATH in "$HOME"/.dotfiles/bin \
                   "$HOME"/.dotfiles/expect; do
     # `-e' or `-x'?
-    if [ -d "$MAYBE_PATH" ]; then
+    if [[ -d "$MAYBE_PATH" ]]; then
         PATH="$MAYBE_PATH":"$PATH"
     fi
 done
@@ -24,7 +24,7 @@ case $(uname -s) in
     CYGWIN*)
         for MAYBE_CYG_PATH in "$HOME"/.dotfiles/winbin; do
             # `-e' or `-x'?
-            if [ -d "$MAYBE_CYG_PATH" ]; then
+            if [[ -d "$MAYBE_CYG_PATH" ]]; then
                 PATH="$MAYBE_CYG_PATH":"$PATH"
             fi
         done
@@ -44,10 +44,9 @@ export CDPATH=.:"$HOME"
 
 # set MANPATH so it includes user's private man if it exists
 # do the same with MANPATH
-#if [ -d "$HOME"/man ]; then
-#    MANPATH="$HOME"/man:"$MANPATH"
-#    export MANPATH
-#fi
+# if [[ -d "$HOME"/man ]]; then
+#     export MANPATH="$HOME/man":"$MANPATH"
+# fi
 
 # colon separated list of directories to search for manual pages
 #ifnset MANPATH "/usr/man"
@@ -80,7 +79,7 @@ LESS="-F -i -M -R -X"
 export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
 
 # Start x11 server (if a process instance is not already running).
-# ps -ae | grep XWin || startxwin >/dev/null 2>&1 &   # XXX For Cygwin only!
+# ps -ae | grep XWin || startxwin > /dev/null 2>&1 &   # XXX For Cygwin only!
 # To check that have the package xinit installed, try 'startxwin' without redirecting anything.
 
 # Set DISPLAY environment variable.
@@ -91,7 +90,7 @@ function alert {
     echo -e "\a"
 }
 
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history | tail -n1 | sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias alert='notify-send --urgency=low -i "$([[ $? = 0 ]] && echo terminal || echo error)" "$(history | tail -n1 | sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 export LANG=C.UTF-8
 
@@ -148,10 +147,10 @@ LS_OPTIONS="$LS_OPTIONS --show-control-chars"
 export TIME_STYLE=long-iso
 
 # Enable color support of `ls'.
-if [ "$TERM" != "dumb" ]; then
+if [[ "$TERM" != "dumb" ]]; then
 
     # Add my coloration scheme to directory listings.
-    if [ -f "$HOME"/.dircolors ]; then
+    if [[ -f "$HOME"/.dircolors ]]; then
         eval "$(dircolors -b $HOME/.dircolors)"
         # See https://github.com/seebi/dircolors-solarized.
     else
@@ -363,7 +362,7 @@ alias booklet="psbook | psnup -2 | pstops '2:0,1U(21cm,29.7cm)'"
 
 # clean [-r] - Remove useless files (recursively).
 clean() {
-    if [ "$1" = "-r" ]; then
+    if [[ "$1" = "-r" ]]; then
         find . \( -name "#*" -o -name "*~" -o -name ".*~" \
              -o -name "*.~[0-9]*~"\ -o -name ".*.~[0-9]*~" \
              -o -name "*.~BASE~" -o -name ".*.~BASE~" \) \
@@ -377,7 +376,7 @@ clean() {
 # Useful when you want to try a config file obtained from elsewhere, and also
 # keep the old version.
 swap() {
-    if [ $# != 2 ]; then
+    if [[ $# != 2 ]]; then
         return 2
     fi
     tmpfile=/tmp/.swapper.$$.$RANDOM

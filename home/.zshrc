@@ -17,7 +17,7 @@ export BROWSER='/mnt/c/Program Files (x86)/Mozilla Firefox/firefox.exe'
 FILE="$HOME"/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh && test -f "$FILE" && . "$FILE"
 
 # XXX Check for MinTTY
-if [ -d /cygdrive/c/ ]; then
+if [[ -d /cygdrive/c/ ]]; then
     echo -ne '\e]4;8;#404040\a'     # bold blk
     echo -ne '\e]4;9;#FF4040\a'     # bold red
     echo -ne '\e]4;10;#40FF40\a'    # bold grn
@@ -28,7 +28,7 @@ if [ -d /cygdrive/c/ ]; then
     echo -ne '\e]4;15;#FFFFFF\a'    # bold wht
 fi
 
-if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
+if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]]; then
     ZSH="$HOME"/.dotfiles/plugins/oh-my-zsh
     # ${ZSH_CUSTOM:-~/.dotfiles/plugins/oh-my-zsh/custom}
     ZSH_CUSTOM="$ZSH/custom"
@@ -38,7 +38,7 @@ if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
     COMPLETION_WAITING_DOTS="true"
 fi
 
-# if [ -r "$ZSH" ]; then
+# if [[ -r "$ZSH" ]]; then
 #     prompt_svn() {
 #         local rev branch
 #         if in_svn; then
@@ -56,7 +56,7 @@ fi
 #     }
 # fi
 
-# if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
+# if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]]; then
 #     ZSH_THEME="powerlevel9k/powerlevel9k"
 #
 #     # Single-line prompt.
@@ -138,7 +138,7 @@ prompt_zinc_setup fniessen-p9k-port
 # # set the zincs_execution_time min time:
 # zincs_execution_time[threshold]=10
 
-if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
+if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]]; then
 
     plugins=(
         colored-man-pages
@@ -150,7 +150,7 @@ if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
     )
 fi
 
-if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
+if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]]; then
     # Fix Colorize man pages (with `less` pager) not working in Cygwin MinTTY
     export MANROFFOPT="-c"
     # in your shell rc file. This has the same effect as
@@ -160,19 +160,19 @@ if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
     # effects.
 fi
 
-if [ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+if [[ -r "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
     plugins+=(zsh-syntax-highlighting)
 fi
 
-if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+if [[ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
     plugins+=(zsh-autosuggestions)
 fi
 
-if [ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]; then
+if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]]; then
     . "$ZSH"/oh-my-zsh.sh
 fi
 
-if [ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+if [[ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 fi
 
@@ -237,9 +237,9 @@ BEL=$(tput bel)
 PROMPT+='%(?::$BEL)'
 # Does not work on Bash on Ubuntu on Windows.
 
-[ "$TERM" = "dumb" ] && PROMPT="> "
+[[ "$TERM" = "dumb" ]] && PROMPT="> "
 
-[ "$TERM" = "dumb" ] && RPROMPT=""
+[[ "$TERM" = "dumb" ]] && RPROMPT=""
 
 # Command line head / tail shortcuts
 alias -g H='| head' ###
@@ -334,7 +334,7 @@ alias lastmonth='LG reg TLM'
 # Ledger -f FILE [OPTIONS] [COMMAND [PATTERNS]]
 # Ledger using `ledger', `hledger' or `beancount' (see `$LEDGER')
 Ledger() {
-    if [ $# -lt 1 ]; then
+    if [[ $# -lt 1 ]]; then
         cat << EOF > /dev/stderr
 Usage: $(basename "$0") -f FILE [OPTIONS] [COMMAND [PATTERNS]]
     or $(basename "$0") FILE   (if LEDGER=beancount)
@@ -388,7 +388,7 @@ exec 2> >( color_err )
 . "$HOME"/.shellrc                      # Error displayed if not found.
 
 # Enable overriding.
-if [ -f "$HOME"/.zshrc_local ]; then
+if [[ -f "$HOME"/.zshrc_local ]]; then
     . "$HOME"/.zshrc_local
 fi
 
