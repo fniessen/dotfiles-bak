@@ -5,7 +5,7 @@
 # July 1993
 # December 2010, minor edits
 
-if [ "$1" = debug ]
+if [[ "$1" = debug ]]
 then
     set -x
     shift
@@ -19,7 +19,7 @@ n='
 program=
 opts=
 
-while [ $# -ne 0 ] # loop over arguments
+while [[ $# -ne 0 ]] # loop over arguments
 do
     case $1 in
     --)     shift
@@ -70,7 +70,7 @@ do
     shift
 done
 
-if [ -z "$program" ]
+if [[ -z "$program" ]]
 then
      program=${1?'missing program'}
      shift

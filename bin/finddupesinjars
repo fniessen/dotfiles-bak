@@ -4,8 +4,7 @@
 # See jarfish:
 # https://code.google.com/archive/p/jarfish/wikis/Intro.wiki
 
-if [ -z "$1" ]
-then
+if [[ -z "$1" ]]; then
     echo "Usage: $(basename "$0")" > /dev/stderr
     echo "Find duplicate 'com/^(microsoft|sun)' classes in JAR files (in the current directory and subdirectories recursively)." > /dev/stdout
     # exit 1

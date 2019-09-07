@@ -6,7 +6,7 @@ echo "exiftool -d %Y%m%d_%H%M%S%%_c.%%e \"-FileName<CreateDate\" DIR"
 exit
 
 function usage() {
-    if [ $# -ne 1 ]; then
+    if [[ $# -ne 1 ]]; then
         echo "ExifDater - version 1.1 - 2018-09-14"
         echo
         echo "ExifDater utilises the ExifTool (https://www.sno.phy.queensu.ca/~phil/exiftool/)"
@@ -21,7 +21,7 @@ function usage() {
 
 function exiftagsexist() {
     which exiftool > /dev/null 2>&1
-    if [ $? -ne 0 ]; then
+    if [[ $? -ne 0 ]]; then
         echo
         echo "Unable to locate exiftool binary"
         echo "Please make sure it is installed and is in your path."
@@ -33,7 +33,7 @@ function exiftagsexist() {
 function gotodir() {
     cd $1 > /dev/null 2>&1
 
-    if [ $? -ne 0 ]; then
+    if [[ $? -ne 0 ]]; then
         echo
         echo "Directory does not exists"
         echo "Please try again."
@@ -45,7 +45,7 @@ function gotodir() {
 function jpgexist() {
     find . -iname "*.jpg" -type f >/dev/null 2>&1
 
-    if [ $? -ne 0 ]; then
+    if [[ $? -ne 0 ]]; then
         echo
         echo "There are no JPEG pictures in this directory"
         echo "Please try again."
@@ -59,7 +59,7 @@ function myexifdater() {
     do
         echo $i
         create_date=`exiftool "$i" 2>&1 | grep "Create Date" | cut -d" " -f3 | sed -e 's/:/-/g'`
-        if [ "$create_date" == "" ]; then
+        if [[ "$create_date" == "" ]]; then
                 echo -e "SKIPPING IMAGE $i \\t\\t\\t [NO EXIF DATA FOUND]"
                 continue
         fi
