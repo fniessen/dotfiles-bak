@@ -52,8 +52,7 @@ BCC=""
 FROM="<$(whoami)@$(echo "$(hostname)".com | tr '[:upper:]' '[:lower:]')>"
 : "${SMTP:=smtp}"                     # set var if not already set
 
-while getopts "s:c:b:f:a:h" opt
-do
+while getopts "s:c:b:f:a:h" opt; do
     case "$opt" in
         s) SUBJECT="$OPTARG";;
         a) ATTFILES="$ATTFILES $OPTARG";;

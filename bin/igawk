@@ -19,8 +19,7 @@ n='
 program=
 opts=
 
-while [[ $# -ne 0 ]] # loop over arguments
-do
+while [[ $# -ne 0 ]]; do # loop over arguments
     case $1 in
     --)     shift
             break ;;
