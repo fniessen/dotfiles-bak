@@ -10,8 +10,8 @@
 # If running in terminal...
 if test -t 1; then
     # ... start Zsh directly (when I open "Bash on Ubuntu on Windows" for example)
-    echo "Execute Zsh..."
-    which zsh && exec zsh
+    echo "Zsh"
+    exec zsh
 fi
 
 # If not running interactively, don't do anything.
@@ -22,18 +22,6 @@ fi
 if [[ $(expr index "$-" i) -ne 0 ]] && [[ -f /etc/bashrc ]]; then
     . /etc/bashrc
 fi
-
-# Store 10000 commands in history buffer.
-export HISTSIZE=10000
-
-# Store 10000 commands in history FILE.
-export HISTFILESIZE=10000
-
-# Avoid recording common commands (like ls, top and clear).
-export HISTIGNORE=”ls*:top:clear”
-
-# Ignore duplicate commands and commands starting with space.
-export HISTCONTROL=ignoreboth           # Prefix a command with a space to keep it out of the history.
 
 #** Controlling the Prompt
 
@@ -125,13 +113,6 @@ esac
 # Get line numbers when you run with `-x'.
 PS4='+'$grn'[$0:$LINENO]+ '${reset_color}
 
-# Permissions on newly created files.
-umask 022                               # Prevent new dirs and files from being
-                                        # group and world writable.
-if [[ $EUID -eq 0 ]]; then
-    umask 077                           # Stricter.
-fi
-
 # Automatically cd into a  directory without the `cd' in front of it.
 shopt -s autocd
 
@@ -147,38 +128,39 @@ shopt -s histappend
 # Make multi-line commandsline in history.
 shopt -q -s cmdhist
 
+# Store 10000 commands in history buffer.
+export HISTSIZE=10000
+
+# Store 10000 commands in history FILE.
+export HISTFILESIZE=10000
+
+# Avoid recording common commands (like ls, top and clear).
+export HISTIGNORE=”ls*:top:clear”
+
+# Ignore duplicate commands and commands starting with space.
+export HISTCONTROL=ignoreboth           # Prefix a command with a space to keep it out of the history.
+
 bind '"\eh": "\C-a\eb\ed\C-y\e#man \C-y\C-m\C-p\C-p\C-a\C-d\C-e"'
+
+# Permissions on newly created files.
+umask 022                               # Prevent new dirs and files from being
+                                        # group and world writable.
+if [[ $EUID -eq 0 ]]; then
+    umask 077                           # Stricter.
+fi
 
 #** 8.6 Programmable Completion
 
 complete -A helptopic help
 complete -A hostname ssh telnet nmap ftp ping host traceroute nslookup
 
-# # Get a file's basename, dirname, extension, etc
-#
-# # Get extension; everything after last '.'.
-# ext=${file##*.}
-#
-# # Basename.
-# basename=$(basename "$file")
-# # Everything after last '/'.
-# basename=${file##*/}
-#
-# # Dirname.
-# dirname=$(dirname "$file")
-# # Everything before last '/'.
-# basename=${file%/*}
-
 # Source common settings.
-. "$HOME"/.shellrc                      # Error displayed if not found.
+. "$HOME"/config-shell                      # Error displayed if not found.
 
 #* Local Variables
 
 # This is for the sake of Emacs.
 # Local Variables:
 # mode: sh
-# mode: outline-minor
 # sh-shell: bash
 # End:
-
-## bash_profile ends here

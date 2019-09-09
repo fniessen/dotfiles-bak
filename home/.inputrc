@@ -53,5 +53,3 @@ set completion-ignore-case on
 # # Display characters with the eighth bit set directly rather than as
 # # meta-prefixed characters.
 # set output-meta on
-
-## .inputrc ends here

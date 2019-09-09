@@ -1,16 +1,16 @@
-alias which-shell='ps -p $$'
-
 # Hey Emacs, this is a -*- sh -*- file
-## .shellrc --- Common features between Bash and Z Shell
+## config-shell --- Common features between Bash and Z Shell
 
 # Copyright (C) 2009-2019 Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: bash, zsh, dotfile, config
 
-#* PATH
+uname -s -n -r -m
 
-# Extend the PATH var (where to look for executable files).
+alias which-shell='ps -p $$'
+
+# Add user paths.
 for MAYBE_PATH in "$HOME"/.dotfiles/bin \
                   "$HOME"/.dotfiles/expect; do
     # `-e' or `-x'?
@@ -85,7 +85,7 @@ export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --
 # Set DISPLAY environment variable.
 export DISPLAY=:0.0
 
-function alert {
+alert() {
     $@
     echo -e "\a"
 }
@@ -165,7 +165,7 @@ else
 fi
 
 # This alias reloads this file.
-alias reload='unalias -a && . "$HOME"/.shellrc'
+alias reload='unalias -a && . "$HOME"/config-shell'
 
 alias dirf='find . -type d | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/|-\1/"'
 
@@ -416,9 +416,3 @@ texman() {
 texlist() {
     locate "$*" | grep "\(pdf\|dvi\)" | grep "\ (texlive\|gwTeX\)"
 }
-
-# This is for the sake of Emacs.
-# Local Variables:
-# End:
-
-# .shellrc ends here

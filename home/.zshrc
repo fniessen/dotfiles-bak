@@ -76,20 +76,24 @@ fi
 #     POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
 # fi
 
-ZSH_THEME=""
-source "$ZSH_CUSTOM"/themes/zinc/zinc.zsh
+if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh//custom/themes/zinc/zinc.zsh ]]; then
 
-zinc_default_user="f.niessen"
-zinc_default_host="XIPHIAS"
+    ZSH_THEME=""
+    source "$ZSH_CUSTOM"/themes/zinc/zinc.zsh
 
-prompt_zinc_setup rprompt-previous-line
+    zinc_default_user="f.niessen"
+    zinc_default_host="XIPHIAS"
 
-# Input your own strftime format: http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
-zincs_time() {
-    REPLY="%D{%H:%M}"
-}
+    prompt_zinc_setup rprompt-previous-line
 
-prompt_zinc_setup fniessen-p9k-port
+    # Input your own strftime format: http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+    zincs_time() {
+        REPLY="%D{%H:%M}"
+    }
+
+    prompt_zinc_setup fniessen-p9k-port
+
+fi
 
 # prompt_zinc_setup fniessen-p9k-port
 
@@ -176,11 +180,6 @@ if [[ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 fi
 
-setopt AUTO_CD                  # Change directory given just path.
-
-setopt EXTENDED_GLOB            # Use additional pattern matching features.
-setopt NOMATCH                  # Unmatched patterns cause an error.
-
 # History.
 HISTSIZE=10000
 SAVEHIST=10000
@@ -195,6 +194,11 @@ setopt HIST_REDUCE_BLANKS       # Leave blanks out.
 setopt HIST_SAVE_NO_DUPS        # Don't save duplicates.
 setopt INC_APPEND_HISTORY       # Write after each command.
 setopt SHARE_HISTORY            # Share history between sessions.
+
+setopt AUTO_CD                  # Change directory given just path.
+
+setopt EXTENDED_GLOB            # Use additional pattern matching features.
+setopt NOMATCH                  # Unmatched patterns cause an error.
 
 setopt NOTIFY                   # Immediately report changes in background job status.
 
@@ -385,7 +389,7 @@ color_err() {
 exec 2> >( color_err )
 
 # Source common settings.
-. "$HOME"/.shellrc                      # Error displayed if not found.
+. "$HOME"/config-shell                      # Error displayed if not found.
 
 # Enable overriding.
 if [[ -f "$HOME"/.zshrc_local ]]; then
@@ -397,7 +401,5 @@ fi
 # This is for the sake of Emacs.
 # Local Variables:
 # mode: sh
-# mode: outline-minor
+# sh-shell: zsh
 # End:
-
-## .zshrc ends here
