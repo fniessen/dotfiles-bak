@@ -44,7 +44,7 @@ set completion-ignore-case on
 # # Display all alternatives for completion after one tab keypress.
 # set show-all-if-ambiguous on
 
-# #* Get Bash to display accented characters (Emacs *Meta Key* Problems in XTerm)
+# # Get Bash to display accented characters (Emacs *Meta Key* Problems in XTerm)
 
 # # Don't strip characters to 7 bits when reading.
 # set input-meta on

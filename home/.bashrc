@@ -5,7 +5,7 @@
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: bash, dotfile, config
 
-#* Code:
+# Code:
 
 # If running in terminal...
 if test -t 1; then
@@ -23,8 +23,6 @@ if [[ $(expr index "$-" i) -ne 0 ]] && [[ -f /etc/bashrc ]]; then
     . /etc/bashrc
 fi
 
-#** Controlling the Prompt
-
 # Regular colors.
 grn="\[$(tput setaf 2)\]"
 yel="\[$(tput setaf 3)\]"
@@ -36,7 +34,7 @@ GRN="\[$(tput setaf 2; tput bold)\]"
 
 reset_color="\[$(tput sgr0)\]"
 
-#*** PROMPT_COMMAND + PS1 --- Default interaction prompt
+# PROMPT_COMMAND + PS1 --- Default interaction prompt
 
 # To be called just before the prompt is printed.
 leuven-before-prompt() {
@@ -104,11 +102,7 @@ case "$TERM" in
         ;;
 esac
 
-#*** PS2 --- Continuation interactive prompt
-
-#*** PS3 --- Prompt used by "select" inside shell script
-
-#*** PS4 --- Used by "set -x" to prefix tracing output
+# PS4 --- Used by "set -x" to prefix tracing output
 
 # Get line numbers when you run with `-x'.
 PS4='+'$grn'[$0:$LINENO]+ '${reset_color}
@@ -140,24 +134,13 @@ export HISTIGNORE=”ls*:top:clear”
 # Ignore duplicate commands and commands starting with space.
 export HISTCONTROL=ignoreboth           # Prefix a command with a space to keep it out of the history.
 
-bind '"\eh": "\C-a\eb\ed\C-y\e#man \C-y\C-m\C-p\C-p\C-a\C-d\C-e"'
-
-# Permissions on newly created files.
-umask 022                               # Prevent new dirs and files from being
-                                        # group and world writable.
-if [[ $EUID -eq 0 ]]; then
-    umask 077                           # Stricter.
-fi
-
-#** 8.6 Programmable Completion
-
 complete -A helptopic help
 complete -A hostname ssh telnet nmap ftp ping host traceroute nslookup
 
+bind '"\eh": "\C-a\eb\ed\C-y\e#man \C-y\C-m\C-p\C-p\C-a\C-d\C-e"'
+
 # Source common settings.
 . "$HOME"/config-shell                      # Error displayed if not found.
-
-#* Local Variables
 
 # This is for the sake of Emacs.
 # Local Variables:

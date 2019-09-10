@@ -5,14 +5,10 @@
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: zsh, dotfile, config
 
-#* Code:
+# Code:
 
 # Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
 PS1=$'%{\e]0;%d\a%}\n%F{grn}%n@%m %F{yel}%d%f\n%# '
-
-# # For Bash on Ubuntu on Windows.
-# export BROWSER='/mnt/c/Windows/explorer.exe' # does not work.
-export BROWSER='/mnt/c/Program Files (x86)/Mozilla Firefox/firefox.exe'
 
 FILE="$HOME"/.dotfiles/plugins/mintty-colors-solarized/mintty-solarized-dark.sh && test -f "$FILE" && . "$FILE"
 
@@ -95,8 +91,6 @@ if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh//custom/themes/zinc/zinc.zsh ]]; th
 
 fi
 
-# prompt_zinc_setup fniessen-p9k-port
-
 # # either user and host separate with CONNECT_PREV
 # # or zincs_userhost
 # zinc_left=(
@@ -142,6 +136,14 @@ fi
 # # set the zincs_execution_time min time:
 # zincs_execution_time[threshold]=10
 
+BEL=$(tput bel)
+PROMPT+='%(?::$BEL)'
+# Does not work on Bash on Ubuntu on Windows.
+
+[[ "$TERM" = "dumb" ]] && PROMPT="> "
+
+[[ "$TERM" = "dumb" ]] && RPROMPT=""
+
 if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]]; then
 
     plugins=(
@@ -176,14 +178,30 @@ if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]]; then
     . "$ZSH"/oh-my-zsh.sh
 fi
 
+# Autosuggestions.
 if [[ -r "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=5'
 fi
 
-# History.
-HISTSIZE=10000
-SAVEHIST=10000
+setopt AUTO_CD                  # Change directory given just path.
 
+# Load general completion.
+autoload -Uz compinit
+# compinit                      # Security check (insecure directories)!
+
+setopt AUTO_LIST                # Automatically list choices on an ambiguous completion.
+
+setopt EXTENDED_GLOB            # Use additional pattern matching features.
+setopt NOMATCH                  # Unmatched patterns cause an error.
+
+setopt NOTIFY                   # Immediately report changes in background job status.
+
+# Beep when there's an error with the command text you're typing in (e.g. if you
+# hit tab and there are no matching files) -- not as a result of normal commands
+# returning errors.
+setopt BEEP
+
+# History.
 setopt APPEND_HISTORY           # Append rather than overwrite history file.
 setopt EXTENDED_HISTORY         # Save timestamp and runtime information.
 setopt HIST_EXPIRE_DUPS_FIRST   # Allow dups, but expire old ones when I hit HISTSIZE.
@@ -195,17 +213,8 @@ setopt HIST_SAVE_NO_DUPS        # Don't save duplicates.
 setopt INC_APPEND_HISTORY       # Write after each command.
 setopt SHARE_HISTORY            # Share history between sessions.
 
-setopt AUTO_CD                  # Change directory given just path.
-
-setopt EXTENDED_GLOB            # Use additional pattern matching features.
-setopt NOMATCH                  # Unmatched patterns cause an error.
-
-setopt NOTIFY                   # Immediately report changes in background job status.
-
-# Beep when there's an error with the command text you're typing in (e.g. if you
-# hit tab and there are no matching files) -- not as a result of normal commands
-# returning errors.
-setopt BEEP
+HISTSIZE=10000
+SAVEHIST=10000
 
 # Behave like Emacs when editing.
 bindkey -e
@@ -227,23 +236,6 @@ backward-delete-char-beep() {
 }
 zle -N backward-delete-char-beep
 bindkey "^?" backward-delete-char-beep
-
-# zstyle :compinstall filename '/cygdrive/d/Users/fni/.zshrc'
-
-# Load general completion.
-autoload -Uz compinit
-# compinit                                # Security check (insecure directories)!
-
-# Display a list of completions when you give an ambiguous choice (like Bash).
-setopt autolist
-
-BEL=$(tput bel)
-PROMPT+='%(?::$BEL)'
-# Does not work on Bash on Ubuntu on Windows.
-
-[[ "$TERM" = "dumb" ]] && PROMPT="> "
-
-[[ "$TERM" = "dumb" ]] && RPROMPT=""
 
 # Command line head / tail shortcuts
 alias -g H='| head' ###
@@ -298,15 +290,12 @@ alias -g T7="| awk -F $'\t' '{print \$7}'"
 alias -g T8="| awk -F $'\t' '{print \$8}'"
 alias -g T9="| awk -F $'\t' '{print \$9}'"
 
-alias -g ND='$(ls -d *(/om[1]))'        # Newest directory.
-alias -g NF='$(ls *(.om[1]))'           # Newest file.
-
 alias -- cdwd='cd $(pwd)'
 alias -- cwd='echo $cwd'
 
-alias -g GLWEEK=' --since=1.week.ago'
-alias -g GLMONTH=' --since=1.month.ago'
-alias -g GLYEAR=' --since=1.year.ago'
+alias -g GTHISWEEK=' --since=1.week.ago'
+alias -g GTHISMONTH=' --since=1.month.ago'
+alias -g GTHISYEAR=' --since=1.year.ago'
 
 # When entering a directory, list the contents.
 cd() {
@@ -376,17 +365,17 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 compdef '_files -g "*"' start
 
 # Coloring stderr.
-STDERRRED=$'\e[1;31m'
+STDERRED_ESC_CODE=$'\e[01;31m'
 zmodload zsh/system
-color_err() {
+color_stderr_red() {
     # Sysread & syswrite are part of `zsh/system'.
     emulate -LR zsh
     while sysread; do
-        syswrite -o 2 "$STDERRRED$REPLY$terminfo[sgr0]"
+        syswrite -o 2 "$STDERRED_ESC_CODE$REPLY$terminfo[sgr0]"
     done
 }
 
-exec 2> >( color_err )
+exec 2> >( color_stderr_red )
 
 # Source common settings.
 . "$HOME"/config-shell                      # Error displayed if not found.
@@ -395,8 +384,6 @@ exec 2> >( color_err )
 if [[ -f "$HOME"/.zshrc_local ]]; then
     . "$HOME"/.zshrc_local
 fi
-
-#* Local Variables
 
 # This is for the sake of Emacs.
 # Local Variables:
