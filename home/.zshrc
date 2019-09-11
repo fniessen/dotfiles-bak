@@ -1,3 +1,4 @@
+# Hey Emacs, this is a -*- sh -*- file
 ## .zshrc --- Z Shell configuration file (for interactive shells)
 
 # Copyright (C) 2009-2019 Fabrice Niessen
@@ -191,6 +192,11 @@ autoload -Uz compinit
 
 setopt AUTO_LIST                # Automatically list choices on an ambiguous completion.
 
+# Case-insensitive completion.
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+compdef '_files -g "*"' start
+
 setopt EXTENDED_GLOB            # Use additional pattern matching features.
 setopt NOMATCH                  # Unmatched patterns cause an error.
 
@@ -237,20 +243,18 @@ backward-delete-char-beep() {
 zle -N backward-delete-char-beep
 bindkey "^?" backward-delete-char-beep
 
-# Command line head / tail shortcuts
-alias -g H='| head' ###
-alias -g T='| tail' ###
+alias -g 21="2>&1"
+alias -g C='| wc -l'
+alias -g CA="| cat -A"
+alias -g F=' | fmt -' ##
 alias -g G='| grep -E' ######
+alias -g H='| head' ###
 alias -g L="| less" #######
 alias -g M="| less"
-alias -g CA="| cat -A"
-alias -g 21="2>&1"
 alias -g NUL='> /dev/null 2>&1'
-
-alias -g W='| wc -l' ####
-alias -g C='| wc -l'
 alias -g S='| sort' ###
-alias -g F=' | fmt -' ##
+alias -g T='| tail' ###
+alias -g W='| wc -l' ####
 
 alias -g A='| awk'
 alias -g A1="| awk '{print \$1}'"
@@ -359,11 +363,6 @@ EOF
     rm "$LEDGER_FILE"
 }
 
-# Case-insensitive completion.
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-
-compdef '_files -g "*"' start
-
 # Coloring stderr.
 STDERRED_ESC_CODE=$'\e[01;31m'
 zmodload zsh/system
@@ -377,16 +376,10 @@ color_stderr_red() {
 
 exec 2> >( color_stderr_red )
 
-# Source common settings.
+# Common configuration.
 . "$HOME"/config-shell                      # Error displayed if not found.
 
 # Enable overriding.
 if [[ -f "$HOME"/.zshrc_local ]]; then
     . "$HOME"/.zshrc_local
 fi
-
-# This is for the sake of Emacs.
-# Local Variables:
-# mode: sh
-# sh-shell: zsh
-# End:

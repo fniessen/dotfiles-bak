@@ -1,3 +1,4 @@
+# Hey Emacs, this is a -*- sh -*- file
 ## bash_profile --- Bourne Again Shell configuration file (for interactive shells)
 
 # Copyright (C) 2003-2019 Fabrice Niessen
@@ -7,31 +8,28 @@
 
 # Code:
 
-# If running in terminal...
-if test -t 1; then
-    # ... start Zsh directly (when I open "Bash on Ubuntu on Windows" for example)
-    echo "Zsh"
-    exec zsh
-fi
-
 # If not running interactively, don't do anything.
 # isInteractive=$(echo $- | grep i)
 [[ "$-" != *i* ]] && return
+
+# If running in terminal...
+if test -t 1; then
+    # ... start Zsh
+    echo "Zsh"
+    exec zsh
+fi
 
 # Source global definitions only if the session is interactive.
 if [[ $(expr index "$-" i) -ne 0 ]] && [[ -f /etc/bashrc ]]; then
     . /etc/bashrc
 fi
 
-# Regular colors.
-grn="\[$(tput setaf 2)\]"
-yel="\[$(tput setaf 3)\]"
-
-# Bold colors.
+# Colors.
 BLK="\[$(tput setaf 0; tput bold)\]"
 RED="\[$(tput setaf 1; tput bold)\]"
+grn="\[$(tput setaf 2)\]"
 GRN="\[$(tput setaf 2; tput bold)\]"
-
+yel="\[$(tput setaf 3)\]"
 reset_color="\[$(tput sgr0)\]"
 
 # PROMPT_COMMAND + PS1 --- Default interaction prompt
@@ -139,11 +137,10 @@ complete -A hostname ssh telnet nmap ftp ping host traceroute nslookup
 
 bind '"\eh": "\C-a\eb\ed\C-y\e#man \C-y\C-m\C-p\C-p\C-a\C-d\C-e"'
 
-# Source common settings.
+# Common configuration.
 . "$HOME"/config-shell                      # Error displayed if not found.
 
-# This is for the sake of Emacs.
-# Local Variables:
-# mode: sh
-# sh-shell: bash
-# End:
+# Enable overriding.
+if [[ -f "$HOME"/.bashrc_local ]]; then
+    . "$HOME"/.bashrc_local
+fi

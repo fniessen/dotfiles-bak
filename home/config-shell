@@ -71,31 +71,6 @@ INFOPATH=/usr/share/info:"$INFOPATH"
 # `Info-default-directory-list' when searching for info files
 # INFOPATH="$HOME"/texlive/2014/texmf/doc/info:"$INFOPATH"
 
-export PAGER="less"
-
-alias more='less'
-
-export LESS_TERMCAP_mb=$'\e[01;31m'
-export LESS_TERMCAP_md=$'\e[01;31m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[01;44;33m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[01;32m'
-
-export LESS='-R'
-
-export LESS='-F -i -M -R -X'
-# export LESS="-P ?c<- .?f%f:Standard input.  ?n:?eEND:?p%pj\%.. .?c%ccol . ?mFile %i of %m  .?xNext\ %x.%t   Press h for help"
-export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
-
-# Start x11 server (if a process instance is not already running).
-# ps -ae | grep XWin || startxwin > /dev/null 2>&1 &   # XXX For Cygwin only!
-# To check that have the package xinit installed, try 'startxwin' without redirecting anything.
-
-# Set DISPLAY environment variable.
-export DISPLAY=:0.0
-
 # Find a suitable editor.
 for editor in emacsclientw emacsclient emacs; do
     if command -v "$editor" > /dev/null 2>&1; then
@@ -137,6 +112,33 @@ alias em=emacs-minimal
 ec() {
     emacsclient --no-wait "$1"
 }
+
+export PAGER="less"
+
+alias more='less'
+
+export LESS_TERMCAP_mb=$'\e[01;31m'
+export LESS_TERMCAP_md=$'\e[01;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;44;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[01;32m'
+
+export LESS='-R'
+
+export LESS='-F -i -M -R -X'
+# export LESS="-P ?c<- .?f%f:Standard input.  ?n:?eEND:?p%pj\%.. .?c%ccol . ?mFile %i of %m  .?xNext\ %x.%t   Press h for help"
+export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
+
+# Start x11 server (if a process instance is not already running).
+# ps -ae | grep XWin || startxwin > /dev/null 2>&1 &   # XXX For Cygwin only!
+# To check that have the package xinit installed, try 'startxwin' without redirecting anything.
+
+# Set DISPLAY environment variable.
+export DISPLAY=:0.0
+
+alias hgrep='history | grep -i'
 
 alias which-shell='ps -p $$'
 
@@ -305,8 +307,6 @@ svn-logfile-p() {
 }
 
 alias svn-nevermind='read -p "Destroy all local changes? [y/N]" && [[ $REPLY =~ ^[yY] ]] && svn revert . -R && rm -rf $(awk -f <(echo "/^?/{print \$2}") <(svn status) ;)'
-
-alias hgrep='history | grep -i'
 
 alias remove-bom='sed -i "1s/^\xEF\xBB\xBF//"'
 
