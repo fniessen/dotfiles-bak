@@ -38,7 +38,7 @@
     cmd = meld "$LOCAL" "$REMOTE"
 
 [alias]
-    showtool = "!f () { rev=$(git rev-parse \"${*:-HEAD}\"); git difftool $rev~1 $rev; }; f"
+    showtool = "!f() { rev=$(git rev-parse \"${*:-HEAD}\"); git difftool $rev~1 $rev; }; f"
 
 [alias]
     diffall = "!git difftool -t meld --dir-diff"
@@ -188,7 +188,7 @@
     today-all = !git log --since=midnight --no-merges --all
 
     # When was this file last updated, on each local branch.
-    wwflu = "!f() { for b in $(git rev-parse --symbolic --branches); do echo -e `git log --format=%at:%ar -1 $b -- \"$1\"`\\\\t$b; done | sort -r | cut -f2 -d: ; }; f"
+    wwflu = "!f() { for b in $(git rev-parse --symbolic --branches); do echo -e `git log --format=%at:%ar -1 $b -- \"$1\"`\\\\t$b; done | sort -r | cut -f2 -d:; }; f"
 
     forkdiff = !bash -c 'git diff $(git merge-base "$1" "$2") "$2" "${@: 3}" ' -
 
@@ -198,6 +198,7 @@
     ld = log --decorate --date=relative
 
     ll = log --decorate --date=short --stat
+    lll = log -u
 
     show-tree = log --decorate --all --simplify-by-decoration --oneline --date=short --graph
 
@@ -260,11 +261,15 @@
 
     # Case-sensitive.
     rg = "grep --break --heading --line-number"
+
+# In all commits, not in all branches!!! Lots of duplicates!!!
 grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     # `-I' = Don't match the pattern in binary files.
     g = "grep -I"
-    gno = "grep -I --name-only"
+
+    # Name only.
+    gno = "grep -I --files-with-matches"
 
     # List all tracked files.
     ls-tracked = ls-files -t
@@ -325,6 +330,8 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # including those in .gitignore.
     clear = git clean -d -f -x && git reset --hard
 
+    squash = "!f() { git reset --soft HEAD~${1} && git commit --edit -m\"$(git log --format=%B --reverse HEAD..HEAD@{1})\"; }; f"
+
     r = remote -v
     remotes = remote -v
 
@@ -344,10 +351,10 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     up = pull --rebase --autostash
     up = !git fetch && git rebase --autostash FETCH_HEAD
 
-    up-tmpname = "!f() { git remote update -p; git merge --ff-only @{u} ; }; f"
+    up-tmpname = "!f() { git remote update -p; git merge --ff-only @{u}; }; f"
 
     # Rebasing non-linear changes (when the fast-forward merge is not possible).
-    upr = "!f() { git remote update -p; git rebase -p @{u} ; }; f"
+    upr = "!f() { git remote update -p; git rebase -p @{u}; }; f"
 
 # cleanpull
 # update (like svn? if we add a git reset in front?)
@@ -362,10 +369,10 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # prune-local-branches = !sh -c 'git fetch -p && git branch -vv | grep \": gone]\" | awk \"{print $1}\" | xargs git branch -d'
 
     # Here is a correct solution (using bash as a command-line).
-    prune-local-branches = "!f() { git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d ; }; f"
+    prune-local-branches = "!f() { git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d; }; f"
 
     # Here is a correct solution (which does not need access to the remote Git repo).
-    prune-local-branches = "!f() { git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d ; }; f"
+    prune-local-branches = "!f() { git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d; }; f"
 
     when = !stat -c %y .git/FETCH_HEAD | cut -d'.' -f1
 
@@ -473,7 +480,7 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     # checkpoint and checkpoint recover
     cp = !git stash push -m "$(date +%F--%T)" && git stash pop --index
-    cpr = "!f() { git fsck | grep commit | cut -d' ' -f3 | while read hash; do git rev-parse --verify --no-revs --quiet $hash^2 2>/dev/null && echo $hash | xargs git rev-list --since=${1:-1day} -1; done | xargs -L 1 git log --format=%at:%h -1 | sort|cut -f2 -d: | xargs -L 1 git log --graph --oneline --format='%Cblue%h %Cgreen(%ar) %Creset%s' -3 ; }; f"
+    cpr = "!f() { git fsck | grep commit | cut -d' ' -f3 | while read hash; do git rev-parse --verify --no-revs --quiet $hash^2 2>/dev/null && echo $hash | xargs git rev-list --since=${1:-1day} -1; done | xargs -L 1 git log --format=%at:%h -1 | sort|cut -f2 -d: | xargs -L 1 git log --graph --oneline --format='%Cblue%h %Cgreen(%ar) %Creset%s' -3; }; f"
 
     sl = stash list
     stashes = stash list --date=local
