@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 REMOTES="$@";
-if [[ -z "$REMOTES" ]]; then
+if [ -z "$REMOTES" ]; then
     REMOTES=$(git remote);
 fi
 REMOTES=$(echo "$REMOTES" | xargs -n 1 echo)
@@ -19,10 +19,10 @@ echo "$REMOTES" | while read REMOTE; do
               ALB="refs/heads/$LB";
               NBEHIND=$(( $(git rev-list --count $ALB..$ARB 2> /dev/null) + 0));
               NAHEAD=$(( $(git rev-list --count $ARB..$ALB 2> /dev/null) + 0));
-              if [[ "$NBEHIND" -gt 0 ]]; then
-                  if [[ "$NAHEAD" -gt 0 ]]; then
+              if [ "$NBEHIND" -gt 0 ]; then
+                  if [ "$NAHEAD" -gt 0 ]; then
                       echo -e "[$LB \tis $NBEHIND commit(s) behind and $NAHEAD commit(s) ahead of $REMOTE/$RB.]  Not possible to fast-forward, aborting.";
-                  elif [[ "$LB" = "$CLB" ]]; then
+                  elif [ "$LB" = "$CLB" ]; then
                       echo -e "[$LB \tis $NBEHIND commit(s) behind of $REMOTE/$RB.  Fast-forwarding merge...]";
                       # git merge --quiet $ARB;
                       git merge --ff-only --verbose $ARB;
