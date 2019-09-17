@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-
 echo "Remove exe perm"
 find . -type f \
     \( -name "*.DTD" \
