@@ -10,7 +10,7 @@ CursorType=underscore
 
 # Text
 Font=Powerline Consolas
-FontHeight=8
+FontHeight=9
 BoldAsFont=yes
 BoldAsColour=yes
 AllowBlinking=yes
