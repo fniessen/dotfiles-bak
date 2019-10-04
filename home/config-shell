@@ -117,13 +117,13 @@ export PAGER="less"
 
 alias more='less'
 
-export LESS_TERMCAP_mb=$'\e[01;31m'
-export LESS_TERMCAP_md=$'\e[01;31m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[01;44;33m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[01;32m'
+export LESS_TERMCAP_mb=$'\e[01;31m'     # Begin bold.
+export LESS_TERMCAP_md=$'\e[01;36m'     # Begin blink.
+export LESS_TERMCAP_me=$'\e[0m'         # Reset bold/blink.
+export LESS_TERMCAP_so=$'\e[01;44;33m'  # Begin reverse video.
+export LESS_TERMCAP_se=$'\e[0m'         # Reset reverse video.
+export LESS_TERMCAP_us=$'\e[01;32m'     # Begin underline.
+export LESS_TERMCAP_ue=$'\e[0m'         # Reset underline.
 
 export LESS='-R'
 
@@ -324,7 +324,7 @@ alias grep='grep --color=auto'
 alias egrep='grep -E --color=auto'
 alias fgrep='grep -F --color=auto'
 
-export GREP_COLORS='0;30;43'
+export GREP_COLOR='0;33;1;44'            # Bold Yellow on blue.
 
 # Grep through the running processes.
 alias pgrep='pgrep -fl'

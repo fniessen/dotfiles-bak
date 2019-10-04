@@ -161,7 +161,7 @@ if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]]; then
     # Fix Colorize man pages (with `less` pager) not working in Cygwin MinTTY
     export MANROFFOPT="-c"
     # in your shell rc file. This has the same effect as
-    # export GROFF_NO_SGR=1
+    # export GROFF_NO_SGR=1               # For konsole and gnome-terminal.
     # but only affects man. I'm not sure if groff is used for anything else
     # besides man pages, but this seems safer to prevent unintended side
     # effects.
@@ -364,7 +364,7 @@ EOF
 }
 
 # Coloring stderr.
-STDERRED_ESC_CODE=$'\e[01;31m'
+STDERRED_ESC_CODE=$'\e[33;1;41m'
 zmodload zsh/system
 color_stderr_red() {
     # Sysread & syswrite are part of `zsh/system'.
