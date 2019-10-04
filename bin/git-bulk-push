@@ -19,7 +19,7 @@ for repo in $(find . -maxdepth 5 -name ".git" -type d | rev | cut -c 6- | rev | 
     else
         echo "No (accessible) remote -- or bad authentication?"
     fi
-    echo $reset
+    echo
 done
 
 
