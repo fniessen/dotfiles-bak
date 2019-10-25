@@ -47,7 +47,7 @@
    ((and (font-info "Consolas")
          (or (eq system-type 'windows-nt)
              (eq system-type 'cygwin)))
-    (set-frame-font "Consolas-8" nil t))
+    (set-frame-font "Consolas-9" nil t))
    ;; ((font-info "Courier New")
    ;;  (set-frame-font "Courier New-9" nil t))
    ((font-info "Hack")
@@ -61,12 +61,13 @@
    ))
 
 ;; Other monospaced fonts to look at (with many UTF-8 chars):
-;; - Droid Sans Mono
+;; - Source Code Pro (!)
 ;; - Free Monospaced
 ;; - Inconsolata
+
+;; - Droid Sans Mono
 ;; - Menlo (!)
 ;; - Monaco
-;; - Source Code Pro (!)
 ;; - Ubuntu Mono
 
 ;;* 00 Emacs Leuven ----------------------------------------------------------
