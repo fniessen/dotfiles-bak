@@ -40,6 +40,16 @@
 [alias]
     showtool = "!f() { rev=$(git rev-parse \"${*:-HEAD}\"); git difftool $rev~1 $rev; }; f"
 
+    diff-file-last-commit = "!f() { \
+            project_root_dir=$(git rev-parse --show-toplevel); \
+            echo finding full file path of $1 in $project_root_dir; \
+            filepath=$(find $project_root_dir -type f -name $1); \
+            echo full file path $filepath; \
+            last_modified_commit_hash=$(git rev-list -1 HEAD $filepath); \
+            echo last commit file modified $last_modified_commit_hash; \
+            git difftool $last_modified_commit_hash^ $filepath; \
+        }; f"
+
 [alias]
     diffall = "!git difftool -t meld --dir-diff"
 
@@ -129,7 +139,6 @@
     pretty = format:%C(yellow)%h%C(reset) %C(green)%ad%C(auto)%d%C(reset) %s %C(blue)<%an>%C(reset)
 
 
-
 # https://dev.to/megamattmiller/the-git-aliases-that-get-me-to-friday-1cmj
 [custom.formats]
     ls   = "[%C(auto,yellow)%<|(10)%h%C(reset)] [%C(auto,bold blue)%<(15trunc)%cn%C(reset)]  %C(auto)%d% C(reset)%s"
@@ -176,6 +185,24 @@
     wdiff = diff --word-diff
     dw = diff --word-diff
 
+# Diff line-wise
+d = diff
+
+# Diff staged line-wise
+ds = diff --staged
+
+# Diff word-wise
+dw = diff --color-words
+
+# Diff staged word-wise
+dws = diff --color-words --staged
+
+# Diff character-wise
+dt = diff --word-diff-regex=.
+
+# Diff staged character-wise
+dts = diff --word-diff-regex=. --staged
+
     # Review.
     dc = diff --cached
 
@@ -187,10 +214,10 @@
 
     today-all = !git log --since=midnight --no-merges --all
 
-    # When was this file last updated, on each local branch.
-    wwflu = "!f() { for b in $(git rev-parse --symbolic --branches); do echo -e `git log --format=%at:%ar -1 $b -- \"$1\"`\\\\t$b; done | sort -r | cut -f2 -d:; }; f"
+    log-standup = !git log --since=yesterday --author=\"$(git config user.email)\" --pretty=short
 
-    forkdiff = !bash -c 'git diff $(git merge-base "$1" "$2") "$2" "${@: 3}" ' -
+    # When was this file last updated, on each local branch.
+    wwflu = "!f() { for b in $(git rev-parse --symbolic --branches); do echo -e $(git log --format=%at:%ar -1 $b -- \"$1\")\\\\t$b; done | sort -r | cut -f2 -d:; }; f"
 
     log-local = log --oneline origin..HEAD
 
@@ -198,11 +225,6 @@
     ld = log --decorate --date=relative
 
     ll = log --decorate --date=short --stat
-    lll = log -u
-
-    show-tree = log --decorate --all --simplify-by-decoration --oneline --date=short --graph
-
-    graph = log --graph -10 --branches --remotes --tags --format=format:'%C(yellow)%h %C(reset) %<(75,trunc)%s <%cn> (%cr) %C(red)%d' --date-order
 
     ls-modified  = "!git status --porcelain -uno | awk 'match($1, /M/) {print $2}'"
     ls-added     = "!git status --porcelain -uno | awk 'match($1, /A/) {print $2}'"
@@ -224,21 +246,14 @@
     last = log --decorate --date=short -1 --stat
 
     # Show the last N commits on the current branch.
-    last = !git log --name-status -$1 ${*:2} && :
+    last = !git log --name-status -$1 ${*:2}
 
     changed = show --pretty="format:" --name-only
 
-    # Show the names of all files changed between two commits.  Usage: "git dname SHA1 SHA2".
-    diffn = diff --name-only
-    dname = diff --name-only
-
-    # History of a file.
+    # Show Git log for a file.
     filelog = log --date=short --follow -C
-    fl = log --date=short --follow -C
 
     related = !sh -c 'git log --follow --format=format:%H $1 | xargs -L1 git diff-tree --no-commit-id --name-only -r | sort | uniq -c | sort -b -n -r'
-
-    who = shortlog -n -s -e --no-merges --
 
     praise = blame -w
     archeology = blame -w -C -n
@@ -246,18 +261,19 @@
 
     find = "log --decorate -i --all --date=short --grep"
 
-    # Find commits by commit message.
+    # Search commits (Filter by commit message).
     findm = "!f() { git log --decorate --grep=$1 -i --all --date=short; }; f"
 
     whatwhen = log --decorate --date=short -p -S
 
     # Find commits by source code.
     findc = "!f() { git log --decorate --date=short -S $1; }; f"
+# XXX Does not work for strings with spaces in them...
 
     grep4d = !sh -c 'git log -p -S'$1' $2' -
 # Not the best example, but: git grep4d CLOSED '*.java'
 
-    status-all = "!for d in `find . -name \".git\"`; do echo \"\n*** Repository: $d ***\" && git --git-dir=$d --work-tree=$d/.. status | grep -q \"is ahead of\"; done"
+    status-all = "!for d in $(find . -name \".git\"); do echo \"\n*** Repository: $d ***\" && git --git-dir=$d --work-tree=$d/.. status | grep -q \"is ahead of\"; done"
 
     # Case-sensitive.
     rg = "grep --break --heading --line-number"
@@ -284,7 +300,7 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     ls-ignored = ls-files --others --ignored --exclude-standard
 
-    ignore = "!f() { echo $1 >> \"${GIT_PREFIX}.gitignore\"; }; f"
+    ignore = "!f() { echo \"$1\" >> \"${GIT_PREFIX}.gitignore\"; }; f"
 
     skip = update-index --assume-unchanged
     unskip = update-index --no-assume-unchanged
@@ -299,14 +315,16 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # Commit changes to current HEAD (modified and deleted files) as amended commit.
     plus = commit -a -v --amend --reuse-message HEAD
 
-    # Append staged changes to the PREVIOUS commit (changes its SHA-1, keeps the commit message).
+    # Append staged changes to the PREVIOUS commit (changes its SHA, keeps the commit message).
     fix = commit -v --amend --reuse-message HEAD
 
-    # Change previous commit's message to what you type in.
+    # Change PREVIOUS commit's message to what you type in.
     medit = commit --amend -m
 
     # Credit an author on the PREVIOUS commit.
     credit = "!f() { git commit --amend --author \"$1 <$2>\" --reuse-message HEAD; }; f"
+
+    fixup = "!f() { TARGET=$(git rev-parse "$1"); git commit --fixup=$TARGET ${@:2} && EDITOR=true git rebase -i --autostash --autosquash $TARGET^; }; f"
 
     # Discard.
     unmodify = checkout --
@@ -317,6 +335,9 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     undo-soft = reset --soft HEAD~1
     uncommit = reset --soft HEAD~1
+
+    undo-mixed = reset --mixed HEAD~1
+    uncommit-unstage = reset --mixed HEAD~1
 
     # Erase any changes since your last commit (reset every file in your working
     # directory to its committed state).
@@ -360,8 +381,10 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 # update (like svn? if we add a git reset in front?)
 # sync
 
-    update = !git pull --rebase --prune $@ && git submodule update --init --recursive
+    # Get everything new.
     update = !git pull                     && git submodule update --init --recursive
+    get    = !git pull --rebase            && git submodule update --init --recursive
+    update = !git pull --rebase --prune $@ && git submodule update --init --recursive
 
     pull-all = !"old=$(git rev-parse --abbrev-ref HEAD) ; for b in $(git for-each-ref refs/heads --format='%(refname)') ; do git checkout ${b#refs/heads/} ; git pull --ff-only ; done; git checkout ${old}"
 
@@ -385,11 +408,13 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # Avoid a fast-forward commit.
     mnf = merge --no-ff
 
+    cvsmerge = merge --no-ff --log
+
     # Merge remote master into the current branch.
     mm = !git fetch -p && git merge origin/master
 
-    merge-check = "!f() { git merge --no-commit --no-ff $1; git merge --abort; echo 'Merge aborted'; }; f"
-# works for git fetch & git merge
+    # Run merge test (before merge) to check for any conflicts beforehand.
+    mergetest = "!f() { git merge --no-commit --no-ff \"$1\"; git merge --abort; echo \"Merge aborted\"; }; f"
 
     # Check how the merge of `dev' into master will go: git merge-dry-run dev.
     merge-dry-run = "!f() { grep -q 'changed in both' <<< $(git merge-tree $(git merge-base FETCH_HEAD $1) FETCH_HEAD $1) && echo 'Merge conflicts!' || echo 'No merge conflicts'; }; f"
@@ -403,25 +428,28 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     conflicts = "!git ls-files -u | cut -f 2 | sort -u"
 
+    master = checkout master
+    develop = checkout develop
+
     # Shortcut for checkout.
     co = checkout
 
     # Create a new branch, and then switch to it.
     create-branch = checkout -b
 
-    master = checkout master
-    develop = checkout develop
-
     # Show local and remote branches.
     br = branch -a -vv
 
-    # Current branch.
-    cb = "name-rev --name-only HEAD"
+    be = branch --edit-description
 
     # I want to change branches; which are my recent ones again?
     coto = branch --sort=-committerdate
 
-    local-branch-dates  = !git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+    # List branches sorted by last modified.
+    b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
+
+    local-branch-dates = !git for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+    # TODO Invert the order!
 
     # Politely ask Git to delete a local branch.
     delete-local-branch = branch -d
@@ -429,15 +457,16 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # Delete remote branch.
     delete-remote-branch = push origin --delete
 
-    bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+    # Remove branches that have already been merged.
+    delete-merged-branches = "!git branch --no-color --merged | grep -v '\\*' | \
+                               grep -v master | \
+                               xargs -n 1 git branch -d"
 
-    bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
-
-    # Remove branches that have already been merged with master
-    delete-merged-branches = "!git branch --no-color --merged | grep -v '\\*' | grep -v master | xargs -n 1 git branch -d"
+    divergence = log --left-right --graph --cherry-pick --oneline $1...origin/$1
 
     # log since master.
     missing-master = log master...
+
     # diff since master.
     missing-master-diff = diff master...
 
@@ -508,40 +537,69 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     outgoing = log --branches --not --remotes --decorate
 
     # Get the current branch name (not so useful in itself, but used in other
-    # aliases).
-    branch-name = !git rev-parse --abbrev-ref HEAD
+    # aliases).  Works well in detached mode.
+    branch-name = name-rev --name-only HEAD
+    # branch-name = !git branch --show-current # v2.22+
 
-upstream-name = !git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD)
+    upstream-name = !git for-each-ref --format='%(upstream:short)' $(git symbolic-ref -q HEAD)
 
     # Create a copy of the current branch on the remote "origin", and set it to
     # track the upstream branch.
     publish = !git push -u origin $(git branch-name)
 
+    # Unpublish the current branch by deleting the remote branch.
     unpublish = !git push origin :$(git branch-name)
 
     export-branch = !git format-patch --stdout $1 > ~/$(git branch-name).diff
 
     sha1-tag = '!f() { git name-rev --name-only "$@"; }; f'
 
-    chlogm =  !sh -c 'git log $1...$2  --pretty=format:\"%s [[http://github.com/$3/$4/commit/%H][view commit]]\"' -
+    lll = log -u
+
+    # Apply a patch to files and/or to the index from URL.
+    apply-url = "!f() { curl -s $1 2>nul | git apply ${@:2}; }; f"
+
+    # Apply a series of patches from an URL.
+    am-url = "!f() { curl -s $1 2>nul | git am ${@:2}; }; f"
+
+    # Interactive apply patch.
+    ipatch = "!f() { git apply $1; git add -p; }; f"
 
     export = archive -o latest.tar.gz -9 --prefix=latest/
 
-    release = '!git commit -am "Release $1" && git tag -a -m $1'
+    # Best common ancestor (when it was branched off).
+    mbase = !git show --summary $(git merge-base origin/$1 $(git branch-name))
 
   # # Deploy
-  # staging = !git push heroku-staging $(git name):master -f && git track 'Deployed to staging ' # push current branch to staging, can add more comments after
-  # dev = !git push heroku-dev $(git name):master -f && git track 'Deployed to dev ' # push current branch to dev
-  # deploy = !git push heroku $(git name):master -f && git track 'Deployed to produciton ' # push current branch to production
+  # staging = !git push heroku-staging $(git branch-name):master -f && git track 'Deployed to staging ' # push current branch to staging, can add more comments after
+  # dev = !git push heroku-dev $(git branch-name):master -f && git track 'Deployed to dev ' # push current branch to dev
+  # deploy = !git push heroku $(git branch-name):master -f && git track 'Deployed to production ' # push current branch to production
 
-    version = describe --tags
-    lasttag = describe --tags --abbrev=0
+
+ # deploy='git push production master && terminal-notifier-notify -title "Deploy" -message "Deploy complete"'
+ # stage='git push staging $(git branch-name):master'
+
+    # Detailed list of changes.
+    changelog = !sh -c 'git log --no-merges --pretty=format:\"* %s\" $1...$2' -
+    changelog-org = !sh -c 'git log --no-merges --pretty=format:\"- %s\" $1...$2' -
+
+currentTag = tag --points-at HEAD
+zip = "!f() { git archive --format=zip -o $(git currentTag).zip HEAD; }; f"
+
+    last-tag = describe --tags --abbrev=0
 
     # Show verbose output about tags.
-    tags = tag -l
-    tags = !git tag | sort -V
+    tags = !git tag -l | sort -V
+
+    # le dernier tag, ainsi que la liste des commits ayant eu lieu depuis sur la
+    # branche courante.
+    unreleased = !git log --oneline $(git last-tag)...HEAD && git last-tag
 
     releases = log --decorate --oneline --simplify-by-decoration --all
+    # XXX Add date
+
+    # Rename a tag (locally and remotely).
+    rename-tag = "!f() { git tag $2 $1; git tag -d $1; git push origin $2; git push origin :refs/tags/$1; }; f"
 
     debug  = "!set -x; GIT_TRACE=2 GIT_CURL_VERBOSE=2 GIT_TRACE_PERFORMANCE=2 GIT_TRACE_PACK_ACCESS=2 GIT_TRACE_PACKET=2 GIT_TRACE_PACKFILE=2 GIT_TRACE_SETUP=2 GIT_TRACE_SHALLOW=2 git"
 
@@ -556,8 +614,6 @@ upstream-name = !git for-each-ref --format='%(upstream:short)' $(git symbolic-re
     root = rev-parse --show-toplevel
     root-relative = rev-parse --show-prefix
 
-    rma = !git ls-files --deleted -z | xargs -0 git rm
-
     # Pull then push current branch.
     sync = !git pull && git push
 
@@ -568,16 +624,55 @@ upstream-name = !git for-each-ref --format='%(upstream:short)' $(git symbolic-re
 
     record = !sh -c '(git add -p -- $@ && git commit) || git reset' --
 
-    lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA1: %C(yellow)%h%C(reset)  %s' --stdin | awk '/SHA1/ {sub(\"SHA1: \", \"\"); print}'"
-
-    graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+    lost = "!git fsck | awk '/dangling commit/ {print $3}' | git show --format='SHA: %C(yellow)%h%C(reset)  %s' --stdin | awk '/SHA/ {sub(\"SHA: \", \"\"); print}'"
 
     # 2009-05-26  (merged-bed-bug) 6fe85ff regenerate rules Brad Bowman
     logdate = log --format=format:'%ad %d %h %s %an%n' --date=short
-    br-date = !"sh -c 'for b in $(git branch --no-merged) ; \
-               do git logdate -1 -r $b --; done'"
+    br-date = !"sh -c 'for b in $(git branch --no-merged); do \
+                           git logdate -1 -r $b --; \
+                       done'"
+
+    find-file = !git ls-tree -r --name-only $(git branch-name) | grep --color=auto
+
+    find-file-all = "!f() { for branch in $(git for-each-ref --format=\"%(refname)\" refs/heads); do \
+                            echo \"${branch}:\"; \
+                                git ls-tree -r --name-only $branch | nl -bn -w3 | grep --color=auto \"$1\"; \
+                            done; }; f"
+
+    # Delete local and remote tags.
+    delete-tag = "!f() { [ -z ${1} ] \
+                         && echo \"No tags given as an argument!\" \
+                         || (git tag -l ${1} | \
+                             xargs -I % echo \"git tag -d % \
+                                            && git push --delete origin %\" | \
+                             sh); \
+                       }; f"
+
+    release = "!f() { git tag -a v$1 -m \"Release version $1\" \
+                   && git push origin --tags \
+                   && git push origin; }; f"
+
+    who = shortlog -n -s -e --no-merges --
+
+# history: This is pretty much the only way I look at my log. Aside from providing one-line logs,
+#          it also shows the branching in/out
+hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+
+    graph = log --graph -10 --branches --remotes --tags --format=format:'%C(yellow)%h %C(reset) %<(75,trunc)%s <%cn> (%cr) %C(red)%d' --date-order
+
+    show-tree = log --decorate --all --simplify-by-decoration --oneline --date=short --graph
+
+    graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+
+    # Show the names of all files changed between two commits.  Usage: "git diffn SHAv1 SHAv2".
+    diffn = diff --name-only
+
+    # diff status: A git diff, but with only the filenames (which reminds me of git status)
+    diffst = diff --name-only
+
+    issues = '!f() { URL=$(git config --get remote.origin.url); open ${URL/.git}/issues/$1; }; f'
+
+    serve="daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/"
 
     conflicts = diff --name-only --diff-filter=U
     unmerged = diff --name-only --diff-filter=U
-
-    issues = '!f() { URL=$(git config --get remote.origin.url); open ${URL/.git}/issues/$1; }; f'
