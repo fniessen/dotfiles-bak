@@ -18,8 +18,15 @@
 
 #    whitespace = fix,-indent-with-non-tab,trailing-space,space-before-tab,cr-at-eol
 
+    # Do filesystem operations in parallel to hide latency (default since v2.1).
+    preloadindex = true
+
+    # Fix UAC issues so you don't need to run Git as administrator (default since v2.8).
+    fscache = true
+
 [gc]
-    auto = 1
+    # Minimize the number of files in .git/.
+    auto = 256
 
 [diff]
     renames = copies
@@ -41,7 +48,7 @@
     showtool = "!f() { rev=$(git rev-parse \"${*:-HEAD}\"); git difftool $rev~1 $rev; }; f"
 
     diff-file-last-commit = "!f() { \
-            project_root_dir=$(git rev-parse --show-toplevel); \
+            project_root_dir=$(git root); \
             echo finding full file path of $1 in $project_root_dir; \
             filepath=$(find $project_root_dir -type f -name $1); \
             echo full file path $filepath; \
@@ -135,6 +142,11 @@
     separator = red bold
     selected = white bold
 
+[alias]
+    # Proxy.
+    setproxy = !git config --global http.proxy http://proxy-guest.forem.be:8080 && git config --global https.proxy https://proxy-guest.forem.be:8080
+    rmvproxy = !git config --global --unset http.proxy && git config --global --unset https.proxy
+
 [format]
     pretty = format:%C(yellow)%h%C(reset) %C(green)%ad%C(auto)%d%C(reset) %s %C(blue)<%an>%C(reset)
 
@@ -148,10 +160,6 @@
 [alias]
 
     alias = "!git config -l | grep alias | cut -c 7- | sort"
-
-    # Proxy.
-    setproxy = !git config --global http.proxy http://proxy-guest.forem.be:8080 && git config --global https.proxy https://proxy-guest.forem.be:8080
-    rmvproxy = !git config --global --unset http.proxy && git config --global --unset https.proxy
 
     type = cat-file -t
     dump = cat-file -p
@@ -217,7 +225,9 @@ dts = diff --word-diff-regex=. --staged
     log-standup = !git log --since=yesterday --author=\"$(git config user.email)\" --pretty=short
 
     # When was this file last updated, on each local branch.
-    wwflu = "!f() { for b in $(git rev-parse --symbolic --branches); do echo -e $(git log --format=%at:%ar -1 $b -- \"$1\")\\\\t$b; done | sort -r | cut -f2 -d:; }; f"
+    wwflu = "!f() { for b in $(git rev-parse --symbolic --branches); do \
+                        echo -e $(git log --format=%at:%ar -1 $b -- \"$1\")\\\\t$b; \
+                    done | sort -r | cut -f2 -d:; }; f"
 
     log-local = log --oneline origin..HEAD
 
@@ -273,7 +283,10 @@ dts = diff --word-diff-regex=. --staged
     grep4d = !sh -c 'git log -p -S'$1' $2' -
 # Not the best example, but: git grep4d CLOSED '*.java'
 
-    status-all = "!for d in $(find . -name \".git\"); do echo \"\n*** Repository: $d ***\" && git --git-dir=$d --work-tree=$d/.. status | grep -q \"is ahead of\"; done"
+    status-all = "!for d in $(find . -name \".git\"); do \
+                     echo \"\n*** Repository: $d ***\" \
+                     && git --git-dir=$d --work-tree=$d/.. status | grep -q \"is ahead of\"; \
+                   done"
 
     # Case-sensitive.
     rg = "grep --break --heading --line-number"
@@ -324,7 +337,9 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     # Credit an author on the PREVIOUS commit.
     credit = "!f() { git commit --amend --author \"$1 <$2>\" --reuse-message HEAD; }; f"
 
-    fixup = "!f() { TARGET=$(git rev-parse "$1"); git commit --fixup=$TARGET ${@:2} && EDITOR=true git rebase -i --autostash --autosquash $TARGET^; }; f"
+    fixup = "!f() { TARGET=$(git rev-parse \"$1\"); \
+                    git commit --fixup=$TARGET ${@:2} \
+                        && EDITOR=true git rebase -i --autostash --autosquash $TARGET^; }; f"
 
     # Discard.
     unmodify = checkout --
@@ -386,7 +401,12 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
     get    = !git pull --rebase            && git submodule update --init --recursive
     update = !git pull --rebase --prune $@ && git submodule update --init --recursive
 
-    pull-all = !"old=$(git rev-parse --abbrev-ref HEAD) ; for b in $(git for-each-ref refs/heads --format='%(refname)') ; do git checkout ${b#refs/heads/} ; git pull --ff-only ; done; git checkout ${old}"
+    pull-all = !"old=$(git rev-parse --abbrev-ref HEAD); \
+                 for b in $(git for-each-ref refs/heads --format='%(refname)'); do \
+                     git checkout ${b#refs/heads/}; \
+                     git pull --ff-only; \
+                 done; \
+                 git checkout ${old}"
 
     # Git config alias escaping...  This DOES NOT work.
     # prune-local-branches = !sh -c 'git fetch -p && git branch -vv | grep \": gone]\" | awk \"{print $1}\" | xargs git branch -d'
@@ -509,7 +529,10 @@ grep-all = "!f() { git rev-list --all | xargs git grep $1; }; f"
 
     # checkpoint and checkpoint recover
     cp = !git stash push -m "$(date +%F--%T)" && git stash pop --index
-    cpr = "!f() { git fsck | grep commit | cut -d' ' -f3 | while read hash; do git rev-parse --verify --no-revs --quiet $hash^2 2>/dev/null && echo $hash | xargs git rev-list --since=${1:-1day} -1; done | xargs -L 1 git log --format=%at:%h -1 | sort|cut -f2 -d: | xargs -L 1 git log --graph --oneline --format='%Cblue%h %Cgreen(%ar) %Creset%s' -3; }; f"
+    cpr = "!f() { git fsck | grep commit | cut -d' ' -f3 | \
+                  while read hash; do \
+                      git rev-parse --verify --no-revs --quiet $hash^2 2>/dev/null && echo $hash | xargs git rev-list --since=${1:-1day} -1; \
+                  done | xargs -L 1 git log --format=%at:%h -1 | sort | cut -f2 -d: | xargs -L 1 git log --graph --oneline --format='%Cblue%h %Cgreen(%ar) %Creset%s' -3; }; f"
 
     sl = stash list
     stashes = stash list --date=local
