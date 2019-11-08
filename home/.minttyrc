@@ -4,9 +4,14 @@
 ForegroundColour=108,131,134
 BackgroundColour=0,24,40
 CursorColour=0,255,0
+SearchForegroundColour=white
+SearchBackgroundColour=bright yellow
+SearchCurrentColour=blue
 Transparency=off
 OpaqueWhenFocused=yes
 CursorType=underscore
+# HighlightForegroundColour=
+# HighlightBackgroundColour=
 
 # Text
 Font=Powerline Consolas
