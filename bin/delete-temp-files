@@ -13,3 +13,5 @@ rm -v ~/.emacs.d/projectile.cache
 # rm -v ~/.histfile
 
 find ~/ -iname 'nul' | xargs rm -rf -v
+find ~/ -iname 'null' | xargs rm -rf -v
+find ~/ -iname 'MDB_ODBC.Trace.Txt' | xargs rm -rf -v
