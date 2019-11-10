@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-find . -type d -iname "*$1*" | sed "s#^\./##"
+find . -type d -iname "*$1*" -printf '%P\n'
