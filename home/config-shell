@@ -225,8 +225,13 @@ alias .....='cd ../../../..'
 # Aliases '-' to 'cd -'.
 alias -- -='cd -'
 
-alias c:='cd /mnt/c'
-alias d:='cd /mnt/d'
+# # For WSL.
+# alias c:='cd /mnt/c'
+# alias d:='cd /mnt/d'
+#
+# # For Cygwin.
+# alias c:='cd /cygdrive/c'
+# alias d:='cd /cygdrive/d'
 
 # list last used directories (directory history).
 alias d='dirs -v'
@@ -288,22 +293,22 @@ svn-showtool() {
     svn diff --diff-cmd='meld' -c "$1" "$2"
 }
 
-# svn-whatchanged [path/to/file]
-alias svn-whatchanged='svn log -v'
+# svn-changed release-number
+alias svn-changed='svn log -v -r'
 
-# svn-logfile path/to/file
-svn-logfile() {
-    svn log -q "$1" | grep "^r"
+# svn-filelog path/to/file
+svn-filelog() {
+    svn log -q "$1" | grep --color=never "^r"
+}
+
+# svn-filelog-p path/to/file
+svn-filelog-p() {
+    svn log --diff "$1" | less
 }
 
 # svn-unmodify path/to/file
 svn-unmodify() {
     svn revert "$1"
-}
-
-# svn-logfile-p path/to/file
-svn-logfile-p() {
-    svn log --diff "$1" | less
 }
 
 alias svn-nevermind='read -p "Destroy all local changes? [y/N]" && [[ $REPLY =~ ^[yY] ]] && svn revert . -R && rm -rf $(awk -f <(echo "/^?/{print \$2}") <(svn status) ;)'
