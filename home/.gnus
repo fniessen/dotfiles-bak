@@ -14,8 +14,8 @@
   (sit-for 1.5))
 
 (if (file-exists-p "~/.authinfo")
-    (message "~/.authinfo found")
-  (message "~/.authinfo NOT found")
+    (message "[~/.authinfo found]")
+  (message "[~/.authinfo NOT found]")
   (sit-for 1.5))
 
 ;;; .gnus ends here
