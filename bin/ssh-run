@@ -1,33 +1,32 @@
 #!/usr/bin/expect -f
 
-# sshcmd.exp -- use ssh to remotely execute a command
-# Time-stamp: <2011-08-09 Tue 12:36 Fabrice on MEDIACENTER>
+# ssh-run.exp -- Use ssh to remotely execute a command
 
-# usage: sshcmd.exp [user] [host] [password] [command]
+# usage: ssh-run.exp [SSH_USER] [SERVER] [PASS] [COMMAND]
 
 # useful GLOBAL
 set argv0 [file tail $argv0]
 
 # check for the correct number of arguments
 if {$argc == 4} { ;# no identity file
-    set IDFILE ""
-    set USER [lindex $argv 0]
-    set HOST [lindex $argv 1]
+    set SSH_KEY ""
+    set SSH_USER [lindex $argv 0]
+    set SERVER [lindex $argv 1]
     set PASS [lindex $argv 2]
-    set CMD  [lindex $argv 3]
+    set COMMAND  [lindex $argv 3]
 } elseif {$argc == 5} {
-    set IDFILE [lindex $argv 0]
+    set SSH_KEY [lindex $argv 0]
 
     # check for accessibility of identity file
-    if {! [file exists $IDFILE]} {
-        send_user "$argv0: Identity file `$IDFILE' does not exist.\n"
+    if {! [file exists $SSH_KEY]} {
+        send_user "$argv0: Identity file `$SSH_KEY' does not exist.\n"
         exit 1
     }
 
-    set USER [lindex $argv 1]
-    set HOST [lindex $argv 2]
+    set SSH_USER [lindex $argv 1]
+    set SERVER [lindex $argv 2]
     set PASS [lindex $argv 3]
-    set CMD  [lindex $argv 4]
+    set COMMAND  [lindex $argv 4]
 } else {
     send_user "Usage: $argv0 \[identity_file\] user host pass command\n"
     exit 1
@@ -40,10 +39,10 @@ set PROMPT "(%|#|\\$|>|]) ?(\\u001b\\\[0m)?(\\u001b\\\[K)?$"
 
 log_user 0
 
-if {$IDFILE == ""} {
-    spawn ssh $USER@$HOST
+if {$SSH_KEY == ""} {
+    spawn ssh $SSH_USER@$SERVER
 } else {
-    spawn ssh -i $IDFILE $USER@$HOST
+    spawn ssh -i $SSH_KEY $SSH_USER@$SERVER
 }
 match_max 100000   ;# the result might be more than 2000 characters
 
@@ -72,8 +71,8 @@ expect {
     -re ".*$PROMPT"
 }
 
-send "$CMD\r"                    ;# send command
-# expect "$CMD\r"                ;# discard command echo
+send "$COMMAND\r"                ;# send command
+# expect "$COMMAND\r"            ;# discard command echo
 expect -re "\n(.*)\r.*$PROMPT"   ;# match and save the result
 puts $expect_out(1,string)
 
@@ -86,4 +85,4 @@ send "exit\r"
 
 exit $RC
 
-## sshcmd.exp ends here
+## ssh-run.exp ends here
