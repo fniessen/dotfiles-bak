@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [ ! -d .git ]; then
+    # No .git folder.
+    echo "Disable .svn folder... Enable .git folder..."
+    mv .svn .svn-bak && mv .git-bak .git
+else
+    if [ ! -d .svn ]; then
+        # No .svn folder.
+        echo "Disable .git folder... Enable .svn folder..."
+        mv .git .git-bak && mv .svn-bak .svn
+    fi
+fi
