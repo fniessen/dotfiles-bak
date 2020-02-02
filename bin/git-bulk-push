@@ -4,6 +4,7 @@ BLU=$(tput bold)$(tput setaf 4)
 reset=$(tput sgr0)
 
 # TODO Return the exit code of the underlying git invocations
+# TODO Test with branch that's not yet published (@{u} is not known...)
 
 echo "Searching at most 5 levels of directories..."
 for repo in $(find . -maxdepth 5 -name ".git" -type d | rev | cut -c 6- | rev | sed "s#^\./##"); do
