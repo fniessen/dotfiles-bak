@@ -1,12 +1,22 @@
 # Hey Emacs, this is a -*- sh -*- file
 ## .zshrc --- Z Shell configuration file (for interactive shells)
 
-# Copyright (C) 2009-2019 Fabrice Niessen
+# Copyright (C) 2009-2020 Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: zsh, dotfile, config
 
 # Code:
+
+# Allow local Shell customizations.
+if [ -f "$HOME"/.shell_local_before ]; then
+    . "$HOME"/.shell_local_before
+fi
+
+# Allow local Zsh customizations.
+if [ -f "$HOME"/.zshrc_local_before ]; then
+    . "$HOME"/.zshrc_local_before
+fi
 
 # Don't inherit the value of PS1 from the previous shell (Zsh from Bash).
 PS1=$'%{\e]0;%d\a%}\n%F{grn}%n@%m %F{yel}%d%f\n%# '
@@ -27,7 +37,7 @@ fi
 
 if [[ -r "$HOME"/.dotfiles/plugins/oh-my-zsh ]]; then
     ZSH="$HOME"/.dotfiles/plugins/oh-my-zsh
-    # ${ZSH_CUSTOM:-~/.dotfiles/plugins/oh-my-zsh/custom}
+    # ${ZSH_CUSTOM:-"$HOME"/.dotfiles/plugins/oh-my-zsh/custom}
     ZSH_CUSTOM="$ZSH/custom"
 
     HIST_STAMPS="yyyy-mm-dd"            # See command `history'.
@@ -376,10 +386,12 @@ color_stderr_red() {
 
 exec 2> >( color_stderr_red )
 
-# Common configuration.
-. "$HOME"/config-shell                      # Error displayed if not found.
+# Allow local Zsh customizations.
+if [ -f "$HOME"/.zshrc_local_after ]; then
+    . "$HOME"/.zshrc_local_after
+fi
 
-# Enable overriding.
-if [[ -f "$HOME"/.zshrc_local ]]; then
-    . "$HOME"/.zshrc_local
+# Allow local Shell customizations.
+if [ -f "$HOME"/.shell_local_after ]; then
+    . "$HOME"/.shell_local_after
 fi

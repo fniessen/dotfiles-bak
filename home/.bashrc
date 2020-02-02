@@ -1,7 +1,7 @@
 # Hey Emacs, this is a -*- sh -*- file
 ## bash_profile --- Bourne Again Shell configuration file (for interactive shells)
 
-# Copyright (C) 2003-2019 Fabrice Niessen
+# Copyright (C) 2003-2020 Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: bash, dotfile, config
@@ -19,6 +19,16 @@ if test -t 1; then
     exec zsh
 fi
 
+# Allow local Shell customizations.
+if [ -f "$HOME"/.shell_local_before ]; then
+    . "$HOME"/.shell_local_before
+fi
+
+# Allow local Bash customizations.
+if [ -f "$HOME"/.bashrc_local_before ]; then
+    . "$HOME"/.bashrc_local_before
+fi
+
 # Source global definitions only if the session is interactive.
 if [[ $(expr index "$-" i) -ne 0 ]] && [[ -f /etc/bashrc ]]; then
     . /etc/bashrc
@@ -34,9 +44,12 @@ reset_color="\[$(tput sgr0)\]"
 
 # PROMPT_COMMAND + PS1 --- Default interaction prompt
 
+# + PROMPT='${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)$(branch_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
+
+
 # To be called just before the prompt is printed.
 leuven-before-prompt() {
-    RET=$?
+    RET_STATUS=$?
 
     # Set a color prompt (unless in Emacs).
     case $TERM in
@@ -52,17 +65,17 @@ leuven-before-prompt() {
     esac
 
     # Colorful prompt, based on whether the previous command succeeded or not.
-    if [[ $RET -eq 0 ]]; then
-        HILIT_RET=$GRN
+    if [[ $RET_STATUS -eq 0 ]]; then
+        HILIT_RET_STATUS=$GRN
     else
-        HILIT_RET=$RED
+        HILIT_RET_STATUS=$RED
     fi
 
     # Replace the `$HOME' prefix by `~' in the current directory.
     if [[ "$HOME" = "${PWD:0:${#HOME}}" ]]; then
-        myPWD="~${PWD:${#HOME}}"
+        local myPWD="~${PWD:${#HOME}}"
     else
-        myPWD=$PWD
+        local myPWD=$PWD
     fi
 
     # How many characters of the path should be kept.
@@ -75,15 +88,15 @@ leuven-before-prompt() {
 
     # Prompt character.
     if [[ $EUID -eq 0 ]]; then
-        local PROMPTCHAR="#"
+        local PROMPT_CHAR="#"
     else
-        local PROMPTCHAR="$"
+        local PROMPT_CHAR="$"
     fi
 
     if [[ "$color_prompt" = "yes" ]]; then
-        PS1="$grn\u@\h$BLK:${reset_color}$yel$myPWD${HILIT_RET} $RET${reset_color}$PROMPTCHAR "
+        PS1="$grn\u@\h$BLK:${reset_color}$yel$myPWD${HILIT_RET_STATUS} $RET_STATUS${reset_color}$PROMPT_CHAR "
     else
-        PS1="\u@\h:$myPWD $RET$PROMPTCHAR "
+        PS1="\u@\h:$myPWD $RET_STATUS$PROMPT_CHAR "
     fi
 }
 
@@ -137,10 +150,12 @@ complete -A hostname ssh telnet nmap ftp ping host traceroute nslookup
 
 bind '"\eh": "\C-a\eb\ed\C-y\e#man \C-y\C-m\C-p\C-p\C-a\C-d\C-e"'
 
-# Common configuration.
-. "$HOME"/config-shell                      # Error displayed if not found.
+# Allow local Bash customizations.
+if [ -f "$HOME"/.bashrc_local_after ]; then
+    . "$HOME"/.bashrc_local_after
+fi
 
-# Enable overriding.
-if [[ -f "$HOME"/.bashrc_local ]]; then
-    . "$HOME"/.bashrc_local
+# Allow local Shell customizations.
+if [ -f "$HOME"/.shell_local_after ]; then
+    . "$HOME"/.shell_local_after
 fi
