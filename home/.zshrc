@@ -254,19 +254,25 @@ zle -N backward-delete-char-beep
 bindkey "^?" backward-delete-char-beep
 
 alias -g 21="2>&1"
-alias -g C='| wc -l'
+alias -g A='| awk'
+alias -g BG='& exit'
+alias -g C='| cat'
 alias -g CA="| cat -A"
 alias -g F=' | fmt -' ##
-alias -g G='| grep -E' ######
+alias -g G='| grep --color=auto -E' ######
 alias -g H='| head' ###
+alias -g J='| jq -C .'
 alias -g L="| less" #######
-alias -g M="| less"
-alias -g NUL='> /dev/null 2>&1'
+alias -g L='| less'
+alias -g N='> /dev/null'
+alias -g NN='> /dev/null 2>&1'
 alias -g S='| sort' ###
 alias -g T='| tail' ###
 alias -g W='| wc -l' ####
+alias -g X1='| xargs -n 1'
+alias -g X='| xargs'
+alias -g XL='| tr "\n" "\0" | xargs -0'
 
-alias -g A='| awk'
 alias -g A1="| awk '{print \$1}'"
 alias -g A2="| awk '{print \$2}'"
 alias -g A3="| awk '{print \$3}'"
