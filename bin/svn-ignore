@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Usage: svnignore admin/notes/\*.tex
+# Usage: svn-ignore admin/notes/\*.tex
 
 target="$1"
 targetdirectory=$(dirname $target)
