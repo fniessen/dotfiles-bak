@@ -46,3 +46,5 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         symlinkifne "$(basename "$config_file")"
     done
 fi
+
+# ln -s "$HOME"/.dotfiles/plugins/git-config/.gitconfig "$HOME"/.gitconfig
