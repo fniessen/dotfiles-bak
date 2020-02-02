@@ -15,3 +15,4 @@ rm -v ~/.emacs.d/projectile.cache
 find ~/ -iname 'nul' | xargs rm -rf -v
 find ~/ -iname 'null' | xargs rm -rf -v
 find ~/ -iname 'MDB_ODBC.Trace.Txt' | xargs rm -rf -v
+# find ~/ -iname '*.exe.stackdump' | xargs rm -rf -v
