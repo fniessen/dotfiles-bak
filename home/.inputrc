@@ -1,7 +1,7 @@
 # Hey Emacs, this is a -*- sh -*- file
 ## .inputrc --- my Readline Init File
 
-# Copyright (C) 2005-2019 Fabrice Niessen
+# Copyright (C) 2005-2020 Fabrice Niessen
 
 # Author: Fabrice Niessen <(concat "fniessen" at-sign "pirilampo.org")>
 # Keywords: readline, dotfile, config
