@@ -29,11 +29,6 @@ if [ -f "$HOME"/.bashrc_local_before ]; then
     . "$HOME"/.bashrc_local_before
 fi
 
-# Source global definitions only if the session is interactive.
-if [[ $(expr index "$-" i) -ne 0 ]] && [[ -f /etc/bashrc ]]; then
-    . /etc/bashrc
-fi
-
 # Colors.
 BLK="\[$(tput setaf 0; tput bold)\]"
 RED="\[$(tput setaf 1; tput bold)\]"
