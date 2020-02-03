@@ -11,6 +11,7 @@ rm -rf -v ~/.local/*
 
 rm -v ~/.emacs.d/projectile.cache
 # rm -v ~/.histfile
+rm -v ~/.lesshst
 
 find ~/ -iname 'nul' | xargs rm -rf -v
 find ~/ -iname 'null' | xargs rm -rf -v
