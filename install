@@ -47,4 +47,4 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     done
 fi
 
-# ln -s "$HOME"/.dotfiles/plugins/git-config/.gitconfig "$HOME"/.gitconfig
+# ln -s "$HOME"/.dotfiles/plugins/git-leuven/.gitconfig "$HOME"/.gitconfig

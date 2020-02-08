@@ -12,11 +12,11 @@ cd "${PLUGINS}"
 
 for repo in \
     https://github.com/fniessen/emacs-leuven.git \
-    https://github.com/fniessen/git-config.git \
+    https://github.com/fniessen/git-leuven.git \
     https://github.com/karlin/mintty-colors-solarized.git \
     https://github.com/robbyrussell/oh-my-zsh.git \
     https://github.com/fniessen/refcard-SQL.git \
-    https://github.com/fniessen/shellrc-leuven.git;
+    https://github.com/fniessen/shell-leuven.git;
 do
     git clone $repo
 done
