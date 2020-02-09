@@ -43,6 +43,7 @@ find . -type f \
     -o -name "*.gemspec" \
     -o -name "*.gif" \
     -o -name "*.gitignore" \
+    -o -name "*.gpg" \
     -o -name "*.htm" \
     -o -name "*.html" \
     -o -name "*.ico" \
