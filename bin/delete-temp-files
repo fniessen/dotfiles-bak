@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+rm -rf -v ~/.cache/mozilla
 rm -rf -v ~/.dotfiles/home/.emacs.d/auctex-auto-generated-info/*
 rm -rf -v ~/.dotfiles/home/.emacs.d/auto-save-list/.*
 rm -rf -v ~/.dotfiles/home/.emacs.d/backups/*
