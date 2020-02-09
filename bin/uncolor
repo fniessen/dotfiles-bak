@@ -1,8 +1,0 @@
-#!/usr/bin/env sh
-
-## uncolor -- Remove terminal escape sequences such as color changes
-sed -r "s/\x1b\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g"
-
-# Even simpler, in some contexts: just use 'cat'!
-
-# strip-ansi-cli

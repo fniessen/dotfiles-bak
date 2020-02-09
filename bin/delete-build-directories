@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-# Is the 'clean' target not good enough?
-
-# Exclude the 'schema' directory in 'find' command (Don't delete folders such as
-# `./schema/ab-products/common/mobile/src/build').
-find . -iname "build" -not -path "./schema/*" | xargs rm -rf -v
-                                        # '-prune' doesn't work for me.

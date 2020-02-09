@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-find . -wholename '*/build/classes' -type d -print0 | xargs -0 rm -rf
