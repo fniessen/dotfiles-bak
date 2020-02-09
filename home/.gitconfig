@@ -1,4 +1,0 @@
-    serve="daemon --verbose --export-all --base-path=.git --reuseaddr --strict-paths .git/"
-
-    conflicts = diff --name-only --diff-filter=U
-    unmerged = diff --name-only --diff-filter=U
