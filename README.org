@@ -1,4 +1,4 @@
-#+TITLE:     Managing Dotfiles
+#+TITLE:     Managing Dotfiles (OBSOLETED - Use dotfiles_default instead!)
 #+AUTHOR:    Fabrice Niessen
 #+EMAIL:     (concat "fniessen" at-sign "pirilampo.org")
 #+DESCRIPTION:
