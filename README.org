@@ -7,7 +7,7 @@
 #+OPTIONS:   H:4 num:t toc:3
 
 #+FILETAGS:  :personal:
-#+SETUPFILE: ~/.dotfiles/org/theme-readtheorg.setup
+#+SETUPFILE: ~/org/theme-readtheorg.setup
 
 Your unofficial guide to dotfiles on GitHub:
 http://dotfiles.github.io/
